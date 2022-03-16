@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.GameModel.FieldCells.SpecificFieldCells
+namespace Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells
 {
     /// <summary>
     /// Клетка, где дорога проходит уголком между двумя соседними выходами.

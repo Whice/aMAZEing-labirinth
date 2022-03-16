@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace Assets.Scripts.GameModel.FieldCells.SpecificFieldCells
+namespace Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells
 {
     /// <summary>
     /// Клетка, где три пути пересекаются, один проход отсутсвует.

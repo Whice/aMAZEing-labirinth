@@ -1,11 +1,11 @@
-using Assets.Scripts.GameModel.FieldCells;
-using Assets.Scripts.GameModel.FieldCells.SpecificFieldCells;
+using Assets.Scripts.GameModel.PlayingField.FieldCells;
+using Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells;
 using System;
 using Xunit;
 
 namespace TestModel
 {
-    public class UnitTestModel
+    public class UnitTestGameModel
     {
         #region FieldCells
 

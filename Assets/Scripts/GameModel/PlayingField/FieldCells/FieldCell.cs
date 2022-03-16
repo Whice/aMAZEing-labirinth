@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.GameModel.FieldCells
+namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 {
     /// <summary>
     /// Ячейка игрового поля.
@@ -75,30 +75,38 @@ namespace Assets.Scripts.GameModel.FieldCells
         /// <summary>
         /// Повернуть по часовой стрелке.
         /// </summary>
-        public void TurnClockwise()
+        /// <param name="count">Количество поворотов.</param>
+        public void TurnClockwise(Int32 count=1)
         {
-            Int32 end = this.directions.Length - 1;
-            Boolean lastDirection = this.directions[end];
-            for (Int32 i = end; i > 0; i--)
+            for (Int32 numberTurn = 0; numberTurn < count; numberTurn++)
             {
-                this.directions[i] = this.directions[i - 1];
-            }
+                Int32 end = this.directions.Length - 1;
+                Boolean lastDirection = this.directions[end];
+                for (Int32 i = end; i > 0; i--)
+                {
+                    this.directions[i] = this.directions[i - 1];
+                }
 
-            this.directions[0] = lastDirection;
+                this.directions[0] = lastDirection;
+            }
         }
         /// <summary>
         /// Повернуть против часовой стрелке.
         /// </summary>
-        public void TurnCounterClockwise()
+        /// <param name="count">Количество поворотов.</param>
+        public void TurnCounterClockwise(Int32 count = 1)
         {
-            Int32 end = this.directions.Length - 1;
-            Boolean firstDirection = this.directions[0];
-            for (Int32 i = 0; i < end; i++)
+            for (Int32 numberTurn = 0; numberTurn < count; numberTurn++)
             {
-                this.directions[i] = this.directions[i + 1];
-            }
+                Int32 end = this.directions.Length - 1;
+                Boolean firstDirection = this.directions[0];
+                for (Int32 i = 0; i < end; i++)
+                {
+                    this.directions[i] = this.directions[i + 1];
+                }
 
-            this.directions[end] = firstDirection;
+                this.directions[end] = firstDirection;
+            }
         }
     }
 }
