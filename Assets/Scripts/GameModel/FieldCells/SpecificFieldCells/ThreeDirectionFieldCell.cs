@@ -6,7 +6,7 @@ namespace Assets.Scripts.GameModel.FieldCells.SpecificFieldCells
 {
     /// <summary>
     /// Клетка, где три пути пересекаются, один проход отсутсвует.
-    /// <br/> По умолчанию есть проходы вверх, влево, вниз.
+    /// <br/> По умолчанию есть проходы вверх, вправо, вниз.
     /// </summary>
     public class ThreeDirectionFieldCell: FieldCell
     {
