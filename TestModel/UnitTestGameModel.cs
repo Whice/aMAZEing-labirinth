@@ -1,3 +1,4 @@
+﻿using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells;
 using System;
@@ -5,10 +6,11 @@ using Xunit;
 
 namespace TestModel
 {
-    public class UnitTestGameModel
+    /// <summary>
+    ///  Класс тестирования ячеек.
+    /// </summary>
+    public class UnitTestGameModelCells
     {
-        #region FieldCells
-
         #region Create
 
         [Fact]
@@ -126,7 +128,112 @@ namespace TestModel
         }
 
         #endregion Rotate
-
-        #endregion FieldCells
     }
+    /// <summary>
+    ///  Класс тестировани¤ игрового поля.
+    /// </summary>
+    public class UnitTestGameModelPlaingField
+    {
+        #region Create
+
+        [Fact]
+        public void TestCreate_CreateField_SuccessfullCreatePinnedCells()
+        {
+            PlayingField field = new PlayingField();
+
+            #region  углы
+
+            FieldCell currentCell = field.fieldCells[0, 0];
+            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            currentCell = field.fieldCells[0, 6];
+            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            currentCell = field.fieldCells[6, 0];
+            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            currentCell = field.fieldCells[6, 6];
+            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+
+            #endregion  углы
+
+            #region центр
+
+            currentCell = field.fieldCells[2, 2];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            currentCell = field.fieldCells[2, 4];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            currentCell = field.fieldCells[4, 4];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            currentCell = field.fieldCells[4, 2];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+
+            #endregion центр
+
+            #region границы
+
+            currentCell = field.fieldCells[0, 2];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            currentCell = field.fieldCells[0, 4];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            currentCell = field.fieldCells[2, 6];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            currentCell = field.fieldCells[4, 6];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            currentCell = field.fieldCells[6, 2];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            currentCell = field.fieldCells[6, 4];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionLeft);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            currentCell = field.fieldCells[2, 0];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+            currentCell = field.fieldCells[4, 0];
+            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.True(currentCell.IsHaveDirectionUp);
+            Assert.True(currentCell.IsHaveDirectionRight);
+            Assert.True(currentCell.IsHaveDirectionDown);
+
+            #endregion границы
+        }
+
+        #endregion Create
+    }
+
 }

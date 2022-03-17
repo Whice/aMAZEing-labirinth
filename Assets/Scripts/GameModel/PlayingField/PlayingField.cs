@@ -12,7 +12,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// Размер игрового поля.
         /// </summary>
-        public Int32 fieldSize = 7;
+        private Int32 fieldSize = 7;
         /// <summary>
         /// Все игровое поле.
         /// </summary>
@@ -75,16 +75,21 @@ namespace Assets.Scripts.GameModel.PlayingField
             return cells;
         }
         /// <summary>
-        /// Создание двигающихся ячеек.
+        /// Создание ячейки по типу. Для типа "не определено" выбирается тип уголка.
         /// </summary>
+        /// <param name="type">Тип ячейки.</param>
+        /// <param name="count">Количество ячеек.</param>
         /// <returns></returns>
-        private FieldCell[] CreateMovingFieldCells()
+        private FieldCell[] CreateFieldCells(CellType type, Int32 count)
         {
-            
-            FieldCell[] fieldCells = new FieldCell[fieldSize*fieldSize];
+            switch(type)
+            {
+                case CellType.corner: return CreateCornerTwoDirectionFieldCells(count);
+                case CellType.line: return CreateLineTwoDirectionFieldCells(count);
+                case CellType.treeDirection: return CreateThreeDirectionFieldCells(count);
 
-            return fieldCells;
-
+                    default: return CreateCornerTwoDirectionFieldCells(count);
+            }
         }
         /// <summary>
         /// Создание закрепленных ячеек.
@@ -94,7 +99,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             #region Создание угловых ячеек
 
-            FieldCell[] cornerFieldCells = CreateCornerTwoDirectionFieldCells(4);
+            FieldCell[] cornerFieldCells = CreateFieldCells(CellType.corner, 4);
             //Верхняя левая
             cornerFieldCells[0].TurnClockwise(1);
             this.fieldCells[0, 0] = cornerFieldCells[0];
@@ -103,15 +108,15 @@ namespace Assets.Scripts.GameModel.PlayingField
             this.fieldCells[0, this.fieldSize-1] = cornerFieldCells[1];
             //Нижняя правая
             cornerFieldCells[2].TurnClockwise(3);
-            this.fieldCells[this.fieldSize - 1, 0] = cornerFieldCells[2];
+            this.fieldCells[this.fieldSize - 1, this.fieldSize - 1] = cornerFieldCells[2];
             //Нижняя левая
-            this.fieldCells[this.fieldSize - 1, this.fieldSize - 1] = cornerFieldCells[3];
+            this.fieldCells[this.fieldSize - 1, 0] = cornerFieldCells[3];
 
             #endregion Создание угловых ячеек
 
             #region Создание ячеек по краям
 
-            FieldCell[] borderFieldCells = CreateThreeDirectionFieldCells(8);
+            FieldCell[] borderFieldCells = CreateFieldCells(CellType.treeDirection, 8);
 
             //Две верхние
             borderFieldCells[0].TurnClockwise(1);
@@ -136,7 +141,7 @@ namespace Assets.Scripts.GameModel.PlayingField
 
             #region Создание центральных ячеек
 
-            FieldCell[] centerFieldCells = CreateThreeDirectionFieldCells(4);
+            FieldCell[] centerFieldCells = CreateFieldCells(CellType.treeDirection, 4);
 
             //Верхняя левая
             this.fieldCells[2, 2] = centerFieldCells[0];
@@ -152,6 +157,15 @@ namespace Assets.Scripts.GameModel.PlayingField
 
             #endregion Создание центральных ячеек
 
+        }
+        /// <summary>
+        /// Создание двигающихся ячеек.
+        /// </summary>
+        /// <returns></returns>
+        private void CreateMovingFieldCells()
+        {
+
+            FieldCell[] fieldCells = new FieldCell[fieldSize * fieldSize];
         }
         private void CreateField()
         {
