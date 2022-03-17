@@ -9,6 +9,11 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
     public abstract class FieldCell
     {
         /// <summary>
+        /// Тип ячейки.
+        /// Хранит информацию о том, сколько проходов у нее и как они расположены.
+        /// </summary>
+        public readonly CellType CellType = CellType.unknown;
+        /// <summary>
         /// Проходы.
         /// <br/> 0 - верхний.
         /// <br/> 1 - правый.
@@ -20,9 +25,12 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// 
         /// </summary>
         /// <param name="directions">Проходы.</param>
-        public FieldCell(List<Boolean> directions)
+        /// <param name="CellType">Тип ячейки.
+        /// Хранит информацию о том, сколько проходов у нее и как они расположены.</param>
+        public FieldCell(List<Boolean> directions, CellType CellType)
         {
             this.directions = directions.ToArray();
+            this.CellType = CellType;
         }
 
         /// <summary>

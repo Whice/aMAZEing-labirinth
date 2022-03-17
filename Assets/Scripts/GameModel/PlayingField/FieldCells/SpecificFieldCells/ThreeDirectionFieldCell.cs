@@ -10,7 +10,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells
     /// </summary>
     public class ThreeDirectionFieldCell: FieldCell
     {
-        public ThreeDirectionFieldCell() : base(new List<Boolean>() { true, true, true, false })
+        public ThreeDirectionFieldCell() : base(new List<Boolean>() { true, true, true, false }, CellType.treeDirection)
         {
 
         }

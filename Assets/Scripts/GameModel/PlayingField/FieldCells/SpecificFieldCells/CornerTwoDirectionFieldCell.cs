@@ -9,7 +9,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells
     /// </summary>
     public class CornerTwoDirectionFieldCell : FieldCell
     {
-        public CornerTwoDirectionFieldCell() : base(new List<Boolean>() { true, true, false,  false })
+        public CornerTwoDirectionFieldCell() : base(new List<Boolean>() { true, true, false,  false }, CellType.corner)
         {
 
         }
