@@ -27,6 +27,6 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// <summary>
         /// Три прохода.
         /// </summary>
-        treeDirection
+        threeDirection
     }
 }

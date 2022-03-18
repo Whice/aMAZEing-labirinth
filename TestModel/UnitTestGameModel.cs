@@ -130,33 +130,52 @@ namespace TestModel
         #endregion Rotate
     }
     /// <summary>
-    ///  Класс тестировани¤ игрового поля.
+    ///  Класс тестирования игрового поля.
     /// </summary>
     public class UnitTestGameModelPlaingField
     {
+        /// <summary>
+        /// Игровое поле для всех тестов создания.
+        /// </summary>
+        private PlayingField field = null;
+
         #region Create
 
+        /// <summary>
+        /// Создать игровое поле, если оно не создано.
+        /// </summary>
+        private void CreateField()
+        {
+            if(this.field == null)
+            {
+                this.field = new PlayingField();
+            }
+        }
+        /// <summary>
+        /// Правильное заполнение закрепленных ячеек при создании.
+        /// </summary>
         [Fact]
         public void TestCreate_CreateField_SuccessfullCreatePinnedCells()
         {
-            PlayingField field = new PlayingField();
+            CreateField();
+            PlayingField field = this.field;
 
             #region  углы
 
             FieldCell currentCell = field.fieldCells[0, 0];
-            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             currentCell = field.fieldCells[0, 6];
-            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             currentCell = field.fieldCells[6, 0];
-            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             currentCell = field.fieldCells[6, 6];
-            Assert.Equal(currentCell.CellType, CellType.corner);
+            Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
 
@@ -165,22 +184,22 @@ namespace TestModel
             #region центр
 
             currentCell = field.fieldCells[2, 2];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             currentCell = field.fieldCells[2, 4];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             currentCell = field.fieldCells[4, 4];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             currentCell = field.fieldCells[4, 2];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
@@ -190,47 +209,104 @@ namespace TestModel
             #region границы
 
             currentCell = field.fieldCells[0, 2];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             currentCell = field.fieldCells[0, 4];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             currentCell = field.fieldCells[2, 6];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             currentCell = field.fieldCells[4, 6];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             currentCell = field.fieldCells[6, 2];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             currentCell = field.fieldCells[6, 4];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             currentCell = field.fieldCells[2, 0];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             currentCell = field.fieldCells[4, 0];
-            Assert.Equal(currentCell.CellType, CellType.treeDirection);
+            Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
 
             #endregion границы
+        }
+        /// <summary>
+        /// Отсутсвуют пустые ячейки на поле. Они должны быть все определены.
+        /// </summary>
+        [Fact]
+        public void TestCreate_CreateField_ThereAreNoNullValuesI​nField()
+        {
+            CreateField();
+            PlayingField field = this.field;
+
+            foreach (FieldCell cell in field.fieldCells)
+            {
+                Assert.NotNull(field.freeFieldCell);
+            }
+        }
+        /// <summary>
+        /// Заполнение свободной ячейки присоздании.
+        /// </summary>
+        [Fact]
+        public void TestCreate_CreateField_SuccessfullCreateFreeCell()
+        {
+            CreateField();
+            PlayingField field = this.field;
+
+            Assert.NotNull(field.freeFieldCell);
+        }
+        /// <summary>
+        /// Правильное количество ячеек каждого вида.
+        /// </summary>
+        [Fact]
+        public void TestCreate_CreateField_RightCountCellsInField()
+        {
+            CreateField();
+            PlayingField field = this.field;
+            Int32 countCoreners = 0;
+            Int32 countLines = 0;
+            Int32 countThreeDirections = 0;
+            foreach (FieldCell cell in field.fieldCells)
+            {
+                if (cell.CellType == CellType.threeDirection)
+                    ++countThreeDirections;
+                if (cell.CellType == CellType.line)
+                    ++countLines;
+                if (cell.CellType == CellType.corner)
+                    ++countCoreners;
+            }
+
+            if (field.freeFieldCell.CellType == CellType.corner)
+                ++countCoreners;
+            else if (field.freeFieldCell.CellType == CellType.line)
+                ++countLines;
+            else if (field.freeFieldCell.CellType == CellType.threeDirection)
+                ++countThreeDirections;
+
+            Assert.Equal(20, countCoreners);
+            Assert.Equal(12, countLines);
+            Assert.Equal(18, countThreeDirections);
         }
 
         #endregion Create
