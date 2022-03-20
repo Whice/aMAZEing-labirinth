@@ -128,29 +128,74 @@ namespace TestModel
         }
 
         #endregion Rotate
+
+        #region Interaction
+
+        [Fact]
+        public void TestRotateCornerTwoDirectionNotInteractionFieldCell_TurnClockwise_UnsuccessfullRotate()
+        {
+            FieldCell cell = new CornerTwoDirectionFieldCell();
+
+            //По умолчанию взаимодействие включено
+
+            cell.TurnClockwise();
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.TurnCounterClockwise();
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            //при отключении взаимодействия, повороты не должны работать.
+            cell.isInteractable = false;
+
+            cell.TurnClockwise();
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.TurnCounterClockwise();
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+        }
+
+        #endregion Interactions
     }
     /// <summary>
     ///  Класс тестирования игрового поля.
     /// </summary>
     public class UnitTestGameModelPlaingField
     {
+#pragma warning disable CS8618
         /// <summary>
         /// Игровое поле для всех тестов создания.
         /// </summary>
-        private PlayingField field = null;
-
-        #region Create
-
+        private PlayingField field;
+#pragma warning restore CS8618
         /// <summary>
         /// Создать игровое поле, если оно не создано.
         /// </summary>
         private void CreateField()
         {
-            if(this.field == null)
+            if (this.field == null)
             {
                 this.field = new PlayingField();
             }
         }
+
+        #region Create
+
         /// <summary>
         /// Правильное заполнение закрепленных ячеек при создании.
         /// </summary>
@@ -310,6 +355,27 @@ namespace TestModel
         }
 
         #endregion Create
+
+
+        /// <summary>
+        /// Правильное заполнение закрепленных ячеек при создании.
+        /// </summary>
+        [Fact]
+        public void TestCreate_RotateAllNotInreationCellsField_UnsuccessfullRotate()
+        {
+            CreateField();
+            PlayingField field = this.field;
+            PlayingField field2 = new PlayingField();
+
+            foreach (FieldCell cell in field.fieldCells)
+                cell.TurnClockwise();
+
+            for (Int32 i = 0; i < PlayingField.fieldSize; i++)
+                for (Int32 j = 0; j < PlayingField.fieldSize; j++)
+                {
+                    Assert.True(field.fieldCells[i, j] == field2.fieldCells[i, j]);
+                }
+        }
     }
 
 }

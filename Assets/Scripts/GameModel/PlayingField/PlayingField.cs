@@ -13,7 +13,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// Размер игрового поля.
         /// </summary>
-        private Int32 fieldSize = 7;
+        public const Int32 fieldSize = 7;
         /// <summary>
         /// Все игровое поле.
         /// </summary>
@@ -24,7 +24,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         public FieldCell freeFieldCell = null;
         public PlayingField()
         {
-            this.fieldCells = new FieldCell[this.fieldSize, fieldSize];
+            this.fieldCells = new FieldCell[fieldSize, fieldSize];
             CreateField();
         }
 
@@ -107,12 +107,12 @@ namespace Assets.Scripts.GameModel.PlayingField
             this.fieldCells[0, 0] = cornerFieldCells[0];
             //Верхняя правая
             cornerFieldCells[1].TurnClockwise(2);
-            this.fieldCells[0, this.fieldSize-1] = cornerFieldCells[1];
+            this.fieldCells[0, fieldSize-1] = cornerFieldCells[1];
             //Нижняя правая
             cornerFieldCells[2].TurnClockwise(3);
-            this.fieldCells[this.fieldSize - 1, this.fieldSize - 1] = cornerFieldCells[2];
+            this.fieldCells[fieldSize - 1, fieldSize - 1] = cornerFieldCells[2];
             //Нижняя левая
-            this.fieldCells[this.fieldSize - 1, 0] = cornerFieldCells[3];
+            this.fieldCells[fieldSize - 1, 0] = cornerFieldCells[3];
 
             #endregion Создание угловых ячеек
 
@@ -128,13 +128,13 @@ namespace Assets.Scripts.GameModel.PlayingField
             //Две правые
             borderFieldCells[2].TurnClockwise(2);
             borderFieldCells[3].TurnClockwise(2);
-            this.fieldCells[2, this.fieldSize - 1] = borderFieldCells[2];
-            this.fieldCells[4, this.fieldSize - 1] = borderFieldCells[3];
+            this.fieldCells[2, fieldSize - 1] = borderFieldCells[2];
+            this.fieldCells[4, fieldSize - 1] = borderFieldCells[3];
             //Две нижние
             borderFieldCells[4].TurnClockwise(3);
             borderFieldCells[5].TurnClockwise(3);
-            this.fieldCells[this.fieldSize - 1, 2] = borderFieldCells[4];
-            this.fieldCells[this.fieldSize - 1, 4] = borderFieldCells[5];
+            this.fieldCells[fieldSize - 1, 2] = borderFieldCells[4];
+            this.fieldCells[fieldSize - 1, 4] = borderFieldCells[5];
             //Две левые
             this.fieldCells[2, 0] = borderFieldCells[6];
             this.fieldCells[4, 0] = borderFieldCells[7];
@@ -192,9 +192,9 @@ namespace Assets.Scripts.GameModel.PlayingField
             Stack<FieldCell> fieldCellsStack = new Stack<FieldCell>(fieldCellsList);
 
             Random random = new Random();
-            for (Int32 i = 0; i < this.fieldSize; i++)
+            for (Int32 i = 0; i < fieldSize; i++)
             {
-                for (Int32 j = 0; j < this.fieldSize; j++)
+                for (Int32 j = 0; j < fieldSize; j++)
                 {
                     if (this.fieldCells[i, j] == null)
                     {
@@ -213,10 +213,17 @@ namespace Assets.Scripts.GameModel.PlayingField
             //Пометить последнюю оставшуюся ячейку как свободную
             this.freeFieldCell = fieldCellsStack.Pop();
         }
+        /// <summary>
+        /// Создание игрового поля.
+        /// </summary>
         private void CreateField()
         {
             CreatePinnedFieldCells();
             CreateMovingFieldCells();
+
+            //Ячейки поля не должны изменяться.
+            foreach(FieldCell cell in this.fieldCells)
+                cell.isInteractable = false;
         }
 
         #endregion Создание ячеек на поле.

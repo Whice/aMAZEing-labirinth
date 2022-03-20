@@ -9,11 +9,6 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
     public abstract class FieldCell
     {
         /// <summary>
-        /// Тип ячейки.
-        /// Хранит информацию о том, сколько проходов у нее и как они расположены.
-        /// </summary>
-        public readonly CellType CellType = CellType.unknown;
-        /// <summary>
         /// Проходы.
         /// <br/> 0 - верхний.
         /// <br/> 1 - правый.
@@ -33,6 +28,17 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             this.CellType = CellType;
         }
 
+        #region Данные ячейки.
+
+        /// <summary>
+        /// Разрешено взаимодействие с этой ячейкой.
+        /// </summary>
+        public Boolean isInteractable { get; set; } = true;
+        /// <summary>
+        /// Тип ячейки.
+        /// Хранит информацию о том, сколько проходов у нее и как они расположены.
+        /// </summary>
+        public readonly CellType CellType = CellType.unknown;
         /// <summary>
         /// Имеется ли направление вверх у этой клетки.
         /// </summary>
@@ -80,12 +86,20 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             }
         }
 
+        #endregion Данные ячейки.
+
+        #region Действия с ячейкой.
+
         /// <summary>
         /// Повернуть по часовой стрелке.
         /// </summary>
         /// <param name="count">Количество поворотов.</param>
         public void TurnClockwise(Int32 count=1)
         {
+            //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
+            if (!this.isInteractable)
+                return;
+
             for (Int32 numberTurn = 0; numberTurn < count; numberTurn++)
             {
                 Int32 end = this.directions.Length - 1;
@@ -104,6 +118,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// <param name="count">Количество поворотов.</param>
         public void TurnCounterClockwise(Int32 count = 1)
         {
+            //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
+            if (!this.isInteractable)
+                return;
+
             for (Int32 numberTurn = 0; numberTurn < count; numberTurn++)
             {
                 Int32 end = this.directions.Length - 1;
@@ -116,5 +134,63 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 this.directions[end] = firstDirection;
             }
         }
+
+        #endregion Действия с ячейкой.
+
+        #region Сравнение.
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is FieldCell otherCell)
+            {
+
+                if (this.IsHaveDirectionUp != otherCell.IsHaveDirectionUp)
+                    return false;
+                if (this.IsHaveDirectionRight != otherCell.IsHaveDirectionRight)
+                    return false;
+                if (this.IsHaveDirectionDown != otherCell.IsHaveDirectionDown)
+                    return false;
+                if (this.IsHaveDirectionLeft != otherCell.IsHaveDirectionLeft)
+                    return false;
+
+                if(this.directionCount != otherCell.directionCount)
+                    return false;
+
+                if(this.CellType != otherCell.CellType)
+                    return false;
+
+                return true;
+            }
+
+            return false;
+        }
+        public override Int32 GetHashCode()
+        {
+            Int32 hashCode = 0;
+            hashCode += this.isInteractable ? 1 : 0;
+            hashCode += this.IsHaveDirectionUp ? 1 : 0;
+            hashCode += this.IsHaveDirectionRight ? 1 : 0;
+            hashCode += this.IsHaveDirectionDown ? 1 : 0;
+            hashCode += this.IsHaveDirectionLeft ? 1 : 0;
+            hashCode |= this.directionCount;
+            hashCode |= (Int32)this.CellType;
+            return hashCode;
+        }
+        public static bool operator ==(FieldCell l, FieldCell r)
+        {
+            if(l==null || r==null)
+                return false;
+            else
+                return l.Equals(r);
+        }
+        public static bool operator !=(FieldCell l, FieldCell r)
+        {
+            return !(l == r);
+        }
+
+        #endregion Сравнение.
     }
 }
