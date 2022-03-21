@@ -1,182 +1,17 @@
 ﻿using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
-using Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells;
 using System;
 using Xunit;
 
-namespace TestModel
+namespace TestModel.ModelTests
 {
-    /// <summary>
-    ///  Класс тестирования ячеек.
-    /// </summary>
-    public class UnitTestGameModelCells
-    {
-        #region Create
-
-        [Fact]
-        public void TestCreateCornerTwoDirectionFieldCell_Create_SuccessfullCreate()
-        {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
-
-            Assert.Equal(2, cell.directionCount);
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestCreateLineTwoDirectionFieldCell_Create_SuccessfullCreate()
-        {
-            FieldCell cell = new LineTwoDirectionFieldCell();
-
-            Assert.Equal(2, cell.directionCount);
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestCreateThreeDirectionFieldCell_Create_SuccessfullCreate()
-        {
-            FieldCell cell = new ThreeDirectionFieldCell();
-
-            Assert.Equal(3, cell.directionCount);
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.True(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-        }
-
-        #endregion Create
-
-        #region Rotate
-
-        [Fact]
-        public void TestRotateCornerTwoDirectionFieldCell_TurnClockwise_SuccessfullRotate()
-        {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
-
-            cell.TurnClockwise();
-
-            Assert.False(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.True(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestRotateCornerTwoDirectionFieldCell_TurnCounterClockwise_SuccessfullRotate()
-        {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
-
-            cell.TurnCounterClockwise();
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.False(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.True(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestRotateLineTwoDirectionFieldCell_TurnClockwise_SuccessfullRotate()
-        {
-            FieldCell cell = new LineTwoDirectionFieldCell();
-
-            cell.TurnClockwise();
-
-            Assert.False(cell.IsHaveDirectionUp);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.True(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestRotateLineTwoDirectionFieldCell_TurnCounterClockwise_SuccessfullRotate()
-        {
-            FieldCell cell = new LineTwoDirectionFieldCell();
-
-            cell.TurnClockwise();
-
-            Assert.False(cell.IsHaveDirectionUp);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.True(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestRotateThreeDirectionFieldCell_TurnClockwise_SuccessfullRotate()
-        {
-            FieldCell cell = new ThreeDirectionFieldCell();
-
-            cell.TurnClockwise();
-
-            Assert.False(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.True(cell.IsHaveDirectionDown);
-            Assert.True(cell.IsHaveDirectionLeft);
-        }
-        [Fact]
-        public void TestRotateThreeDirectionFieldCell_TurnCounterClockwise_SuccessfullRotate()
-        {
-            FieldCell cell = new ThreeDirectionFieldCell();
-
-            cell.TurnCounterClockwise();
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.True(cell.IsHaveDirectionLeft);
-        }
-
-        #endregion Rotate
-
-        #region Interaction
-
-        [Fact]
-        public void TestRotateCornerTwoDirectionNotInteractionFieldCell_TurnClockwise_UnsuccessfullRotate()
-        {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
-
-            //По умолчанию взаимодействие включено
-
-            cell.TurnClockwise();
-
-            Assert.False(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.True(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-
-            cell.TurnCounterClockwise();
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-
-            //при отключении взаимодействия, повороты не должны работать.
-            cell.isInteractable = false;
-
-            cell.TurnClockwise();
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-
-            cell.TurnCounterClockwise();
-
-            Assert.True(cell.IsHaveDirectionUp);
-            Assert.True(cell.IsHaveDirectionRight);
-            Assert.False(cell.IsHaveDirectionDown);
-            Assert.False(cell.IsHaveDirectionLeft);
-        }
-
-        #endregion Interactions
-    }
     /// <summary>
     ///  Класс тестирования игрового поля.
     /// </summary>
     public class UnitTestGameModelPlaingField
     {
+        #region Дополнительные поля и методы.
+
 #pragma warning disable CS8618
         /// <summary>
         /// Игровое поле для всех тестов создания.
@@ -193,6 +28,8 @@ namespace TestModel
                 this.field = new PlayingField();
             }
         }
+
+        #endregion Дополнительные поля и методы.
 
         #region Create
 
@@ -307,7 +144,7 @@ namespace TestModel
 
             foreach (FieldCell cell in field.fieldCells)
             {
-                Assert.NotNull(field.freeFieldCell);
+                Assert.NotNull(cell);
             }
         }
         /// <summary>
@@ -353,10 +190,6 @@ namespace TestModel
             Assert.Equal(12, countLines);
             Assert.Equal(18, countThreeDirections);
         }
-
-        #endregion Create
-
-
         /// <summary>
         /// Правильное заполнение закрепленных ячеек при создании.
         /// </summary>
@@ -365,7 +198,7 @@ namespace TestModel
         {
             CreateField();
             PlayingField field = this.field;
-            PlayingField field2 = new PlayingField();
+            PlayingField field2 = this.field.Clone();
 
             foreach (FieldCell cell in field.fieldCells)
                 cell.TurnClockwise();
@@ -376,6 +209,7 @@ namespace TestModel
                     Assert.True(field.fieldCells[i, j] == field2.fieldCells[i, j]);
                 }
         }
-    }
 
+        #endregion Create
+    }
 }

@@ -15,7 +15,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// <br/> 2 - нижний.
         /// <br/> 3 - левый.
         /// </summary>
-        private Boolean[] directions = null;
+        protected Boolean[] directions = null;
         /// <summary>
         /// 
         /// </summary>
@@ -28,7 +28,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             this.CellType = CellType;
         }
 
-        #region Данные ячейки.
+        #region Публичные данные ячейки.
 
         /// <summary>
         /// Разрешено взаимодействие с этой ячейкой.
@@ -59,7 +59,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         public Boolean IsHaveDirectionDown
         {
             get => this.directions[2];
-        } 
+        }
         /// <summary>
         /// Имеется ли направление влево у этой клетки.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 Int32 count = 0;
                 foreach (Boolean direction in this.directions)
                 {
-                    if(direction)
+                    if (direction)
                     {
                         count++;
                     }
@@ -94,7 +94,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// Повернуть по часовой стрелке.
         /// </summary>
         /// <param name="count">Количество поворотов.</param>
-        public void TurnClockwise(Int32 count=1)
+        public void TurnClockwise(Int32 count = 1)
         {
             //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
             if (!this.isInteractable)
@@ -156,10 +156,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 if (this.IsHaveDirectionLeft != otherCell.IsHaveDirectionLeft)
                     return false;
 
-                if(this.directionCount != otherCell.directionCount)
+                if (this.directionCount != otherCell.directionCount)
                     return false;
 
-                if(this.CellType != otherCell.CellType)
+                if (this.CellType != otherCell.CellType)
                     return false;
 
                 return true;
@@ -181,7 +181,9 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         }
         public static bool operator ==(FieldCell l, FieldCell r)
         {
-            if(l==null || r==null)
+            if (l is null && r is null)
+                return true;
+            else if (l is null)
                 return false;
             else
                 return l.Equals(r);
@@ -192,5 +194,28 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         }
 
         #endregion Сравнение.
+
+        #region Клонирование.
+
+        /// <summary>
+        /// Создание глубокого клона ячейки.
+        /// </summary>
+        /// <returns></returns>
+        public abstract FieldCell Clone();
+        /// <summary>
+        /// Копировать данные массива направлений.
+        /// </summary>
+        /// <returns></returns>
+        protected Boolean[] CopyDirections()
+        {
+            Boolean[] directionsClone = new Boolean[this.directions.Length];
+            for(Int32 i = 0; i < this.directions.Length; i++)
+            {
+                directionsClone[i] = this.directions[i];
+            }
+            return directionsClone;
+        }
+
+        #endregion Клонирование.
     }
 }

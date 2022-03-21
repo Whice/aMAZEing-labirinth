@@ -10,6 +10,8 @@ namespace Assets.Scripts.GameModel.PlayingField
     /// </summary>
     public class PlayingField
     {
+        #region Данные игрового поля.
+
         /// <summary>
         /// Размер игрового поля.
         /// </summary>
@@ -22,6 +24,9 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// Свободная ячейка.
         /// </summary>
         public FieldCell freeFieldCell = null;
+
+        #endregion Данные игрового поля.
+
         public PlayingField()
         {
             this.fieldCells = new FieldCell[fieldSize, fieldSize];
@@ -227,5 +232,29 @@ namespace Assets.Scripts.GameModel.PlayingField
         }
 
         #endregion Создание ячеек на поле.
+
+        #region Клонирование.
+
+        /// <summary>
+        /// Создание глубокого клона игрового поля.
+        /// </summary>
+        /// <returns></returns>
+        public PlayingField Clone()
+        {
+            PlayingField fieldClone = new PlayingField();
+
+            for (Int32 i = 0; i < fieldSize; i++)
+            {
+                for (Int32 j = 0; j < fieldSize; j++)
+                {
+                    fieldClone.fieldCells[i, j] = this.fieldCells[i, j].Clone();
+                }
+            }
+            fieldClone.freeFieldCell = this.freeFieldCell.Clone();
+
+            return fieldClone;
+        }
+
+        #endregion Клонирование.
     }
 }
