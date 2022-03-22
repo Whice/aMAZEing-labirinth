@@ -10,12 +10,12 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
     /// Тип ячейки.
     /// Хранит информацию о том, сколько проходов у нее и как они расположены.
     /// </summary>
-    public enum CellType
+    public enum CellType : byte
     {
         /// <summary>
         /// Не известно.
         /// </summary>
-        unknown=0,
+        unknown = 0,
         /// <summary>
         /// Уголок. Два прохода.
         /// </summary>
