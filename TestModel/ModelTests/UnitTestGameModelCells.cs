@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.FieldCells;
-using Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells;
 using Xunit;
 
 namespace TestModel.ModelTests
@@ -14,7 +13,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestCreateCornerTwoDirectionFieldCell_Create_SuccessfullCreate()
         {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.corner);
 
             Assert.Equal(2, cell.directionCount);
 
@@ -26,7 +25,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestCreateLineTwoDirectionFieldCell_Create_SuccessfullCreate()
         {
-            FieldCell cell = new LineTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.line);
 
             Assert.Equal(2, cell.directionCount);
 
@@ -38,7 +37,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestCreateThreeDirectionFieldCell_Create_SuccessfullCreate()
         {
-            FieldCell cell = new ThreeDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.threeDirection);
 
             Assert.Equal(3, cell.directionCount);
 
@@ -55,7 +54,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateCornerTwoDirectionFieldCell_TurnClockwise_SuccessfullRotate()
         {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.corner);
 
             cell.TurnClockwise();
 
@@ -67,7 +66,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateCornerTwoDirectionFieldCell_TurnCounterClockwise_SuccessfullRotate()
         {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.corner);
 
             cell.TurnCounterClockwise();
 
@@ -79,7 +78,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateLineTwoDirectionFieldCell_TurnClockwise_SuccessfullRotate()
         {
-            FieldCell cell = new LineTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.line);
 
             cell.TurnClockwise();
 
@@ -91,7 +90,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateLineTwoDirectionFieldCell_TurnCounterClockwise_SuccessfullRotate()
         {
-            FieldCell cell = new LineTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.line);
 
             cell.TurnClockwise();
 
@@ -103,7 +102,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateThreeDirectionFieldCell_TurnClockwise_SuccessfullRotate()
         {
-            FieldCell cell = new ThreeDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.threeDirection);
 
             cell.TurnClockwise();
 
@@ -115,7 +114,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateThreeDirectionFieldCell_TurnCounterClockwise_SuccessfullRotate()
         {
-            FieldCell cell = new ThreeDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.threeDirection);
 
             cell.TurnCounterClockwise();
 
@@ -132,7 +131,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestRotateCornerTwoDirectionNotInteractionFieldCell_TurnClockwise_UnsuccessfullRotate()
         {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.corner);
 
             //По умолчанию взаимодействие включено
 
@@ -180,17 +179,17 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestCloneFieldCell_Cloning_InstanceMatching()
         {
-            FieldCell cell = new CornerTwoDirectionFieldCell();
+            FieldCell cell = new FieldCell(CellType.corner);
             FieldCell cloneCell = cell.Clone();
 
             Assert.Equal(cell, cloneCell);
 
-            cell = new LineTwoDirectionFieldCell();
+            cell = new FieldCell(CellType.line);
             cloneCell = cell.Clone();
 
             Assert.Equal(cell, cloneCell);
 
-            cell = new ThreeDirectionFieldCell();
+            cell = new FieldCell(CellType.threeDirection);
             cloneCell = cell.Clone();
 
             Assert.Equal(cell, cloneCell);

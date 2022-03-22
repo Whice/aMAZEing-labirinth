@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
+using System;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.GameModel.PlayingField.FieldCells
@@ -6,7 +7,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
     /// <summary>
     /// Ячейка игрового поля.
     /// </summary>
-    public abstract class FieldCell
+    public class FieldCell
     {
         /// <summary>
         /// Проходы.
@@ -15,17 +16,54 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// <br/> 2 - нижний.
         /// <br/> 3 - левый.
         /// </summary>
-        protected Boolean[] directions = null;
+        private Boolean[] directions = null;
+        /// <summary>
+        /// Задать проходы для ячейки по ее типу.
+        /// </summary>
+        /// <param name="сellType">Тип ячейки.</param>
+        private void CreateDirections(CellType сellType)
+        {
+            this.directions = new Boolean[4];
+
+            switch (сellType)
+            {
+                case CellType.corner:
+                    {
+                        this.directions = new Boolean[] { true, true, false, false };
+                        break;
+                    }
+                case CellType.line:
+                    {
+                        this.directions = new Boolean[] { true, false, true, false };
+                        break;
+                    }
+                case CellType.threeDirection:
+                    { 
+                    this.directions = new Boolean[] { true, true, true, false };
+                    break;
+            }
+                default:
+                    {
+                        //corner
+                        this.directions = new Boolean[] { true, true, false, false };
+                        break;
+                    }
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="directions">Проходы.</param>
-        /// <param name="CellType">Тип ячейки.
+        /// <param name="сellType">Тип ячейки.
+        /// <param name="treasureOrStartPoints">Сокровище или стратовая точка, которая есть в этой ячейке.
         /// Хранит информацию о том, сколько проходов у нее и как они расположены.</param>
-        public FieldCell(List<Boolean> directions, CellType CellType)
+        public FieldCell(CellType сellType,
+            TreasureAndStartPointsType treasureOrStartPoints = TreasureAndStartPointsType.empty)
         {
-            this.directions = directions.ToArray();
-            this.CellType = CellType;
+            this.CellType = сellType;
+            CreateDirections(сellType);
+
+            this.treasureOrStartPoints = treasureOrStartPoints;
         }
 
         #region Публичные данные ячейки.
@@ -39,6 +77,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// Хранит информацию о том, сколько проходов у нее и как они расположены.
         /// </summary>
         public readonly CellType CellType = CellType.unknown;
+        /// <summary>
+        /// Сокровище или стратовая точка, которая есть в этой ячейке.
+        /// </summary>
+        public readonly TreasureAndStartPointsType treasureOrStartPoints;
         /// <summary>
         /// Имеется ли направление вверх у этой клетки.
         /// </summary>
@@ -201,7 +243,13 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// Создание глубокого клона ячейки.
         /// </summary>
         /// <returns></returns>
-        public abstract FieldCell Clone();
+        public FieldCell Clone()
+        {
+            FieldCell cell = new FieldCell(this.CellType, this.treasureOrStartPoints);
+            cell.directions = this.CopyDirections();
+            cell.isInteractable = this.isInteractable;
+            return cell;
+        }
         /// <summary>
         /// Копировать данные массива направлений.
         /// </summary>

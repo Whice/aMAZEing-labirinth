@@ -13,7 +13,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
     public enum CellType : byte
     {
         /// <summary>
-        /// Не известно.
+        /// Неизвестно.
         /// </summary>
         unknown = 0,
         /// <summary>

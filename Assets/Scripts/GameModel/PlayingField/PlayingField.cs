@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.FieldCells;
-using Assets.Scripts.GameModel.PlayingField.FieldCells.SpecificFieldCells;
+using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Collections.Generic;
 
@@ -35,68 +35,45 @@ namespace Assets.Scripts.GameModel.PlayingField
 
         #region Создание ячеек на поле.
 
-        /// <summary>
-        /// Создание ячеек-уголков.
-        /// </summary>
-        /// <param name="count">Количество.</param>
-        /// <returns></returns>
-        private CornerTwoDirectionFieldCell[] CreateCornerTwoDirectionFieldCells(Int32 count)
-        {
-            CornerTwoDirectionFieldCell[] cells = new CornerTwoDirectionFieldCell[count];
-            for (int i = 0; i < count; i++)
-            {
-                cells[i] = new CornerTwoDirectionFieldCell();
-            }
+        #region Создание ячеек определенного типа.
 
-            return cells;
-        }
         /// <summary>
-        /// Создание ячеек-линий.
-        /// </summary>
-        /// <param name="count">Количество.</param>
-        /// <returns></returns>
-        private LineTwoDirectionFieldCell[] CreateLineTwoDirectionFieldCells(Int32 count)
-        {
-            LineTwoDirectionFieldCell[] cells = new LineTwoDirectionFieldCell[count];
-            for (int i = 0; i < count; i++)
-            {
-                cells[i] = new LineTwoDirectionFieldCell();
-            }
-
-            return cells;
-        }
-        /// <summary>
-        /// Создание ячеек с тремя проходами.
-        /// </summary>
-        /// <param name="count">Количество.</param>
-        /// <returns></returns>
-        private ThreeDirectionFieldCell[] CreateThreeDirectionFieldCells(Int32 count)
-        {
-            ThreeDirectionFieldCell[] cells = new ThreeDirectionFieldCell[count];
-            for (int i = 0; i < count; i++)
-            {
-                cells[i] = new ThreeDirectionFieldCell();
-            }
-
-            return cells;
-        }
-        /// <summary>
-        /// Создание ячейки по типу. Для типа "не определено" выбирается тип уголка.
+        /// Создание ячеек по типу. Для типа "не определено" выбирается тип уголка.
         /// </summary>
         /// <param name="type">Тип ячейки.</param>
         /// <param name="count">Количество ячеек.</param>
         /// <returns></returns>
         private FieldCell[] CreateFieldCells(CellType type, Int32 count)
         {
-            switch(type)
+            FieldCell[] cells = new FieldCell[count];
+            for (int i = 0; i < count; i++)
             {
-                case CellType.corner: return CreateCornerTwoDirectionFieldCells(count);
-                case CellType.line: return CreateLineTwoDirectionFieldCells(count);
-                case CellType.threeDirection: return CreateThreeDirectionFieldCells(count);
-
-                    default: return CreateCornerTwoDirectionFieldCells(count);
+                cells[i] = new FieldCell(type);
             }
+            return cells;
         }
+        /// <summary>
+        /// Создание ячеек с сокровищами или стартовыми точками.
+        /// </summary>
+        /// <param name="type">Тип ячейки.</param>
+        /// <param name="startNumber">Начальный порядковый номер в типе сокровищ.</param>
+        /// <param name="endNumber">Конечный порядковый номер в типе сокровищ.</param>
+        /// <returns></returns>
+        private FieldCell[] CreateFieldCellsWithTreasureAndStartPointsType(CellType type, Int32 startNumber, Int32 endNumber)
+        {
+            Int32 count = endNumber - startNumber + 1;
+            FieldCell[] cells = new FieldCell[count];
+            for (int i = startNumber, j=0; i <= endNumber; i++, j++)
+            {
+                cells[j] = new FieldCell(type, (TreasureAndStartPointsType)i);
+            }
+            return cells;
+        }
+
+
+        #endregion Создание ячеек определенного типа.
+
+        #region Создание и размещение специальных ячеек для игрового поля.
 
         /// <summary>
         /// Создание закрепленных ячеек.
@@ -106,13 +83,13 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             #region Создание угловых ячеек
 
-            FieldCell[] cornerFieldCells = CreateFieldCells(CellType.corner, 4);
+            FieldCell[] cornerFieldCells = CreateFieldCellsWithTreasureAndStartPointsType(CellType.corner, 2, 5);
             //Верхняя левая
             cornerFieldCells[0].TurnClockwise(1);
             this.fieldCells[0, 0] = cornerFieldCells[0];
             //Верхняя правая
             cornerFieldCells[1].TurnClockwise(2);
-            this.fieldCells[0, fieldSize-1] = cornerFieldCells[1];
+            this.fieldCells[0, fieldSize - 1] = cornerFieldCells[1];
             //Нижняя правая
             cornerFieldCells[2].TurnClockwise(3);
             this.fieldCells[fieldSize - 1, fieldSize - 1] = cornerFieldCells[2];
@@ -123,7 +100,7 @@ namespace Assets.Scripts.GameModel.PlayingField
 
             #region Создание ячеек по краям
 
-            FieldCell[] borderFieldCells = CreateFieldCells(CellType.threeDirection, 8);
+            FieldCell[] borderFieldCells = CreateFieldCellsWithTreasureAndStartPointsType(CellType.threeDirection, 6, 13);
 
             //Две верхние
             borderFieldCells[0].TurnClockwise(1);
@@ -148,7 +125,7 @@ namespace Assets.Scripts.GameModel.PlayingField
 
             #region Создание центральных ячеек
 
-            FieldCell[] centerFieldCells = CreateFieldCells(CellType.threeDirection, 4);
+            FieldCell[] centerFieldCells = CreateFieldCellsWithTreasureAndStartPointsType(CellType.threeDirection, 14, 17);
 
             //Верхняя левая
             this.fieldCells[2, 2] = centerFieldCells[0];
@@ -189,9 +166,10 @@ namespace Assets.Scripts.GameModel.PlayingField
         private void CreateMovingFieldCells()
         {
             //Заполнения списка нужным количеством клеток каждого типа.
-            List<FieldCell> fieldCellsList = new List<FieldCell>(CreateFieldCells(CellType.corner, 16));
+            List<FieldCell> fieldCellsList = new List<FieldCell>(CreateFieldCells(CellType.corner, 10));
+            fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.corner, 18,23 ));
             fieldCellsList.AddRange(CreateFieldCells(CellType.line, 12));
-            fieldCellsList.AddRange(CreateFieldCells(CellType.threeDirection, 6));
+            fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.threeDirection, 24, 29));
             //Перемешывание списка и запись его в стэк
             Shuffle(fieldCellsList);
             Stack<FieldCell> fieldCellsStack = new Stack<FieldCell>(fieldCellsList);
@@ -218,6 +196,9 @@ namespace Assets.Scripts.GameModel.PlayingField
             //Пометить последнюю оставшуюся ячейку как свободную
             this.freeFieldCell = fieldCellsStack.Pop();
         }
+
+        #endregion Создание и размещение специальных ячеек для игрового поля.
+
         /// <summary>
         /// Создание игрового поля.
         /// </summary>
@@ -227,7 +208,7 @@ namespace Assets.Scripts.GameModel.PlayingField
             CreateMovingFieldCells();
 
             //Ячейки поля не должны изменяться.
-            foreach(FieldCell cell in this.fieldCells)
+            foreach (FieldCell cell in this.fieldCells)
                 cell.isInteractable = false;
         }
 

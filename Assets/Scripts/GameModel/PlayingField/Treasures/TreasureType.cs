@@ -19,7 +19,7 @@ namespace Assets.Scripts.GameModel.PlayingField.Treasures
     public enum TreasureAndStartPointsType : byte
     {
         /// <summary>
-        /// Не известно.
+        /// Неизвестно.
         /// </summary>
         unknown = 0,
         /// <summary>
