@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
+using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using Xunit;
 
@@ -193,7 +194,6 @@ namespace TestModel.ModelTests
         /// <summary>
         /// Правильное заполнение закрепленных ячеек при создании.
         /// </summary>
-        [Fact]
         public void TestCreate_RotateAllNotInreationCellsField_UnsuccessfullRotate()
         {
             CreateField();
@@ -208,6 +208,38 @@ namespace TestModel.ModelTests
                 {
                     Assert.True(field.fieldCells[i, j] == field2.fieldCells[i, j]);
                 }
+        }
+        /// <summary>
+        /// Правильное количество сокровищ каждого типа при создании.
+        /// </summary>
+        [Fact]
+        public void TestCreate_CreateAllTresures_RightCountTReasuresEachType()
+        {
+
+            CreateField();
+            PlayingField field = this.field;
+            Int32 treasureType;
+            Int32 countStartPoints = 0;
+            Int32 countPinnedTreasures = 0;
+            Int32 countMovingTreasures = 0;
+            foreach(FieldCell cell in field.fieldCells)
+            {
+                treasureType = (Int32)cell.treasureOrStartPoints;
+                if (treasureType >= 2 && treasureType <= 5)
+                    ++countStartPoints;
+                else if(treasureType >= 6 && treasureType <= 17)
+                    ++countPinnedTreasures;
+                else if(treasureType >= 18 && treasureType <= 29)
+                    ++countMovingTreasures;
+            }
+
+            treasureType = (Int32)field.freeFieldCell.treasureOrStartPoints;
+            if (treasureType >= 18 && treasureType <= 29)
+                ++countMovingTreasures;
+
+            Assert.Equal(4, countStartPoints);
+            Assert.Equal(12, countPinnedTreasures);
+            Assert.Equal(12, countMovingTreasures);
         }
 
         #endregion Create
