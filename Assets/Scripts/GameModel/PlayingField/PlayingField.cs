@@ -63,7 +63,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             Int32 count = endNumber - startNumber + 1;
             FieldCell[] cells = new FieldCell[count];
-            for (int i = startNumber, j=0; i <= endNumber; i++, j++)
+            for (int i = startNumber, j = 0; i <= endNumber; i++, j++)
             {
                 cells[j] = new FieldCell(type, (TreasureAndStartPointsType)i);
             }
@@ -167,7 +167,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             //Заполнения списка нужным количеством клеток каждого типа.
             List<FieldCell> fieldCellsList = new List<FieldCell>(CreateFieldCells(CellType.corner, 10));
-            fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.corner, 18,23 ));
+            fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.corner, 18, 23));
             fieldCellsList.AddRange(CreateFieldCells(CellType.line, 12));
             fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.threeDirection, 24, 29));
             //Перемешывание списка и запись его в стэк
@@ -213,6 +213,119 @@ namespace Assets.Scripts.GameModel.PlayingField
         }
 
         #endregion Создание ячеек на поле.
+
+        #region Передвижение ячеек.
+
+        /// <summary>
+        /// Сдвиг линии по указанному номеру в указанном направлении. 
+        /// Номер соответствует положению линии в массиве, т.е. начинается с 0.
+        /// </summary>
+        /// <param name="numberLine">Номер линии.</param>
+        /// <param name="isVerical">Выполнить ли сдвиг по вертикали.</param>
+        /// <param name="isForward">Выполнить ли сдвиг вперед,
+        /// т.е. от меньшего порядкого номера к большему.
+        /// <br/>Если да, то ячейка 0 встанет на меесто ячейки 1,
+        /// ячейка 1 встанет на место ячейки 2, и т.д.</param>
+        private Boolean MoveLine(Int32 numberLine, Boolean isVerical, Boolean isForward)
+        {
+            //Двигать можно только четные(нечетные. т.к. нумерация идет с 0) линии.
+            if (numberLine % 2 != 0)
+            {
+                //Выпавшая ячейка
+                FieldCell plowingCell;
+                FieldCell[,] field = this.fieldCells;
+                if (isVerical)
+                {
+                    if (isForward)
+                    {
+                        plowingCell = field[numberLine, field.GetLength(1) - 1];
+                        for (Int32 i = field.GetLength(1) - 1; i > 0; i--)
+                        {
+                            field[numberLine, i] = field[numberLine, i - 1];
+                        }
+                        field[numberLine, 0] = this.freeFieldCell;
+                        this.freeFieldCell = plowingCell;
+                    }
+                    else
+                    {
+                        plowingCell = field[numberLine, 0];
+                        for (Int32 i = 0; i < field.GetLength(1) - 1; i++)
+                        {
+                            field[numberLine, i] = field[numberLine, i + 1];
+                        }
+                        field[numberLine, field.GetLength(1) - 1] = this.freeFieldCell;
+                        this.freeFieldCell = plowingCell;
+                    }
+                }
+                else
+                {
+                    if (isForward)
+                    {
+                        plowingCell = field[field.GetLength(0) - 1, numberLine];
+                        for (Int32 i = field.GetLength(0) - 1; i > 0; i--)
+                        {
+                            field[i, numberLine] = field[i - 1, numberLine];
+                        }
+                        field[0, numberLine] = this.freeFieldCell;
+                        this.freeFieldCell = plowingCell;
+                    }
+                    else
+                    {
+                        plowingCell = field[0, numberLine];
+                        for (Int32 i = 0; i < field.GetLength(0) - 1; i++)
+                        {
+                            field[i, numberLine] = field[i + 1, numberLine];
+                        }
+                        field[field.GetLength(0) - 1, numberLine] = this.freeFieldCell;
+                        this.freeFieldCell = plowingCell;
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Сдвиг вверх линии по указанному номеру. 
+        /// Номер соответствует положению линии в массиве, т.е. начинается с 0.
+        /// </summary>
+        /// <param name="numberLine">Номер линии.</param>
+        public Boolean MoveLineUp(Int32 numberLine)
+        {
+            return MoveLine(numberLine, true, false);
+        }
+        /// <summary>
+        /// Сдвиг вниз линии по указанному номеру. 
+        /// Номер соответствует положению линии в массиве, т.е. начинается с 0.
+        /// </summary>
+        /// <param name="numberLine">Номер линии.</param>
+        public Boolean MoveLineDown(Int32 numberLine)
+        {
+            return MoveLine(numberLine, true, true);
+        }
+        /// <summary>
+        /// Сдвиг вправо линии по указанному номеру. 
+        /// Номер соответствует положению линии в массиве, т.е. начинается с 0.
+        /// </summary>
+        /// <param name="numberLine">Номер линии.</param>
+        public Boolean MoveLineRight(Int32 numberLine)
+        {
+            return MoveLine(numberLine, false, true);
+        }
+        /// <summary>
+        /// Сдвиг влево линии по указанному номеру. 
+        /// Номер соответствует положению линии в массиве, т.е. начинается с 0.
+        /// </summary>
+        /// <param name="numberLine">Номер линии.</param>
+        public Boolean MoveLineLeft(Int32 numberLine)
+        {
+            return MoveLine(numberLine, false, false);
+        }
+
+        #endregion Передвижение ячеек.
 
         #region Клонирование.
 

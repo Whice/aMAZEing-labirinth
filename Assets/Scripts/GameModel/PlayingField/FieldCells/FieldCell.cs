@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
-using System.Collections.Generic;
 
 namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 {
@@ -38,10 +37,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                         break;
                     }
                 case CellType.threeDirection:
-                    { 
-                    this.directions = new Boolean[] { true, true, true, false };
-                    break;
-            }
+                    {
+                        this.directions = new Boolean[] { true, true, true, false };
+                        break;
+                    }
                 default:
                     {
                         //corner
@@ -257,7 +256,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         protected Boolean[] CopyDirections()
         {
             Boolean[] directionsClone = new Boolean[this.directions.Length];
-            for(Int32 i = 0; i < this.directions.Length; i++)
+            for (Int32 i = 0; i < this.directions.Length; i++)
             {
                 directionsClone[i] = this.directions[i];
             }

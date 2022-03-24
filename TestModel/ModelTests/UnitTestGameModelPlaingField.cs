@@ -222,14 +222,14 @@ namespace TestModel.ModelTests
             Int32 countStartPoints = 0;
             Int32 countPinnedTreasures = 0;
             Int32 countMovingTreasures = 0;
-            foreach(FieldCell cell in field.fieldCells)
+            foreach (FieldCell cell in field.fieldCells)
             {
                 treasureType = (Int32)cell.treasureOrStartPoints;
                 if (treasureType >= 2 && treasureType <= 5)
                     ++countStartPoints;
-                else if(treasureType >= 6 && treasureType <= 17)
+                else if (treasureType >= 6 && treasureType <= 17)
                     ++countPinnedTreasures;
-                else if(treasureType >= 18 && treasureType <= 29)
+                else if (treasureType >= 18 && treasureType <= 29)
                     ++countMovingTreasures;
             }
 
@@ -243,5 +243,159 @@ namespace TestModel.ModelTests
         }
 
         #endregion Create
+
+        #region Движение линий.
+
+        /// <summary>
+        /// Тест на удачный сдвиг вверх второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovement_MoveLineUp_SuccessfullMovement()
+        {
+            CreateField();
+            PlayingField field = this.field;
+            FieldCell[,] cells = field.fieldCells;
+
+            //Предполагаемая новая свободная ячейка
+            FieldCell estimatedFreeCell = cells[1, 0];
+            //Предполагаемая новая линия.
+            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
+            {
+                estimatedNewLine[i] = cells[1, j];
+            }
+            estimatedNewLine[estimatedNewLine.Length - 1] = field.freeFieldCell;
+
+            //Подвинуть вверх вторую по порядку линию
+            field.MoveLineUp(1);
+
+            for (Int32 i = 0; i < estimatedNewLine.Length; i++)
+            {
+                Assert.Equal(estimatedNewLine[i], cells[1, i]);
+            }
+
+            Assert.Equal(estimatedFreeCell, field.freeFieldCell);
+        }
+        /// <summary>
+        /// Тест на удачный сдвиг влево второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovement_MoveLineLeft_SuccessfullMovement()
+        {
+            CreateField();
+            PlayingField field = this.field;
+            FieldCell[,] cells = field.fieldCells;
+
+            //Предполагаемая новая свободная ячейка
+            FieldCell estimatedFreeCell = cells[0, 1];
+            //Предполагаемая новая линия.
+            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
+            {
+                estimatedNewLine[i] = cells[j, 1];
+            }
+            estimatedNewLine[estimatedNewLine.Length - 1] = field.freeFieldCell;
+
+            //Подвинуть вверх вторую по порядку линию
+            field.MoveLineLeft(1);
+
+            for (Int32 i = 0; i < estimatedNewLine.Length; i++)
+            {
+                Assert.Equal(estimatedNewLine[i], cells[i, 1]);
+            }
+
+            Assert.Equal(estimatedFreeCell, field.freeFieldCell);
+        }
+        /// <summary>
+        /// Тест на удачный сдвиг вниз второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovement_MoveLineDown_SuccessfullMovement()
+        {
+            CreateField();
+            PlayingField field = this.field;
+            FieldCell[,] cells = field.fieldCells;
+
+            //Предполагаемая новая свободная ячейка
+            FieldCell estimatedFreeCell = cells[1, PlayingField.fieldSize - 1];
+            //Предполагаемая новая линия.
+            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
+            {
+                estimatedNewLine[i] = cells[1, j];
+            }
+            estimatedNewLine[0] = field.freeFieldCell;
+
+            //Подвинуть вниз вторую по порядку линию
+            field.MoveLineDown(1);
+
+            for (Int32 i = 0; i < estimatedNewLine.Length; i++)
+            {
+                Assert.Equal(estimatedNewLine[i], cells[1, i]);
+            }
+
+            Assert.Equal(estimatedFreeCell, field.freeFieldCell);
+        }
+        /// <summary>
+        /// Тест на удачный сдвиг вправо второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovement_MoveLineRight_SuccessfullMovement()
+        {
+            CreateField();
+            PlayingField field = this.field;
+            FieldCell[,] cells = field.fieldCells;
+
+            //Предполагаемая новая свободная ячейка
+            FieldCell estimatedFreeCell = cells[PlayingField.fieldSize - 1, 1];
+            //Предполагаемая новая линия.
+            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
+            {
+                estimatedNewLine[i] = cells[j, 1];
+            }
+            estimatedNewLine[0] = field.freeFieldCell;
+
+            //Подвинуть вправо вторую по порядку линию
+            field.MoveLineRight(1);
+
+            for (Int32 i = 0; i < estimatedNewLine.Length; i++)
+            {
+                Assert.Equal(estimatedNewLine[i], cells[i, 1]);
+            }
+
+            Assert.Equal(estimatedFreeCell, field.freeFieldCell);
+        }
+        /// <summary>
+        /// Тест на неудачный сдвиг всех нечетных по порядку линий.
+        /// Т.к. нумерация с нуля, то все-таки четных.
+        /// </summary>
+        [Fact]
+        public void TestMovement_SuccessfullMovement_SuccessfullMovement()
+        {
+            CreateField();
+            PlayingField field = this.field;
+
+            for (Int32 i = 0; i < PlayingField.fieldSize; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    Assert.False(field.MoveLineUp(i));
+                    Assert.False(field.MoveLineRight(i));
+                    Assert.False(field.MoveLineDown(i));
+                    Assert.False(field.MoveLineLeft(i));
+                }
+                else
+                {
+                    Assert.True(field.MoveLineUp(i));
+                    Assert.True(field.MoveLineRight(i));
+                    Assert.True(field.MoveLineDown(i));
+                    Assert.True(field.MoveLineLeft(i));
+                }
+            }
+
+        }
+
+        #endregion Движение линий.
     }
 }
