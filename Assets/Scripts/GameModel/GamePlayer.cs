@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts.GameModel.CardDeck;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Assets.Scripts.GameModel
@@ -22,11 +24,15 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         /// <param name="name">Имя или прозвище игрока.</param>
         /// <param name="color">Цвет игрока.</param>
-        public GamePlayer(String name, Color color)
+        /// <param name="cards">Карты для колоды игрока.</param>
+        public GamePlayer(String name, Color color, Card[] cards)
         {
             this.name = name;
             this.color = color;
+            this.cardDeck = new List<Card>(cards);
         }
+
+        #region Местоположение.
 
         /// <summary>
         /// Местоположение на поле по оси X.
@@ -51,5 +57,41 @@ namespace Assets.Scripts.GameModel
                 this.positionY = value.Y;
             }
         }
+
+        #endregion Местоположение.
+
+        #region Колода карт игрока.
+
+        /// <summary>
+        /// Колода карт игрока.
+        /// </summary>
+        private List<Card> cardDeck = null;
+        /// <summary>
+        /// Карта, сокровище которой надо игроку найти.
+        /// </summary>
+        public Card cardForSearch
+        {
+            get=>this.cardDeck[cardDeck.Count - 1];
+        }
+        /// <summary>
+        /// Количество карт в колоде.
+        /// </summary>
+        public Int32 countCardInDeck
+        {
+            get => this.cardDeck.Count;
+        }
+        /// <summary>
+        /// Вытащить и выдать текущую карту для поиска. 
+        /// После этого она исчезнет из спика искомых карт и карта для поиска сменится на следующую.
+        /// </summary>
+        /// <returns></returns>
+        public Card PopCurrentCardForSearch()
+        {
+            Card cardForPop = this.cardDeck[cardDeck.Count - 1];
+            this.cardDeck.RemoveAt(cardDeck.Count - 1);
+            return cardForPop;
+        }
+
+        #endregion Колода карт игрока.
     }
 }
