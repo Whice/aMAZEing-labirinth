@@ -15,6 +15,11 @@ namespace Assets.Scripts.GameModel.CardDeck
         /// <param name="isOpen">Открыта ли карта, по умолчанию нет.</param>
         public Card(TreasureAndStartPointsType treasure, Boolean isOpen = false)
         {
+            if((Int32)treasure<treasure.GetMinimalNumberTreasure() || (Int32)treasure>treasure.GetMaximalNumberTreasure())
+            {
+                throw new ArgumentException("Карте должен быть задан тип сокровища!\nThe card must be set to a treasure type!");
+            }
+
             this.treasure = treasure;
             this.isOpenField = isOpen;
         }
