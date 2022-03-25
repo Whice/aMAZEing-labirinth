@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Assets.Scripts.GameModel
+namespace Assets.Scripts.GameModel.Player
 {
     /// <summary>
     /// Игрок в партии.
