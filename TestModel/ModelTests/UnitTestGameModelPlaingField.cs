@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.GameModel.PlayingField;
+﻿
+using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
-using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using Xunit;
 
@@ -17,7 +17,7 @@ namespace TestModel.ModelTests
         /// <summary>
         /// Игровое поле для всех тестов создания.
         /// </summary>
-        private PlayingField field;
+        private Field field;
 #pragma warning restore CS8618
         /// <summary>
         /// Создать игровое поле, если оно не создано.
@@ -26,7 +26,7 @@ namespace TestModel.ModelTests
         {
             if (this.field == null)
             {
-                this.field = new PlayingField();
+                this.field = new Field();
             }
         }
 
@@ -41,7 +41,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_SuccessfullCreatePinnedCells()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
 
             #region  углы
 
@@ -141,7 +141,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_ThereAreNoNullValuesI​nField()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
 
             foreach (FieldCell cell in field.fieldCells)
             {
@@ -155,7 +155,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_SuccessfullCreateFreeCell()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
 
             Assert.NotNull(field.freeFieldCell);
         }
@@ -166,7 +166,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_RightCountCellsInField()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
             Int32 countCoreners = 0;
             Int32 countLines = 0;
             Int32 countThreeDirections = 0;
@@ -197,14 +197,14 @@ namespace TestModel.ModelTests
         public void TestCreate_RotateAllNotInreationCellsField_UnsuccessfullRotate()
         {
             CreateField();
-            PlayingField field = this.field;
-            PlayingField field2 = this.field.Clone();
+            Field field = this.field;
+            Field field2 = this.field.Clone();
 
             foreach (FieldCell cell in field.fieldCells)
                 cell.TurnClockwise();
 
-            for (Int32 i = 0; i < PlayingField.fieldSize; i++)
-                for (Int32 j = 0; j < PlayingField.fieldSize; j++)
+            for (Int32 i = 0; i < Field.fieldSize; i++)
+                for (Int32 j = 0; j < Field.fieldSize; j++)
                 {
                     Assert.True(field.fieldCells[i, j] == field2.fieldCells[i, j]);
                 }
@@ -217,7 +217,7 @@ namespace TestModel.ModelTests
         {
 
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
             Int32 treasureType;
             Int32 countStartPoints = 0;
             Int32 countPinnedTreasures = 0;
@@ -253,13 +253,13 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineUp_SuccessfullMovement()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
             FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
             FieldCell estimatedFreeCell = cells[1, 0];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
             {
                 estimatedNewLine[i] = cells[1, j];
@@ -283,13 +283,13 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineLeft_SuccessfullMovement()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
             FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
             FieldCell estimatedFreeCell = cells[0, 1];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
             {
                 estimatedNewLine[i] = cells[j, 1];
@@ -313,13 +313,13 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineDown_SuccessfullMovement()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
             FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = cells[1, PlayingField.fieldSize - 1];
+            FieldCell estimatedFreeCell = cells[1, Field.fieldSize - 1];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
             {
                 estimatedNewLine[i] = cells[1, j];
@@ -343,13 +343,13 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineRight_SuccessfullMovement()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
             FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = cells[PlayingField.fieldSize - 1, 1];
+            FieldCell estimatedFreeCell = cells[Field.fieldSize - 1, 1];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[PlayingField.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
             {
                 estimatedNewLine[i] = cells[j, 1];
@@ -374,9 +374,9 @@ namespace TestModel.ModelTests
         public void TestMovement_SuccessfullMovement_SuccessfullMovement()
         {
             CreateField();
-            PlayingField field = this.field;
+            Field field = this.field;
 
-            for (Int32 i = 0; i < PlayingField.fieldSize; i++)
+            for (Int32 i = 0; i < Field.fieldSize; i++)
             {
                 if (i % 2 == 0)
                 {
