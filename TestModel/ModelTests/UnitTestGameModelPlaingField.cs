@@ -1,5 +1,4 @@
-﻿
-using Assets.Scripts.GameModel.PlayingField;
+﻿using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using System;
 using Xunit;
