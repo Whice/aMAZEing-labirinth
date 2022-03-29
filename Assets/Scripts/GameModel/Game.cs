@@ -88,9 +88,62 @@ namespace Assets.Scripts.GameModel
 
         #region Действия.
 
-        public void SetFreeCellToField(Int32 x, Int32 y)
+        /// <summary>
+        /// Поставить свободную ячейку на поле сдвинув линию. 
+        /// </summary>
+        /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
+        /// <param name="side">Сторона поля, куда вставить ячейку.</param>
+        /// <returns></returns>
+        public Boolean SetFreeCellToField(Int32 numberLine, FieldSide side)
         {
-            
+            Boolean successfulMove = false;
+
+            switch (side)
+            {
+                case FieldSide.up:
+                    {
+                        successfulMove = this.field.MoveLineUp(numberLine);
+                        break;
+                    }
+                case FieldSide.right:
+                    {
+                        successfulMove = this.field.MoveLineRight(numberLine);
+                        break;
+                    }
+                case FieldSide.down:
+                    {
+                        successfulMove = this.field.MoveLineDown(numberLine);
+                        break;
+                    }
+                case FieldSide.left:
+                    {
+                        successfulMove = this.field.MoveLineLeft(numberLine);
+                        break;
+                    }
+            }
+
+            if (successfulMove)
+            {
+                this.currentPhasePrivate = this.currentPhasePrivate.GetNextPhase();
+            }
+
+            return successfulMove;
+        }
+        /// <summary>
+        /// Переместить аватар игрока в указанную позицию, если это возможно.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
+        {
+            Boolean successfulMove = this.field.IsPossibleMove(this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
+            if (successfulMove)
+            {
+                this.currentPlayer.SetPosition(x, y);
+            }
+
+            return successfulMove;
         }
 
         #endregion Действия.

@@ -364,6 +364,7 @@ namespace Assets.Scripts.GameModel.PlayingField
 
         #endregion Клонирование.
 
+        #region IEnumerator.
 
         public IEnumerator<FieldCell> GetEnumerator()
         {
@@ -376,6 +377,22 @@ namespace Assets.Scripts.GameModel.PlayingField
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        #endregion IEnumerator.
+
+        /// <summary>
+        /// Возможен ли ход.
+        /// </summary>
+        /// <param name="startX"></param>
+        /// <param name="startY"></param>
+        /// <param name="endX"></param>
+        /// <param name="endY"></param>
+        /// <returns></returns>
+        public Boolean IsPossibleMove(Int32 startX,Int32 startY,Int32 endX,Int32 endY)
+        {
+            //ToDo тут должен быть алгоритм рассчета пути.
+            return true;
         }
     }
 }

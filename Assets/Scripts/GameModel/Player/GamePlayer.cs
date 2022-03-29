@@ -32,8 +32,7 @@ namespace Assets.Scripts.GameModel.Player
             this.name = name;
             this.color = color;
             this.cardDeck = cards;
-            this.positionX = positionX;
-            this.positionY = positionY;
+            SetPosition(positionX, positionY);
         }
         /// <summary>
         /// 
@@ -70,6 +69,16 @@ namespace Assets.Scripts.GameModel.Player
                 this.positionX = value.X;
                 this.positionY = value.Y;
             }
+        }
+        /// <summary>
+        /// Установить новое местоположение для игрока.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void SetPosition(Int32 x, Int32 y)
+        {
+            this.positionX = x;
+            this.positionY = y;
         }
 
         #endregion Местоположение.
