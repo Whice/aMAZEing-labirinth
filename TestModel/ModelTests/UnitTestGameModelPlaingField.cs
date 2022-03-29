@@ -44,19 +44,19 @@ namespace TestModel.ModelTests
 
             #region  углы
 
-            FieldCell currentCell = field.fieldCells[0, 0];
+            FieldCell currentCell = field[0, 0];
             Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
-            currentCell = field.fieldCells[0, 6];
+            currentCell = field[0, 6];
             Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
-            currentCell = field.fieldCells[6, 0];
+            currentCell = field[6, 0];
             Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
-            currentCell = field.fieldCells[6, 6];
+            currentCell = field[6, 6];
             Assert.Equal(CellType.corner, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
@@ -65,22 +65,22 @@ namespace TestModel.ModelTests
 
             #region центр
 
-            currentCell = field.fieldCells[2, 2];
+            currentCell = field[2, 2];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
-            currentCell = field.fieldCells[2, 4];
+            currentCell = field[2, 4];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
-            currentCell = field.fieldCells[4, 4];
+            currentCell = field[4, 4];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
-            currentCell = field.fieldCells[4, 2];
+            currentCell = field[4, 2];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
@@ -90,42 +90,42 @@ namespace TestModel.ModelTests
 
             #region границы
 
-            currentCell = field.fieldCells[0, 2];
+            currentCell = field[0, 2];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
-            currentCell = field.fieldCells[0, 4];
+            currentCell = field[0, 4];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
-            currentCell = field.fieldCells[2, 6];
+            currentCell = field[2, 6];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
-            currentCell = field.fieldCells[4, 6];
+            currentCell = field[4, 6];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionDown);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
-            currentCell = field.fieldCells[6, 2];
+            currentCell = field[6, 2];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
-            currentCell = field.fieldCells[6, 4];
+            currentCell = field[6, 4];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionLeft);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
-            currentCell = field.fieldCells[2, 0];
+            currentCell = field[2, 0];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
             Assert.True(currentCell.IsHaveDirectionDown);
-            currentCell = field.fieldCells[4, 0];
+            currentCell = field[4, 0];
             Assert.Equal(CellType.threeDirection, currentCell.CellType);
             Assert.True(currentCell.IsHaveDirectionUp);
             Assert.True(currentCell.IsHaveDirectionRight);
@@ -142,7 +142,7 @@ namespace TestModel.ModelTests
             CreateField();
             Field field = this.field;
 
-            foreach (FieldCell cell in field.fieldCells)
+            foreach (FieldCell cell in field)
             {
                 Assert.NotNull(cell);
             }
@@ -169,7 +169,7 @@ namespace TestModel.ModelTests
             Int32 countCoreners = 0;
             Int32 countLines = 0;
             Int32 countThreeDirections = 0;
-            foreach (FieldCell cell in field.fieldCells)
+            foreach (FieldCell cell in field)
             {
                 if (cell.CellType == CellType.threeDirection)
                     ++countThreeDirections;
@@ -193,19 +193,20 @@ namespace TestModel.ModelTests
         /// <summary>
         /// Правильное заполнение закрепленных ячеек при создании.
         /// </summary>
+        [Fact]
         public void TestCreate_RotateAllNotInreationCellsField_UnsuccessfullRotate()
         {
             CreateField();
             Field field = this.field;
             Field field2 = this.field.Clone();
 
-            foreach (FieldCell cell in field.fieldCells)
+            foreach (FieldCell cell in field)
                 cell.TurnClockwise();
 
             for (Int32 i = 0; i < Field.fieldSize; i++)
                 for (Int32 j = 0; j < Field.fieldSize; j++)
                 {
-                    Assert.True(field.fieldCells[i, j] == field2.fieldCells[i, j]);
+                    Assert.True(field[i, j] == field2[i, j]);
                 }
         }
         /// <summary>
@@ -221,7 +222,7 @@ namespace TestModel.ModelTests
             Int32 countStartPoints = 0;
             Int32 countPinnedTreasures = 0;
             Int32 countMovingTreasures = 0;
-            foreach (FieldCell cell in field.fieldCells)
+            foreach (FieldCell cell in field)
             {
                 treasureType = (Int32)cell.treasureOrStartPoints;
                 if (treasureType >= 2 && treasureType <= 5)
@@ -253,15 +254,14 @@ namespace TestModel.ModelTests
         {
             CreateField();
             Field field = this.field;
-            FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = cells[1, 0];
+            FieldCell estimatedFreeCell = field[1, 0];
             //Предполагаемая новая линия.
             FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
             {
-                estimatedNewLine[i] = cells[1, j];
+                estimatedNewLine[i] = field[1, j];
             }
             estimatedNewLine[estimatedNewLine.Length - 1] = field.freeFieldCell;
 
@@ -270,7 +270,7 @@ namespace TestModel.ModelTests
 
             for (Int32 i = 0; i < estimatedNewLine.Length; i++)
             {
-                Assert.Equal(estimatedNewLine[i], cells[1, i]);
+                Assert.Equal(estimatedNewLine[i], field[1, i]);
             }
 
             Assert.Equal(estimatedFreeCell, field.freeFieldCell);
@@ -283,15 +283,14 @@ namespace TestModel.ModelTests
         {
             CreateField();
             Field field = this.field;
-            FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = cells[0, 1];
+            FieldCell estimatedFreeCell = field[0, 1];
             //Предполагаемая новая линия.
             FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
             {
-                estimatedNewLine[i] = cells[j, 1];
+                estimatedNewLine[i] = field[j, 1];
             }
             estimatedNewLine[estimatedNewLine.Length - 1] = field.freeFieldCell;
 
@@ -300,7 +299,7 @@ namespace TestModel.ModelTests
 
             for (Int32 i = 0; i < estimatedNewLine.Length; i++)
             {
-                Assert.Equal(estimatedNewLine[i], cells[i, 1]);
+                Assert.Equal(estimatedNewLine[i], field[i, 1]);
             }
 
             Assert.Equal(estimatedFreeCell, field.freeFieldCell);
@@ -313,15 +312,14 @@ namespace TestModel.ModelTests
         {
             CreateField();
             Field field = this.field;
-            FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = cells[1, Field.fieldSize - 1];
+            FieldCell estimatedFreeCell = field[1, Field.fieldSize - 1];
             //Предполагаемая новая линия.
             FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
             {
-                estimatedNewLine[i] = cells[1, j];
+                estimatedNewLine[i] = field[1, j];
             }
             estimatedNewLine[0] = field.freeFieldCell;
 
@@ -330,7 +328,7 @@ namespace TestModel.ModelTests
 
             for (Int32 i = 0; i < estimatedNewLine.Length; i++)
             {
-                Assert.Equal(estimatedNewLine[i], cells[1, i]);
+                Assert.Equal(estimatedNewLine[i], field[1, i]);
             }
 
             Assert.Equal(estimatedFreeCell, field.freeFieldCell);
@@ -343,15 +341,14 @@ namespace TestModel.ModelTests
         {
             CreateField();
             Field field = this.field;
-            FieldCell[,] cells = field.fieldCells;
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = cells[Field.fieldSize - 1, 1];
+            FieldCell estimatedFreeCell = field[Field.fieldSize - 1, 1];
             //Предполагаемая новая линия.
             FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
             for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
             {
-                estimatedNewLine[i] = cells[j, 1];
+                estimatedNewLine[i] = field[j, 1];
             }
             estimatedNewLine[0] = field.freeFieldCell;
 
@@ -360,7 +357,7 @@ namespace TestModel.ModelTests
 
             for (Int32 i = 0; i < estimatedNewLine.Length; i++)
             {
-                Assert.Equal(estimatedNewLine[i], cells[i, 1]);
+                Assert.Equal(estimatedNewLine[i], field[i, 1]);
             }
 
             Assert.Equal(estimatedFreeCell, field.freeFieldCell);

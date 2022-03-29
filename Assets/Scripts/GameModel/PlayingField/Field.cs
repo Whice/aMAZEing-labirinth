@@ -1,14 +1,17 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.GameModel.PlayingField
 {
     /// <summary>
     /// Игровое поле.
+    /// Для обращения к одной ячейке у класса есть индкесатор.
+    /// Для перебора всех ячеек у класса есть итератор.
     /// </summary>
-    public class Field
+    public class Field: IEnumerable<FieldCell>
     {
         #region Данные игрового поля.
 
@@ -19,7 +22,13 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// Все игровое поле.
         /// </summary>
-        public FieldCell[,] fieldCells = null;
+        private FieldCell[,] fieldCells = null;
+        /// <summary>
+        /// Прямое обращение к ячейке игрового поля по координатам.
+        /// </summary>
+        /// <param name="hIndex"></param>
+        /// <param name="vIndex"></param>
+        /// <returns></returns>
         public FieldCell this[Int32 hIndex, Int32 vIndex]
         { 
             get=>this.fieldCells[hIndex,vIndex];
@@ -354,5 +363,19 @@ namespace Assets.Scripts.GameModel.PlayingField
         }
 
         #endregion Клонирование.
+
+
+        public IEnumerator<FieldCell> GetEnumerator()
+        {
+            foreach(FieldCell cell in this.fieldCells)
+            {
+                yield return cell;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
