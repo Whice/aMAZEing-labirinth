@@ -16,8 +16,11 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestCreate_CreateCard_UnsuccessfullCreate()
         {
+
+#pragma warning disable CS8600
             Action act = null;
             ArgumentException exception = null;
+#pragma warning restore CS8600
             for (Int32 i = 0; i < 6; i++)
             {
                 act = () => new Card((TreasureAndStartPointsType)i);
