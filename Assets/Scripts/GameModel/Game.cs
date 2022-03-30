@@ -16,6 +16,7 @@ namespace Assets.Scripts.GameModel
         {
             this.players = players;
             this.currentPlayerNumber = startPlayerNumber;
+            Start();
         }
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace Assets.Scripts.GameModel
             this.currentPlayerNumber = ChooseStartPlayerNumber();
             this.currentPhasePrivate = TurnPhase.movingCell;
             this.fieldPrivate = new Field();
+            this.countOfPlayersPlayingPrivate = players.Length;
         }
 
         #region Данные игры.
@@ -44,9 +46,20 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         private readonly GamePlayer[] players = null;
         /// <summary>
+        /// Количество играющих игроков.
+        /// </summary>
+        private Int32 countOfPlayersPlayingPrivate = -1;
+        /// <summary>
+        /// Количество играющих игроков.
+        /// </summary>
+        public Int32 countOfPlayersPlaying
+        {
+            get => countOfPlayersPlayingPrivate;
+        }
+        /// <summary>
         ///  Номер игрока, которому принадлежит текущий ход.
         /// </summary>
-        private Int32 currentPlayerNumber = 0;
+        private Int32 currentPlayerNumber = -1;
         /// <summary>
         ///  Игрок, которому принадлежит текущий ход.
         /// </summary>
@@ -124,7 +137,7 @@ namespace Assets.Scripts.GameModel
 
             if (successfulMove)
             {
-                this.currentPhasePrivate = this.currentPhasePrivate.GetNextPhase();
+                SetNextPhase();
             }
 
             return successfulMove;
@@ -134,16 +147,33 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <returns></returns>
+        /// <returns>true, если аватар игрока был перемещен.</returns>
         public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
         {
             Boolean successfulMove = this.field.IsPossibleMove(this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
             if (successfulMove)
             {
                 this.currentPlayer.SetPosition(x, y);
+                SetNextPhase();
             }
 
             return successfulMove;
+        }
+        /// <summary>
+        /// Установить следующую фазу, с переходом хода к следующиму игроку.
+        /// </summary>
+        private void SetNextPhase()
+        {
+            this.currentPhasePrivate = this.currentPhasePrivate.GetNextPhase();
+
+            if(this.currentPhasePrivate==TurnPhase.movingCell)
+            {
+                ++this.currentPlayerNumber;
+                if(this.currentPlayerNumber>=this.players.Length)
+                {
+                    this.currentPlayerNumber = 0;
+                }
+            }
         }
 
         #endregion Действия.
