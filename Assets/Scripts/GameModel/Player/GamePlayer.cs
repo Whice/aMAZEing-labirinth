@@ -19,6 +19,30 @@ namespace Assets.Scripts.GameModel.Player
         /// </summary>
         public readonly Color color;
 
+        #region Номер игрока в списке победителей.
+
+        /// <summary>
+        /// Номер игрока в списке победителей.
+        /// </summary>
+        private Int32 winnerNumberPrivate = -1;
+        /// <summary>
+        /// Номер игрока в списке победителей.
+        /// </summary>
+        public Int32 winnerNumber
+        {
+            get=>this.winnerNumberPrivate;
+        }
+        /// <summary>
+        /// Установить игрока в качестве победителя и выдать ему место в списке победителей.
+        /// </summary>
+        /// <param name="numberInWinnerList">Место в списке победителей.</param>
+        public void SetPlayerAsWinner(Int32 numberInWinnerList)
+        {
+            this.winnerNumberPrivate = numberInWinnerList;
+        }
+
+        #endregion Номер игрока в списке победителей.
+
         /// <summary>
         /// 
         /// </summary>
