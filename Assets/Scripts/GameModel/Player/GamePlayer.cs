@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.GameModel.CardDeck;
+﻿using Assets.Scripts.GameModel.Cards;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -48,14 +48,14 @@ namespace Assets.Scripts.GameModel.Player
         /// </summary>
         /// <param name="name">Имя или прозвище игрока.</param>
         /// <param name="color">Цвет игрока.</param>
-        /// <param name="cards">Карты для колоды игрока.</param>
+        /// <param name="cardDeck">Карты для колоды игрока.</param>
         /// <param name="positionX">Местоположение по оси X.</param>
         /// <param name="positionY">Местоположение по оси Y.</param>
-        public GamePlayer(String name, Color color, List<Card> cards, Int32 positionX,Int32 positionY)
+        public GamePlayer(String name, Color color, CardDeck cardDeck, Int32 positionX,Int32 positionY)
         {
             this.name = name;
             this.color = color;
-            this.cardDeck = cards;
+            this.cardDeck = cardDeck;
             SetPosition(positionX, positionY);
         }
         /// <summary>
@@ -63,10 +63,10 @@ namespace Assets.Scripts.GameModel.Player
         /// </summary>
         /// <param name="name">Имя или прозвище игрока.</param>
         /// <param name="color">Цвет игрока.</param>
-        /// <param name="cards">Карты для колоды игрока.</param>
+        /// <param name="cardDeck">Карты для колоды игрока.</param>
         /// <param name="position">Местоположение.</param>
-        public GamePlayer(String name, Color color, List<Card> cards, Point position)
-            : this(name, color, cards, position.X, position.Y) { }
+        public GamePlayer(String name, Color color, CardDeck cardDeck, Point position)
+            : this(name, color, cardDeck, position.X, position.Y) { }
 
 
         #region Местоположение.
@@ -112,20 +112,20 @@ namespace Assets.Scripts.GameModel.Player
         /// <summary>
         /// Колода карт игрока.
         /// </summary>
-        private List<Card> cardDeck = null;
+        private CardDeck cardDeck = null;
         /// <summary>
         /// Карта, сокровище которой надо игроку найти.
         /// </summary>
         public Card cardForSearch
         {
-            get=>this.cardDeck[cardDeck.Count - 1];
+            get => this.cardDeck.topCard;
         }
         /// <summary>
         /// Количество карт в колоде.
         /// </summary>
         public Int32 countCardInDeck
         {
-            get => this.cardDeck.Count;
+            get => this.cardDeck.count;
         }
         /// <summary>
         /// Вытащить и выдать текущую карту для поиска. 
@@ -134,9 +134,7 @@ namespace Assets.Scripts.GameModel.Player
         /// <returns></returns>
         public Card PopCurrentCardForSearch()
         {
-            Card cardForPop = this.cardDeck[cardDeck.Count - 1];
-            this.cardDeck.RemoveAt(cardDeck.Count - 1);
-            return cardForPop;
+            return this.cardDeck.Pop();
         }
 
         #endregion Колода карт игрока.
@@ -147,12 +145,8 @@ namespace Assets.Scripts.GameModel.Player
         /// <returns></returns>
         public GamePlayer Clone()
         {
-            List<Card> cards = new List<Card>(this.cardDeck.Count);
-            for(Int32 i=0;i<this.cardDeck.Count;i++)
-            {
-                cards.Add(this.cardDeck[i].Clone());
-            }
-            return new GamePlayer(this.name, this.color, cards, this.positionX, this.positionY);
+            CardDeck cardDeck = this.cardDeck.Clone();
+            return new GamePlayer(this.name, this.color, cardDeck, this.positionX, this.positionY);
         }
 
         #region Сравнение.
@@ -169,17 +163,9 @@ namespace Assets.Scripts.GameModel.Player
                 if (this.color != otherPlayer.color)
                     return false;
 
-                if (this.cardDeck.Count != otherPlayer.cardDeck.Count)
+                if (this.cardDeck != otherPlayer.cardDeck)
                 {
                     return false;
-                }
-                else
-                {
-                    for (Int32 i = 0; i < this.cardDeck.Count; i++)
-                    {
-                        if (cardDeck[i] != otherPlayer.cardDeck[i])
-                            return false;
-                    }
                 }
 
                 return true;
@@ -191,11 +177,8 @@ namespace Assets.Scripts.GameModel.Player
         {
             Int32 hashCode = this.color.GetHashCode();
             hashCode ^= this.name.GetHashCode();
-            for (Int32 i = 0; i < this.cardDeck.Count; i++)
-            {
-                hashCode ^= this.cardDeck[i].GetHashCode();
-            }
-            
+            hashCode ^= this.cardDeck.GetHashCode();
+
             return hashCode;
         }
         public static bool operator ==(GamePlayer l, GamePlayer r)

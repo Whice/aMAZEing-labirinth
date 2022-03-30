@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.GameModel.CardDeck;
+﻿using Assets.Scripts.GameModel.Cards;
 using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using Xunit;

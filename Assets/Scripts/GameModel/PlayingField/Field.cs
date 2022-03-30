@@ -3,6 +3,7 @@ using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Extensions;
 
 namespace Assets.Scripts.GameModel.PlayingField
 {
@@ -156,23 +157,6 @@ namespace Assets.Scripts.GameModel.PlayingField
 
         }
         /// <summary>
-        /// Перемешать.
-        /// <br/>Тасование Фишера-Йетса.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="list"></param>
-        private void Shuffle(List<FieldCell> list)
-        {
-            Random rand = new Random();
-
-            for (int i = list.Count - 1; i >= 1; i--)
-            {
-                int j = rand.Next(i + 1);
-
-                (list[j], list[i]) = (list[i], list[j]);
-            }
-        }
-        /// <summary>
         /// Создание двигающихся ячеек.
         /// </summary>
         /// <returns></returns>
@@ -184,7 +168,7 @@ namespace Assets.Scripts.GameModel.PlayingField
             fieldCellsList.AddRange(CreateFieldCells(CellType.line, 12));
             fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.threeDirection, 24, 29));
             //Перемешывание списка и запись его в стэк
-            Shuffle(fieldCellsList);
+            fieldCellsList.Shuffle();
             Stack<FieldCell> fieldCellsStack = new Stack<FieldCell>(fieldCellsList);
 
             Random random = new Random();

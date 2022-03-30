@@ -16,6 +16,14 @@ namespace Assets.Scripts.GameModel.PlayingField.Treasures
         {
             return 29;
         }
+        public static Int32 GetMinimalNumberStartPoint(this TreasureAndStartPointsType type)
+        {
+            return 2;
+        }
+        public static Int32 GetMaximalNumberStartPoint(this TreasureAndStartPointsType type)
+        {
+            return 4;
+        }
 
     }
 }

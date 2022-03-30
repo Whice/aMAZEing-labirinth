@@ -138,5 +138,6 @@ namespace Assets.Scripts.GameModel.PlayingField.Treasures
         /// Подвижная ячейка.
         /// </summary>
         treasureOnMovingCell12 = 29
+
     }
 }

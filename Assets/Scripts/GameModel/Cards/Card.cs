@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 
-namespace Assets.Scripts.GameModel.CardDeck
+namespace Assets.Scripts.GameModel.Cards
 {
     /// <summary>
     /// Катра для игры.
