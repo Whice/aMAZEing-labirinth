@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.GameModel.Cards;
 using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace TestModel.ModelTests
@@ -21,7 +22,8 @@ namespace TestModel.ModelTests
             Action act = null;
             ArgumentException exception = null;
 #pragma warning restore CS8600
-            for (Int32 i = 0; i < 6; i++)
+            TreasureAndStartPointsType type = TreasureAndStartPointsType.empty;
+            for (Int32 i = 0; i < type.GetMinimalNumberStartPoint(); i++)
             {
                 act = () => new Card((TreasureAndStartPointsType)i);
 
@@ -72,6 +74,34 @@ namespace TestModel.ModelTests
             Assert.False(card3 != card2);
             Assert.True(card3 != card4);
             Assert.True(card2 != card4);
+        }
+        /// <summary>
+        /// Проверка видимости карты с сокровищем.
+        /// </summary>
+        [Fact]
+        public void TestVisible_CreateWithTreasure_True()
+        {
+            TreasureAndStartPointsType type=TreasureAndStartPointsType.treasureOnMovingCell10;
+            Card card = new Card(type);
+            for(Int32 i=type.GetMinimalNumberTreasure(); i <= type.GetMaximalNumberTreasure();i++)
+            {
+                card = new Card((TreasureAndStartPointsType)i);
+                Assert.True(card.isVisible);
+            }
+        }
+        /// <summary>
+        /// Проверка видимости карты со стартовой точкой.
+        /// </summary>
+        [Fact]
+        public void TestVisible_CreateWithStartPoint_False()
+        {
+            TreasureAndStartPointsType type = TreasureAndStartPointsType.treasureOnMovingCell10;
+            Card card = new Card(type);
+            for (Int32 i=type.GetMinimalNumberStartPoint(); i <= type.GetMaximalNumberStartPoint();i++)
+            {
+                card = new Card((TreasureAndStartPointsType)i);
+                Assert.False(card.isVisible);
+            }
         }
     }
 }

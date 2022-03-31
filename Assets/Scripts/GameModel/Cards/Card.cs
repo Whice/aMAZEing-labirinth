@@ -9,13 +9,18 @@ namespace Assets.Scripts.GameModel.Cards
     public class Card
     {
         /// <summary>
-        /// 
+        /// При создании карты ей можно выдать тип сокровища или стартовой точки.
+        /// <br/>С сокровищем все понятно, а вот стартовые точки добавляются, чтобы
+        /// в конце колоды была такая карта и игрок искал на поле тип сокровища "стартовая точка".
+        /// <br/>Для карты с типом сокровища "стартовая точка" добавлено свойство <see cref="isVisible"/>,
+        /// которое передает false, если в карт тип сокровища "стартовая точка". И предполагается, что такая
+        /// карта не должна показываться игроку.
         /// </summary>
         /// <param name="treasure">Сокровище для этой карты.</param>
         /// <param name="isOpen">Открыта ли карта, по умолчанию нет.</param>
         public Card(TreasureAndStartPointsType treasure, Boolean isOpen = false)
         {
-            if((Int32)treasure<treasure.GetMinimalNumberTreasure() || (Int32)treasure>treasure.GetMaximalNumberTreasure())
+            if((Int32)treasure<treasure.GetMinimalNumberStartPoint() || (Int32)treasure>treasure.GetMaximalNumberTreasure())
             {
                 throw new ArgumentException("Карте должен быть задан тип сокровища!\nThe card must be set to a treasure type!");
             }
@@ -40,6 +45,13 @@ namespace Assets.Scripts.GameModel.Cards
         public Boolean isOpen
         {
             get => this.isOpenField;
+        }
+        /// <summary>
+        /// Видна ли карта игроку. Карта не должна быть видна, если это стартовая точка.
+        /// </summary>
+        public Boolean isVisible
+        {
+            get => (Int32)this.treasure > this.treasure.GetMaximalNumberStartPoint();
         }
         /// <summary>
         /// Перевернуть карту.
