@@ -7,16 +7,8 @@ namespace Assets.Scripts.GameModel.Player
     /// <summary>
     /// Игрок в партии.
     /// </summary>
-    public class GamePlayer
+    public class GamePlayer : PlayerInfo
     {
-        /// <summary>
-        /// Имя или прозвище игрока.
-        /// </summary>
-        public readonly String name;
-        /// <summary>
-        /// Цвет игрока.
-        /// </summary>
-        public readonly Color color;
 
         #region Номер игрока в списке победителей.
 
@@ -29,7 +21,7 @@ namespace Assets.Scripts.GameModel.Player
         /// </summary>
         public Int32 winnerNumber
         {
-            get=>this.winnerNumberPrivate;
+            get => this.winnerNumberPrivate;
         }
         /// <summary>
         /// Установить игрока в качестве победителя и выдать ему место в списке победителей.
@@ -50,22 +42,20 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="cardDeck">Карты для колоды игрока.</param>
         /// <param name="positionX">Местоположение по оси X.</param>
         /// <param name="positionY">Местоположение по оси Y.</param>
-        public GamePlayer(String name, Color color, CardDeck cardDeck, Int32 positionX,Int32 positionY)
+        public GamePlayer(String name, Color color, CardDeck cardDeck, Int32 positionX, Int32 positionY) : base(name, color)
         {
-            this.name = name;
-            this.color = color;
             this.cardDeck = cardDeck;
             SetPosition(positionX, positionY);
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="name">Имя или прозвище игрока.</param>
-        /// <param name="color">Цвет игрока.</param>
+        /// <param name="info">Содержит информацию об игроке, которая не относиться к игровой логике.</param>
         /// <param name="cardDeck">Карты для колоды игрока.</param>
-        /// <param name="position">Местоположение.</param>
-        public GamePlayer(String name, Color color, CardDeck cardDeck, Point position)
-            : this(name, color, cardDeck, position.X, position.Y) { }
+        /// <param name="positionX">Местоположение по оси X.</param>
+        /// <param name="positionY">Местоположение по оси Y.</param>
+        public GamePlayer(PlayerInfo info, CardDeck cardDeck, Int32 positionX, Int32 positionY)
+            : this(info.name, info.color, cardDeck, positionX, positionY) { }
 
 
         #region Местоположение.
