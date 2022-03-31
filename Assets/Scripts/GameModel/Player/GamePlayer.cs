@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Cards;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace Assets.Scripts.GameModel.Player

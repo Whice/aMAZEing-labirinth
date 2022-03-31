@@ -3,7 +3,6 @@ using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
-using System.Collections.Generic;
 
 namespace Assets.Scripts.GameModel
 {
