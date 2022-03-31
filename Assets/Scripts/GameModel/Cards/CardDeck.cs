@@ -65,7 +65,7 @@ namespace Assets.Scripts.GameModel.Cards
         /// </summary>
         public Card topCard
         {
-            get => this.cards[this.lastCardNumber];
+            get => this.lastCardNumber > -1 ? this.cards[this.lastCardNumber] : null;
         }
         /// <summary>
         /// Номер последней карты.
@@ -106,7 +106,7 @@ namespace Assets.Scripts.GameModel.Cards
         /// <returns>Список карт или null, если столько карт нет.</returns>
         public List<Card> Pop(Int32 count)
         {
-            if (count < this.lastCardNumber + 1)
+            if (count <= this.lastCardNumber + 1)
             {
                 List<Card> popCards = new List<Card>(count);
                 for (int i = 0; i < count; i++)
