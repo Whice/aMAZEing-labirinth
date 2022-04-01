@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Extensions;
+using System.Drawing;
 
 namespace Assets.Scripts.GameModel.PlayingField
 {
@@ -12,7 +13,7 @@ namespace Assets.Scripts.GameModel.PlayingField
     /// Для обращения к одной ячейке у класса есть индкесатор.
     /// Для перебора всех ячеек у класса есть итератор.
     /// </summary>
-    public class Field: IEnumerable<FieldCell>
+    public class Field : IEnumerable<FieldCell>
     {
         #region Данные игрового поля.
 
@@ -31,13 +32,23 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <param name="vIndex"></param>
         /// <returns></returns>
         public FieldCell this[Int32 hIndex, Int32 vIndex]
-        { 
-            get=>this.fieldCells[hIndex,vIndex];
+        {
+            get => this.fieldCells[hIndex, vIndex];
         }
         /// <summary>
         /// Свободная ячейка.
         /// </summary>
         public FieldCell freeFieldCell = null;
+        /// <summary>
+        /// Координаты стартовых точек.
+        /// </summary>
+        public readonly Point[] startPointsCoordinate = new Point[4] 
+        { 
+            new Point(0, 0),
+            new Point(0, fieldSize - 1),
+            new Point(fieldSize - 1, fieldSize - 1),
+            new Point(fieldSize - 1, 0)
+        };
 
         #endregion Данные игрового поля.
 
@@ -100,15 +111,15 @@ namespace Assets.Scripts.GameModel.PlayingField
             FieldCell[] cornerFieldCells = CreateFieldCellsWithTreasureAndStartPointsType(CellType.corner, 2, 5);
             //Верхняя левая
             cornerFieldCells[0].TurnClockwise(1);
-            this.fieldCells[0, 0] = cornerFieldCells[0];
+            this.fieldCells[this.startPointsCoordinate[0].X, this.startPointsCoordinate[0].Y] = cornerFieldCells[0];
             //Верхняя правая
             cornerFieldCells[1].TurnClockwise(2);
-            this.fieldCells[0, fieldSize - 1] = cornerFieldCells[1];
+            this.fieldCells[this.startPointsCoordinate[1].X, this.startPointsCoordinate[1].Y] = cornerFieldCells[1];
             //Нижняя правая
             cornerFieldCells[2].TurnClockwise(3);
-            this.fieldCells[fieldSize - 1, fieldSize - 1] = cornerFieldCells[2];
+            this.fieldCells[this.startPointsCoordinate[2].X, this.startPointsCoordinate[2].Y] = cornerFieldCells[2];
             //Нижняя левая
-            this.fieldCells[fieldSize - 1, 0] = cornerFieldCells[3];
+            this.fieldCells[this.startPointsCoordinate[3].X, this.startPointsCoordinate[3].Y] = cornerFieldCells[3];
 
             #endregion Создание угловых ячеек
 

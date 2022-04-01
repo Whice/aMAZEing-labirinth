@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.GameModel.Player;
+﻿using Assets.Scripts.GameModel.Cards;
+using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
@@ -11,39 +12,31 @@ namespace Assets.Scripts.GameModel
     /// </summary>
     public class Game
     {
-        public Game(GamePlayer[] players, Int32 startPlayerNumber)
+        public Game(PlayerInfo[] players, Int32 startPlayerNumber)
         {
-            this.players = players;
-            this.currentPlayerNumber = startPlayerNumber;
             Start();
-        }
-
-        /// <summary>
-        /// Выбрать начального игрока и вернуть его номер.
-        /// </summary>
-        /// <returns></returns>
-        private Int32 ChooseStartPlayerNumber()
-        {
-            Random random = new Random();
-            return random.Next(players.Length);
         }
         /// <summary>
         /// Начать игру.
         /// </summary>
         public void Start()
         {
-            this.currentPlayerNumber = ChooseStartPlayerNumber();
             this.currentPhasePrivate = TurnPhase.movingCell;
             this.fieldPrivate = new Field();
             this.countOfPlayersPlayingPrivate = players.Length;
+
         }
 
         #region Данные игры.
 
         /// <summary>
+        /// Колода карт, сокровища которых были найдены.
+        /// </summary>
+        public CardDeck deck = null;
+        /// <summary>
         /// Список игроков.
         /// </summary>
-        private readonly GamePlayer[] players = null;
+        private GamePlayer[] players = null;
         /// <summary>
         /// Количество играющих игроков.
         /// </summary>
@@ -174,7 +167,48 @@ namespace Assets.Scripts.GameModel
                 }
             }
         }
+        /// <summary>
+        /// Создать объекты игроков для игры.
+        /// </summary>
+        /// <param name="playerInfos">Информация об игроках.</param>
+        private void FillInfoPlayers(PlayerInfo[] playerInfos)
+        {
+            //Выбрать начального игрока случайным образом.
+            Random random = new Random();
+            this.currentPlayerNumber = random.Next(playerInfos.Length);
 
-        #endregion Действия.
-    }
+            DealCardsToPlayers(playerInfos);
+        }
+        /// <summary>
+        /// Раздать карты игрокам.
+        /// </summary>
+        /// <param name="playerInfos">Информация об игроках.</param>
+        /// <returns></returns>
+        private Boolean DealCardsToPlayers(PlayerInfo[] playerInfos)
+        {
+            this.players = new GamePlayer[playerInfos.Length];
+            if (this.countOfPlayersPlaying > 0)
+            {
+                CardDeck deck = new CardDeck();
+                deck.Shuffle();
+
+                Int32 countCardsForOnePlayer = deck.count/this.countOfPlayersPlaying;
+                for(Int32 i = 0; i < this.countOfPlayersPlaying; i++)
+                {
+                    CardDeck deckForPlayer = new CardDeck(deck.Pop(countCardsForOnePlayer));
+                    Int32 startPointX = this.field.startPointsCoordinate[i].X;
+                    Int32 startPointY = this.field.startPointsCoordinate[i].Y;
+                    this.players[i] = new GamePlayer(playerInfos[i], deckForPlayer, startPointX, startPointY);
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+            #endregion Действия.
+        }
 }
