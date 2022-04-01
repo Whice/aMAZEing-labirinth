@@ -2,18 +2,20 @@
 using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Assets.Scripts.GameModel.Cards
 {
     /// <summary>
     /// Колода карт.
     /// </summary>
-    public class CardDeck
+    public class CardDeck: IEnumerable<Card>
     {
         #region Конструкторы.
 
         /// <summary>
         /// Создать колоду из всех карт.
+        /// <br/>Есть возможность перечисления карт через foreach.
         /// </summary>
         public CardDeck()
         {
@@ -27,6 +29,11 @@ namespace Assets.Scripts.GameModel.Cards
             }
             this.lastCardNumber = this.cards.Count - 1;
         }
+        private CardDeck(Boolean empty)
+        {
+            const Int32 maxCardInDeck = 24;
+            this.cards = new List<Card>(maxCardInDeck);
+        }
         /// <summary>
         /// Создать колоду из предоставленых карт.
         /// </summary>
@@ -35,6 +42,13 @@ namespace Assets.Scripts.GameModel.Cards
         {
             this.cards = cards;
             this.lastCardNumber = this.cards.Count - 1;
+        }
+        /// <summary>
+        /// Дать пустую колоду.
+        /// </summary>
+        public static CardDeck empty
+        {
+            get => new CardDeck(true);
         }
 
         #endregion Конструкторы.
@@ -133,8 +147,34 @@ namespace Assets.Scripts.GameModel.Cards
             }
             return new CardDeck(cards);
         }
+        /// <summary>
+        /// Добавить карту.
+        /// </summary>
+        /// <param name="card">Карта для добавления.</param>
+        public void Add(Card card)
+        {
+            this.cards.Add(card);
+            ++this.lastCardNumber;
+        }
 
         #endregion Действия.
+
+        #region IEnumerator.
+
+        public IEnumerator<Card> GetEnumerator()
+        {
+            foreach (Card cell in this.cards)
+            {
+                yield return cell;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion IEnumerator.
 
         #region Сравнение.
 
