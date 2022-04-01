@@ -27,5 +27,51 @@ namespace Assets.Scripts.GameModel.Player
             this.name = name;
             this.color = color;
         }
+
+        #region Сравнение.
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is PlayerInfo otherDeck)
+            {
+                if(this.name!=otherDeck.name)
+                {
+                    return false;
+                }
+                if(this.color!=otherDeck.color)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+        public override Int32 GetHashCode()
+        {
+            Int32 hashCode = this.name.GetHashCode();
+            hashCode |= this.color.GetHashCode();
+
+            return hashCode;
+        }
+        public static bool operator ==(PlayerInfo l, PlayerInfo r)
+        {
+            if (l is null && r is null)
+                return true;
+            else if (l is null)
+                return false;
+            else
+                return l.Equals(r);
+        }
+        public static bool operator !=(PlayerInfo l, PlayerInfo r)
+        {
+            return !(l == r);
+        }
+
+        #endregion Сравнение.
     }
 }
