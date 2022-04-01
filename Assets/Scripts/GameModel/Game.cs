@@ -12,19 +12,13 @@ namespace Assets.Scripts.GameModel
     /// </summary>
     public class Game
     {
-        public Game(PlayerInfo[] players, Int32 startPlayerNumber)
-        {
-            Start();
-        }
         /// <summary>
-        /// Начать игру.
+        /// Создание игры. Не означает ее начало.
+        /// <br/>Начинается она только методом <see cref="Start(PlayerInfo[])"/>,
+        /// который вернет true при удачном старте.
         /// </summary>
-        public void Start()
+        public Game()
         {
-            this.currentPhasePrivate = TurnPhase.movingCell;
-            this.fieldPrivate = new Field();
-            this.countOfPlayersPlayingPrivate = players.Length;
-
         }
 
         #region Данные игры.
@@ -32,11 +26,25 @@ namespace Assets.Scripts.GameModel
         /// <summary>
         /// Колода карт, сокровища которых были найдены.
         /// </summary>
-        public CardDeck deck = null;
+        private CardDeck deckPrivate = null;
+        /// <summary>
+        /// Колода карт, сокровища которых были найдены.
+        /// </summary>
+        public CardDeck deck
+        {
+            get => this.deckPrivate;
+        }
         /// <summary>
         /// Список игроков.
         /// </summary>
-        private GamePlayer[] players = null;
+        private GamePlayer[] playersPrivate = null;
+        /// <summary>
+        /// Список игроков.
+        /// </summary>
+        public GamePlayer[] players
+        {
+            get => this.playersPrivate;
+        }
         /// <summary>
         /// Количество играющих игроков.
         /// </summary>
@@ -51,13 +59,20 @@ namespace Assets.Scripts.GameModel
         /// <summary>
         ///  Номер игрока, которому принадлежит текущий ход.
         /// </summary>
-        private Int32 currentPlayerNumber = -1;
+        private Int32 currentPlayerNumberPrivate = -1;
+        /// <summary>
+        ///  Номер игрока, которому принадлежит текущий ход.
+        /// </summary>
+        public Int32 currentPlayerNumber
+        {
+            get => this.currentPlayerNumberPrivate;
+        }
         /// <summary>
         ///  Игрок, которому принадлежит текущий ход.
         /// </summary>
         public GamePlayer currentPlayer
         {
-            get=>this.players[currentPlayerNumber];
+            get=>this.playersPrivate[currentPlayerNumberPrivate];
         }
         /// <summary>
         /// Текущая фаза хода игрока.
@@ -92,6 +107,8 @@ namespace Assets.Scripts.GameModel
         #endregion Данные игры.
 
         #region Действия.
+
+        #region Во время игры.
 
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
@@ -160,25 +177,18 @@ namespace Assets.Scripts.GameModel
 
             if(this.currentPhasePrivate==TurnPhase.movingCell)
             {
-                ++this.currentPlayerNumber;
-                if(this.currentPlayerNumber>=this.players.Length)
+                ++this.currentPlayerNumberPrivate;
+                if(this.currentPlayerNumberPrivate>=this.playersPrivate.Length)
                 {
-                    this.currentPlayerNumber = 0;
+                    this.currentPlayerNumberPrivate = 0;
                 }
             }
         }
-        /// <summary>
-        /// Создать объекты игроков для игры.
-        /// </summary>
-        /// <param name="playerInfos">Информация об игроках.</param>
-        private void FillInfoPlayers(PlayerInfo[] playerInfos)
-        {
-            //Выбрать начального игрока случайным образом.
-            Random random = new Random();
-            this.currentPlayerNumber = random.Next(playerInfos.Length);
 
-            DealCardsToPlayers(playerInfos);
-        }
+        #endregion Во время игры.
+
+        #region Создание игроков и начало игры.
+
         /// <summary>
         /// Раздать карты игрокам.
         /// </summary>
@@ -186,7 +196,7 @@ namespace Assets.Scripts.GameModel
         /// <returns></returns>
         private Boolean DealCardsToPlayers(PlayerInfo[] playerInfos)
         {
-            this.players = new GamePlayer[playerInfos.Length];
+            this.playersPrivate = new GamePlayer[playerInfos.Length];
             if (this.countOfPlayersPlaying > 0)
             {
                 CardDeck deck = new CardDeck();
@@ -198,7 +208,7 @@ namespace Assets.Scripts.GameModel
                     CardDeck deckForPlayer = new CardDeck(deck.Pop(countCardsForOnePlayer));
                     Int32 startPointX = this.field.startPointsCoordinate[i].X;
                     Int32 startPointY = this.field.startPointsCoordinate[i].Y;
-                    this.players[i] = new GamePlayer(playerInfos[i], deckForPlayer, startPointX, startPointY);
+                    this.playersPrivate[i] = new GamePlayer(playerInfos[i], deckForPlayer, startPointX, startPointY);
                 }
 
                 return true;
@@ -208,7 +218,75 @@ namespace Assets.Scripts.GameModel
                 return false;
             }
         }
+        /// <summary>
+        /// Создать объекты игроков для игры.
+        /// </summary>
+        /// <param name="playerInfos">Информация об игроках.</param>
+        private void FillInfoPlayers(PlayerInfo[] playerInfos)
+        {
+            //Выбрать начального игрока случайным образом.
+            Random random = new Random();
+            this.currentPlayerNumberPrivate = random.Next(playerInfos.Length);
 
-            #endregion Действия.
+            DealCardsToPlayers(playerInfos);
         }
+        /// <summary>
+        /// Начать игру.
+        /// </summary>
+        /// <param name="playerInfos">Информация об игроках.</param>
+        public Boolean Start(PlayerInfo[] playerInfos, out String errorMessage)
+        {
+            if (playerInfos == null)
+            {
+                errorMessage = "Инфо об игроках не может содержать нулевую ссылку!";
+                throw new NullReferenceException(errorMessage);
+            }
+            else if (playerInfos.Length > 4)
+            {
+                errorMessage = "В игре не может быть больше 4х игроков!";
+                throw new ArgumentException(errorMessage);
+            }
+
+            for(Int32 i=0; i < playerInfos.Length; i++)
+            {
+                for(Int32 j=i+1; j < playerInfos.Length; j++)
+                {
+                    if(playerInfos[i].name == playerInfos[j].name)
+                    {
+                        errorMessage = "Игроки не могут иметь одинаковые имена!";
+                        return false;
+                    }
+                    if(playerInfos[i].color == playerInfos[j].color)
+                    {
+                        errorMessage = "Игроки не могут иметь одинаковые цвета!";
+                        return false;
+                    }
+                }
+            }
+
+            this.currentPhasePrivate = TurnPhase.movingCell;
+            this.fieldPrivate = new Field();
+            this.countOfPlayersPlayingPrivate = playerInfos.Length;
+            this.deckPrivate = CardDeck.empty;
+
+            FillInfoPlayers(playerInfos);
+
+            errorMessage = "Нет ошибок.";
+            return true;
+        }
+        /// <summary>
+        /// Создать и сразу начать игру.
+        /// </summary>
+        /// <param name="playerInfos">Информация об игроках.</param>
+        /// <returns>isLuckyStart - Началась ли игра.<br/>game - Объект игры.</returns>
+        public static (Boolean isLuckyStart, Game game) CreateGameWithStart(PlayerInfo[] playerInfos)
+        {
+            Game game = new Game();
+            return (game.Start(playerInfos), game);
+        }
+
+        #endregion Создание игроков и начало игры.
+
+        #endregion Действия.
+    }
 }
