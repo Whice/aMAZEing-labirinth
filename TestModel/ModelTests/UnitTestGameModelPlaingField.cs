@@ -1,6 +1,9 @@
-﻿using Assets.Scripts.GameModel.PlayingField;
+﻿using Assets.Scripts.GameModel.Cards;
+using Assets.Scripts.GameModel.Player;
+using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using System;
+using System.Drawing;
 using Xunit;
 
 namespace TestModel.ModelTests
@@ -40,7 +43,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_SuccessfullCreatePinnedCells()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             #region  углы
 
@@ -140,7 +143,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_ThereAreNoNullValuesI​nField()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             foreach (FieldCell cell in field)
             {
@@ -154,7 +157,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_SuccessfullCreateFreeCell()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             Assert.NotNull(field.freeFieldCell);
         }
@@ -165,7 +168,7 @@ namespace TestModel.ModelTests
         public void TestCreate_CreateField_RightCountCellsInField()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
             Int32 countCoreners = 0;
             Int32 countLines = 0;
             Int32 countThreeDirections = 0;
@@ -197,14 +200,14 @@ namespace TestModel.ModelTests
         public void TestCreate_RotateAllNotInreationCellsField_UnsuccessfullRotate()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
             Field field2 = this.field.Clone();
 
-            foreach (FieldCell cell in field)
+            foreach (FieldCell cell in field2)
                 cell.TurnClockwise();
 
-            for (Int32 i = 0; i < Field.fieldSize; i++)
-                for (Int32 j = 0; j < Field.fieldSize; j++)
+            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
                 {
                     Assert.True(field[i, j] == field2[i, j]);
                 }
@@ -217,7 +220,7 @@ namespace TestModel.ModelTests
         {
 
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
             Int32 treasureType;
             Int32 countStartPoints = 0;
             Int32 countPinnedTreasures = 0;
@@ -253,12 +256,12 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineUp_SuccessfullMovement()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             //Предполагаемая новая свободная ячейка
             FieldCell estimatedFreeCell = field[1, 0];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.FIELD_SIZE];
             for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
             {
                 estimatedNewLine[i] = field[1, j];
@@ -282,12 +285,12 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineLeft_SuccessfullMovement()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             //Предполагаемая новая свободная ячейка
             FieldCell estimatedFreeCell = field[0, 1];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.FIELD_SIZE];
             for (Int32 i = 0, j = i + 1; i < estimatedNewLine.Length - 1; i++, j++)
             {
                 estimatedNewLine[i] = field[j, 1];
@@ -311,12 +314,12 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineDown_SuccessfullMovement()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = field[1, Field.fieldSize - 1];
+            FieldCell estimatedFreeCell = field[1, Field.FIELD_SIZE - 1];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.FIELD_SIZE];
             for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
             {
                 estimatedNewLine[i] = field[1, j];
@@ -340,12 +343,12 @@ namespace TestModel.ModelTests
         public void TestMovement_MoveLineRight_SuccessfullMovement()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
             //Предполагаемая новая свободная ячейка
-            FieldCell estimatedFreeCell = field[Field.fieldSize - 1, 1];
+            FieldCell estimatedFreeCell = field[Field.FIELD_SIZE - 1, 1];
             //Предполагаемая новая линия.
-            FieldCell[] estimatedNewLine = new FieldCell[Field.fieldSize];
+            FieldCell[] estimatedNewLine = new FieldCell[Field.FIELD_SIZE];
             for (Int32 i = estimatedNewLine.Length - 1, j = i - 1; i > 0; i--, j--)
             {
                 estimatedNewLine[i] = field[j, 1];
@@ -370,9 +373,9 @@ namespace TestModel.ModelTests
         public void TestMovement_SuccessfullMovement_SuccessfullMovement()
         {
             CreateField();
-            Field field = this.field;
+            Field field = this.field.Clone();
 
-            for (Int32 i = 0; i < Field.fieldSize; i++)
+            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
             {
                 if (i % 2 == 0)
                 {
@@ -393,5 +396,122 @@ namespace TestModel.ModelTests
         }
 
         #endregion Движение линий.
+
+        #region Движение игроков вместе с линиями.
+
+        /// <summary>
+        /// Тест на удачный сдвиг игрока, при сдвиге вверх второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovementPlayer_MoveLineUp_SuccessfullMovementPlayer()
+        {
+            CreateField();
+            Field field = this.field.Clone();
+
+            //выдать полю игроков
+            GamePlayer[] players = new GamePlayer[]
+            {
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, 2),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 2)
+            };
+            field.SetPlayers(players);
+
+
+            //Подвинуть вверх вторую по порядку линию
+            field.MoveLineUp(1);
+
+            Assert.Equal(Field.FIELD_SIZE - 1, players[0].positionY);
+            Assert.Equal(1, players[1].positionY);
+            Assert.Equal(0, players[2].positionY);
+            Assert.Equal(2, players[3].positionY);
+        }
+        /// <summary>
+        /// Тест на удачный сдвиг игрока, при сдвиге вправо второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovementPlayer_MoveLineRight_SuccessfullMovementPlayer()
+        {
+            CreateField();
+            Field field = this.field.Clone();
+
+            //выдать полю игроков
+            GamePlayer[] players = new GamePlayer[]
+            {
+                new GamePlayer("1", Color.Red, new CardDeck(), Field.FIELD_SIZE-1, 1),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 1),
+                new GamePlayer("1", Color.Red, new CardDeck(), 0, 3),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 3)
+            };
+            field.SetPlayers(players);
+
+
+            //Подвинуть вправо вторую по порядку линию
+            field.MoveLineRight(1);
+
+            Assert.Equal(0, players[0].positionX);
+            Assert.Equal(3, players[1].positionX);
+            Assert.Equal(0, players[2].positionX);
+            Assert.Equal(2, players[3].positionX);
+        }
+        /// <summary>
+        /// Тест на удачный сдвиг игрока, при сдвиге вниз второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovementPlayer_MoveLineDown_SuccessfullMovementPlayer()
+        {
+            CreateField();
+            Field field = this.field.Clone();
+
+            //выдать полю игроков
+            GamePlayer[] players = new GamePlayer[]
+            {
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, Field.FIELD_SIZE-1),
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, 2),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 2)
+            };
+            field.SetPlayers(players);
+
+
+            //Подвинуть вниз вторую по порядку линию
+            field.MoveLineDown(1);
+
+            Assert.Equal(0, players[0].positionY);
+            Assert.Equal(3, players[1].positionY);
+            Assert.Equal(0, players[2].positionY);
+            Assert.Equal(2, players[3].positionY);
+        }
+        /// <summary>
+        /// Тест на удачный сдвиг игрока, при сдвиге влево второй по порядку линии.
+        /// </summary>
+        [Fact]
+        public void TestMovementPlayer_MoveLineLeft_SuccessfullMovementPlayer()
+        {
+            CreateField();
+            Field field = this.field.Clone();
+
+            //выдать полю игроков
+            GamePlayer[] players = new GamePlayer[]
+            {
+                new GamePlayer("1", Color.Red, new CardDeck(), 0, 1),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 1),
+                new GamePlayer("1", Color.Red, new CardDeck(), 0, 3),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 3)
+            };
+            field.SetPlayers(players);
+
+
+            //Подвинуть влево вторую по порядку линию
+            field.MoveLineLeft(1);
+
+            Assert.Equal(Field.FIELD_SIZE - 1, players[0].positionX);
+            Assert.Equal(1, players[1].positionX);
+            Assert.Equal(0, players[2].positionX);
+            Assert.Equal(2, players[3].positionX);
+        }
+
+        #endregion Движение игроков вместе с линиями.
     }
 }

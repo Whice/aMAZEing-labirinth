@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Extensions;
 using System.Drawing;
+using Assets.Scripts.GameModel.Player;
 
 namespace Assets.Scripts.GameModel.PlayingField
 {
@@ -20,7 +21,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// Размер игрового поля.
         /// </summary>
-        public const Int32 fieldSize = 7;
+        public const Int32 FIELD_SIZE = 7;
         /// <summary>
         /// Все игровое поле.
         /// </summary>
@@ -39,22 +40,45 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// Свободная ячейка.
         /// </summary>
         public FieldCell freeFieldCell = null;
-        /// <summary>
-        /// Координаты стартовых точек.
-        /// </summary>
-        public readonly Point[] startPointsCoordinate = new Point[4] 
-        { 
-            new Point(0, 0),
-            new Point(0, fieldSize - 1),
-            new Point(fieldSize - 1, fieldSize - 1),
-            new Point(fieldSize - 1, 0)
-        };
 
         #endregion Данные игрового поля.
 
+        #region
+
+
+        /// <summary>
+        /// Координаты стартовых точек.
+        /// </summary>
+        public readonly Point[] startPointsCoordinate = new Point[4]
+        {
+            new Point(0, 0),
+            new Point(0, FIELD_SIZE - 1),
+            new Point(FIELD_SIZE - 1, FIELD_SIZE - 1),
+            new Point(FIELD_SIZE - 1, 0)
+        };
+        /// <summary>
+        /// Список игроков.
+        /// </summary>
+        private GamePlayer[] players = null;
+        /// <summary>
+        /// Выдать полю информацию об игроках.
+        /// <br/>Теперь они смогут двигаться вместе с ячейками.
+        /// </summary>
+        /// <param name="players">Информацию об игроках.</param>
+        public void SetPlayers(GamePlayer[] players)
+        {
+            this.players = players;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="players">Список игроков.</param>
         public Field()
         {
-            this.fieldCells = new FieldCell[fieldSize, fieldSize];
+            this.fieldCells = new FieldCell[FIELD_SIZE, FIELD_SIZE];
             CreateField();
         }
 
@@ -135,13 +159,13 @@ namespace Assets.Scripts.GameModel.PlayingField
             //Две правые
             borderFieldCells[2].TurnClockwise(2);
             borderFieldCells[3].TurnClockwise(2);
-            this.fieldCells[2, fieldSize - 1] = borderFieldCells[2];
-            this.fieldCells[4, fieldSize - 1] = borderFieldCells[3];
+            this.fieldCells[2, FIELD_SIZE - 1] = borderFieldCells[2];
+            this.fieldCells[4, FIELD_SIZE - 1] = borderFieldCells[3];
             //Две нижние
             borderFieldCells[4].TurnClockwise(3);
             borderFieldCells[5].TurnClockwise(3);
-            this.fieldCells[fieldSize - 1, 2] = borderFieldCells[4];
-            this.fieldCells[fieldSize - 1, 4] = borderFieldCells[5];
+            this.fieldCells[FIELD_SIZE - 1, 2] = borderFieldCells[4];
+            this.fieldCells[FIELD_SIZE - 1, 4] = borderFieldCells[5];
             //Две левые
             this.fieldCells[2, 0] = borderFieldCells[6];
             this.fieldCells[4, 0] = borderFieldCells[7];
@@ -183,9 +207,9 @@ namespace Assets.Scripts.GameModel.PlayingField
             Stack<FieldCell> fieldCellsStack = new Stack<FieldCell>(fieldCellsList);
 
             Random random = new Random();
-            for (Int32 i = 0; i < fieldSize; i++)
+            for (Int32 i = 0; i < FIELD_SIZE; i++)
             {
-                for (Int32 j = 0; j < fieldSize; j++)
+                for (Int32 j = 0; j < FIELD_SIZE; j++)
                 {
                     if (this.fieldCells[i, j] == null)
                     {
@@ -225,6 +249,56 @@ namespace Assets.Scripts.GameModel.PlayingField
         #region Передвижение ячеек.
 
         /// <summary>
+        /// Игрок должен быть перемещен вместе с ячейками.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="numberLine"></param>
+        /// <param name="isVerical"></param>
+        /// <param name="isForward"></param>
+        /// <returns></returns>
+        private void MovePlayer(GamePlayer player, Int32 numberLine, Boolean isVerical, Boolean isForward)
+        {
+            if(isVerical)
+            {
+                if(numberLine == player.positionX)
+                {
+                    //Игрок сам следит за "выходом" за пределы поля и 
+                    // пересталяет на другую его сторону свою фишку, если надо.
+                    if (isForward)
+                        ++player.positionY;
+                    else
+                        --player.positionY;
+                }
+            }
+            else
+            {
+                if (numberLine == player.positionY)
+                {
+                    //Игрок сам следит за "выходом" за пределы поля и 
+                    // пересталяет на другую его сторону свою фишку, если надо.
+                    if (isForward)
+                        ++player.positionX;
+                    else
+                        --player.positionX;
+                }
+            }
+        }
+        /// <summary>
+        /// Игроки должны быть перемещены вместе с ячейками.
+        /// </summary>
+        /// <param name="numberLine"></param>
+        /// <param name="isVerical"></param>
+        /// <param name="isForward"></param>
+        /// <returns></returns>
+        private void MovePlayers(Int32 numberLine, Boolean isVerical, Boolean isForward)
+        {
+           foreach(GamePlayer player in this.players)
+            {
+                MovePlayer(player, numberLine, isVerical, isForward);
+            }
+        }
+
+        /// <summary>
         /// Сдвиг линии по указанному номеру в указанном направлении. 
         /// Номер соответствует положению линии в массиве, т.е. начинается с 0.
         /// </summary>
@@ -236,6 +310,11 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// ячейка 1 встанет на место ячейки 2, и т.д.</param>
         private Boolean MoveLine(Int32 numberLine, Boolean isVerical, Boolean isForward)
         {
+            if (this.players != null)
+            {
+                MovePlayers(numberLine, isVerical, isForward);
+            }
+
             //Двигать можно только четные(нечетные. т.к. нумерация идет с 0) линии.
             if (numberLine % 2 != 0)
             {
@@ -343,11 +422,22 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <returns></returns>
         public Field Clone()
         {
+
             Field fieldClone = new Field();
 
-            for (Int32 i = 0; i < fieldSize; i++)
+            if (this.players != null)
             {
-                for (Int32 j = 0; j < fieldSize; j++)
+                GamePlayer[] playersClone = new GamePlayer[this.players.Length];
+                for (int i = 0; i < playersClone.Length; i++)
+                {
+                    playersClone[i] = this.players[i].Clone();
+                }
+                fieldClone.SetPlayers(playersClone);
+            }
+
+            for (Int32 i = 0; i < FIELD_SIZE; i++)
+            {
+                for (Int32 j = 0; j < FIELD_SIZE; j++)
                 {
                     fieldClone.fieldCells[i, j] = this.fieldCells[i, j].Clone();
                 }

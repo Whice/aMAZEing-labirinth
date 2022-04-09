@@ -34,46 +34,7 @@ namespace Assets.Scripts.GameModel
         {
             get => this.deckPrivate;
         }
-        /// <summary>
-        /// Список игроков.
-        /// </summary>
-        private GamePlayer[] playersPrivate = null;
-        /// <summary>
-        /// Список игроков.
-        /// </summary>
-        public GamePlayer[] players
-        {
-            get => this.playersPrivate;
-        }
-        /// <summary>
-        /// Количество играющих игроков.
-        /// </summary>
-        private Int32 countOfPlayersPlayingPrivate = -1;
-        /// <summary>
-        /// Количество играющих игроков.
-        /// </summary>
-        public Int32 countOfPlayersPlaying
-        {
-            get => countOfPlayersPlayingPrivate;
-        }
-        /// <summary>
-        ///  Номер игрока, которому принадлежит текущий ход.
-        /// </summary>
-        private Int32 currentPlayerNumberPrivate = -1;
-        /// <summary>
-        ///  Номер игрока, которому принадлежит текущий ход.
-        /// </summary>
-        public Int32 currentPlayerNumber
-        {
-            get => this.currentPlayerNumberPrivate;
-        }
-        /// <summary>
-        ///  Игрок, которому принадлежит текущий ход.
-        /// </summary>
-        public GamePlayer currentPlayer
-        {
-            get=>this.playersPrivate[currentPlayerNumberPrivate];
-        }
+       
         /// <summary>
         /// Текущая фаза хода игрока.
         /// </summary>
@@ -190,6 +151,47 @@ namespace Assets.Scripts.GameModel
         #region Создание игроков и начало игры.
 
         /// <summary>
+        /// Список игроков.
+        /// </summary>
+        private GamePlayer[] playersPrivate = null;
+        /// <summary>
+        /// Список игроков.
+        /// </summary>
+        public GamePlayer[] players
+        {
+            get => this.playersPrivate;
+        }
+        /// <summary>
+        /// Количество играющих игроков.
+        /// </summary>
+        private Int32 countOfPlayersPlayingPrivate = -1;
+        /// <summary>
+        /// Количество играющих игроков.
+        /// </summary>
+        public Int32 countOfPlayersPlaying
+        {
+            get => countOfPlayersPlayingPrivate;
+        }
+        /// <summary>
+        ///  Номер игрока, которому принадлежит текущий ход.
+        /// </summary>
+        private Int32 currentPlayerNumberPrivate = -1;
+        /// <summary>
+        ///  Номер игрока, которому принадлежит текущий ход.
+        /// </summary>
+        public Int32 currentPlayerNumber
+        {
+            get => this.currentPlayerNumberPrivate;
+        }
+        /// <summary>
+        ///  Игрок, которому принадлежит текущий ход.
+        /// </summary>
+        public GamePlayer currentPlayer
+        {
+            get => this.playersPrivate[currentPlayerNumberPrivate];
+        }
+
+        /// <summary>
         /// Раздать карты игрокам.
         /// </summary>
         /// <param name="playerInfos">Информация об игроках.</param>
@@ -239,12 +241,17 @@ namespace Assets.Scripts.GameModel
             if (playerInfos == null)
             {
                 errorMessage = "Инфо об игроках не может содержать нулевую ссылку!";
-                throw new NullReferenceException(errorMessage);
+                return false;
             }
             else if (playerInfos.Length > 4)
             {
                 errorMessage = "В игре не может быть больше 4х игроков!";
-                throw new ArgumentException(errorMessage);
+                return false;
+            }
+            else if (playerInfos.Length < 2)
+            {
+                errorMessage = "В игре не может быть меьше 2х игроков!";
+                return false;
             }
 
             for(Int32 i=0; i < playerInfos.Length; i++)
@@ -270,6 +277,7 @@ namespace Assets.Scripts.GameModel
             this.deckPrivate = CardDeck.empty;
 
             FillInfoPlayers(playerInfos);
+            this.fieldPrivate.SetPlayers(this.playersPrivate);
 
             errorMessage = "Нет ошибок.";
             return true;
@@ -278,11 +286,13 @@ namespace Assets.Scripts.GameModel
         /// Создать и сразу начать игру.
         /// </summary>
         /// <param name="playerInfos">Информация об игроках.</param>
-        /// <returns>isLuckyStart - Началась ли игра.<br/>game - Объект игры.</returns>
-        public static (Boolean isLuckyStart, Game game) CreateGameWithStart(PlayerInfo[] playerInfos)
+        /// <returns>isLuckyStart - Началась ли игра.<br/>game - Объект игры.
+        /// <br/>errorMessage - Инфо ошибки в случае, если не удалось запустить игру.</returns>
+        public static (Boolean isLuckyStart, Game game, String errorMessage) CreateGameWithStart(PlayerInfo[] playerInfos)
         {
             Game game = new Game();
-            return (game.Start(playerInfos), game);
+            String errorMessage;
+            return (game.Start(playerInfos, out errorMessage), game, errorMessage);
         }
 
         #endregion Создание игроков и начало игры.

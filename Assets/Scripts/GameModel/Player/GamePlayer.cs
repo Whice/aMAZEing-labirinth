@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Cards;
+using Assets.Scripts.GameModel.PlayingField;
 using System;
 using System.Drawing;
 
@@ -61,13 +62,79 @@ namespace Assets.Scripts.GameModel.Player
         #region Местоположение.
 
         /// <summary>
+        /// Размер игрового поля.
+        /// </summary>
+        private Int32 FIELD_SIZE
+        {
+            get => Field.FIELD_SIZE;
+        }
+
+        /// <summary>
         /// Местоположение на поле по оси X.
         /// </summary>
-        public Int32 positionX;
+        private Int32 positionXField;
+        /// <summary>
+        /// Местоположение на поле по оси X.
+        /// <br/>Игрок сам следит за "выходом" за пределы поля и 
+        /// пересталяет на другую его сторону свою фишку, если надо.
+        /// </summary>
+        public Int32 positionX
+        {
+            get
+            {
+                return this.positionXField;
+            }
+            set
+            {
+                //Если положэение игрока выходит за пределы поля,
+                //то он появляется с другой стороны.
+                if (value >= this.FIELD_SIZE)
+                {
+                    this.positionXField = 0;
+                }
+                else if(value < 0)
+                {
+                    this.positionXField = this.FIELD_SIZE - 1;
+                }
+                else
+                {
+                    this.positionXField = value;
+                }
+            }
+        }
         /// <summary>
         /// Местоположение на поле по оси Y.
         /// </summary>
-        public Int32 positionY;
+        private Int32 positionYField;
+        /// <summary>
+        /// Местоположение на поле по оси Y.
+        /// <br/>Игрок сам следит за "выходом" за пределы поля и 
+        /// пересталяет на другую его сторону свою фишку, если надо.
+        /// </summary>
+        public Int32 positionY
+        {
+            get
+            {
+                return this.positionYField;
+            }
+            set
+            {
+                //Если положэение игрока выходит за пределы поля,
+                //то он появляется с другой стороны.
+                if (value >= this.FIELD_SIZE)
+                {
+                    this.positionYField = 0;
+                }
+                else if (value < 0)
+                {
+                    this.positionYField = this.FIELD_SIZE - 1;
+                }
+                else
+                {
+                    this.positionYField = value;
+                }
+            }
+        }
         /// <summary>
         /// Местоположение на поле.
         /// </summary>
