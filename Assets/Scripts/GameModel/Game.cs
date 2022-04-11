@@ -71,6 +71,37 @@ namespace Assets.Scripts.GameModel
 
         #region Во время игры.
 
+        #region Предыдущий ход.
+
+        /// <summary>
+        /// Номер линии, которая двигалась в предыдущем ходу.
+        /// </summary>
+        private Int32 lastNumberLine = 0;
+        /// <summary>
+        /// Сторона поля, с которой выполнялся сдвиг в пердыдущем ходу.
+        /// </summary>
+        private FieldSide lastFieldSide = FieldSide.unknow;
+        /// <summary>
+        /// Проверить, не отменяет ли нынешний ход предыдущий.
+        /// </summary>
+        /// <param name="numberLine">Номер линии, по которой выполняется сдвиг в этом ходу.</param>
+        /// <param name="side">Сторона поля, с которой выполняется сдвиг в этом ходу.</param>
+        /// <returns></returns>
+        private Boolean IsNotUndoPreviousMove(Int32 numberLine, FieldSide side)
+        {
+            if(numberLine == this.lastNumberLine)
+            {
+                if((Int32)side + (Int32)this.lastFieldSide == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        #endregion Предыдущий ход.
+
+
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
         /// </summary>
@@ -81,33 +112,39 @@ namespace Assets.Scripts.GameModel
         {
             Boolean successfulMove = false;
 
-            switch (side)
+            if (IsNotUndoPreviousMove(numberLine, side))
             {
-                case FieldSide.up:
-                    {
-                        successfulMove = this.field.MoveLineUp(numberLine);
-                        break;
-                    }
-                case FieldSide.right:
-                    {
-                        successfulMove = this.field.MoveLineRight(numberLine);
-                        break;
-                    }
-                case FieldSide.down:
-                    {
-                        successfulMove = this.field.MoveLineDown(numberLine);
-                        break;
-                    }
-                case FieldSide.left:
-                    {
-                        successfulMove = this.field.MoveLineLeft(numberLine);
-                        break;
-                    }
-            }
+                switch (side)
+                {
+                    case FieldSide.up:
+                        {
+                            successfulMove = this.field.MoveLineUp(numberLine);
+                            break;
+                        }
+                    case FieldSide.right:
+                        {
+                            successfulMove = this.field.MoveLineRight(numberLine);
+                            break;
+                        }
+                    case FieldSide.down:
+                        {
+                            successfulMove = this.field.MoveLineDown(numberLine);
+                            break;
+                        }
+                    case FieldSide.left:
+                        {
+                            successfulMove = this.field.MoveLineLeft(numberLine);
+                            break;
+                        }
+                }
 
-            if (successfulMove)
-            {
-                SetNextPhase();
+                if (successfulMove)
+                {
+                    SetNextPhase();
+
+                    this.lastNumberLine = numberLine;
+                    this.lastFieldSide = side;
+                }
             }
 
             return successfulMove;
