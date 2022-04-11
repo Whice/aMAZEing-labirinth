@@ -26,11 +26,11 @@ namespace Assets.Scripts.GameModel
         #region Данные игры.
 
         /// <summary>
-        /// Колода карт, сокровища которых были найдены.
+        /// Колода карт, сокровища которых были найдены. Тут не может быть стартовых точек.
         /// </summary>
         private CardDeck deckPrivate = null;
         /// <summary>
-        /// Колода карт, сокровища которых были найдены.
+        /// Колода карт, сокровища которых были найдены. Тут не может быть стартовых точек.
         /// </summary>
         public CardDeck deck
         {
@@ -103,6 +103,10 @@ namespace Assets.Scripts.GameModel
 
         #endregion Предыдущий ход.
 
+        /// <summary>
+        /// Номер следующего победителя.
+        /// </summary>
+        private Int32 numberOfNextWinner = 0;
 
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
@@ -152,6 +156,35 @@ namespace Assets.Scripts.GameModel
             return successfulMove;
         }
         /// <summary>
+        /// Попытаться получить сокровище искомое нынешним игроком после его хода.
+        /// </summary>
+        private void TryGetTreasureFromFieldForCurrentPlayer()
+        {
+            Int32 currentPlayerX = this.currentPlayer.positionX;
+            Int32 currentPlayerY = this.currentPlayer.positionY;
+
+            TreasureAndStartPointsType cellTreasure = this.field[currentPlayerX, currentPlayerY].treasureOrStartPoints;
+            TreasureAndStartPointsType playerSearchTreasure = this.currentPlayer.cardForSearch.treasure;
+
+            if (cellTreasure == playerSearchTreasure)
+            {
+                Card foundCard = this.currentPlayer.PopCurrentCardForSearch();
+
+                //Если последняя найденая карта игрока это стартовая точка, то он победил,
+                //Если нет, то она добавляется в список найденых.
+
+                if (foundCard.treasure.IsStartPoint())
+                {
+                    this.currentPlayer.SetPlayerAsWinner(this.numberOfNextWinner);
+                    ++this.numberOfNextWinner;
+                }
+                else
+                {
+                    this.deckPrivate.Add(foundCard);
+                }
+            }
+        }
+        /// <summary>
         /// Переместить аватар игрока в указанную позицию, если это возможно.
         /// </summary>
         /// <param name="x"></param>
@@ -164,10 +197,28 @@ namespace Assets.Scripts.GameModel
             if (successfulMove)
             {
                 this.currentPlayer.SetPosition(x, y);
+                TryGetTreasureFromFieldForCurrentPlayer();
                 SetNextPhase();
             }
 
             return successfulMove;
+        }
+        /// <summary>
+        /// Установить следующего играющего игрока.
+        /// <br/>Выбирается следующий игрок из массива, который не победил.
+        /// </summary>
+        private void SetNextPlayer()
+        {
+            //Выбирается следующий игрок из массива, который не победил.
+            do
+            {
+                ++this.currentPlayerNumberPrivate;
+                if (this.currentPlayerNumberPrivate >= this.playersPrivate.Length)
+                {
+                    this.currentPlayerNumberPrivate = 0;
+                }
+            }
+            while (this.currentPlayer.isWinner);
         }
         /// <summary>
         /// Установить следующую фазу, с переходом хода к следующиму игроку.
@@ -178,11 +229,7 @@ namespace Assets.Scripts.GameModel
 
             if(this.currentPhasePrivate==TurnPhase.movingCell)
             {
-                ++this.currentPlayerNumberPrivate;
-                if(this.currentPlayerNumberPrivate>=this.playersPrivate.Length)
-                {
-                    this.currentPlayerNumberPrivate = 0;
-                }
+                SetNextPlayer();
             }
         }
 

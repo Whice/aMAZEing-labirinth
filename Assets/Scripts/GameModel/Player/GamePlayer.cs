@@ -25,12 +25,24 @@ namespace Assets.Scripts.GameModel.Player
             get => this.winnerNumberPrivate;
         }
         /// <summary>
+        /// Игрок победил.
+        /// </summary>
+        private Boolean isWinnerPrivate = false;
+        /// <summary>
+        /// Игрок победил.
+        /// </summary>
+        public Boolean isWinner
+        {
+            get => this.isWinnerPrivate;
+        }
+        /// <summary>
         /// Установить игрока в качестве победителя и выдать ему место в списке победителей.
         /// </summary>
         /// <param name="numberInWinnerList">Место в списке победителей.</param>
         public void SetPlayerAsWinner(Int32 numberInWinnerList)
         {
             this.winnerNumberPrivate = numberInWinnerList;
+            this.isWinnerPrivate = true;
         }
 
         #endregion Номер игрока в списке победителей.

@@ -20,6 +20,16 @@ namespace Assets.Scripts.GameModel.PlayingField.Treasures
         {
             return 4;
         }
+        /// <summary>
+        /// Тип сокровища - стартовая точка.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static Boolean IsStartPoint(this TreasureAndStartPointsType type)
+        {
+            return (Int32)type >= ((Int32)type.GetMinimalNumberStartPoint()) 
+                && (Int32)type <= ((Int32)type.GetMaximalNumberStartPoint());
+        }
 
     }
 }
