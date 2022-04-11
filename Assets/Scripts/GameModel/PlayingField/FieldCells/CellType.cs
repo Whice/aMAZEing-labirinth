@@ -3,6 +3,9 @@
     /// <summary>
     /// Тип ячейки.
     /// Хранит информацию о том, сколько проходов у нее и как они расположены.
+    /// <br/>corner = 1,
+    /// <br/>line = 2,
+    /// <br/>threeDirection = 3
     /// </summary>
     public enum CellType : byte
     {
@@ -17,10 +20,10 @@
         /// <summary>
         /// Линия. Два прохода.
         /// </summary>
-        line,
+        line = 2,
         /// <summary>
         /// Три прохода.
         /// </summary>
-        threeDirection
+        threeDirection = 3
     }
 }
