@@ -2,8 +2,10 @@
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
+using Assets.Scripts.GameModel.PlayingField.Treasures;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.GameModel
 {
@@ -158,6 +160,7 @@ namespace Assets.Scripts.GameModel
         public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
         {
             Boolean successfulMove = this.field.IsPossibleMove(this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
+
             if (successfulMove)
             {
                 this.currentPlayer.SetPosition(x, y);
@@ -236,17 +239,35 @@ namespace Assets.Scripts.GameModel
         private Boolean DealCardsToPlayers(PlayerInfo[] playerInfos)
         {
             this.playersPrivate = new GamePlayer[playerInfos.Length];
-            if (this.countOfPlayersPlaying > 0)
+            if (this.playersPrivate != null && this.countOfPlayersPlaying > 0)
             {
+                //пол умолчанию колода создается со всеми сокровищами.
                 CardDeck deck = new CardDeck();
                 deck.Shuffle();
 
+                //выяснить, сколько карт каждому игроку
                 Int32 countCardsForOnePlayer = deck.count/this.countOfPlayersPlaying;
-                for(Int32 i = 0; i < this.countOfPlayersPlaying; i++)
+
+                List<Card> startPointAndDeckForPlayer;
+                CardDeck deckForPlayer;
+
+                for (Int32 i = 0; i < this.countOfPlayersPlaying; i++)
                 {
-                    CardDeck deckForPlayer = new CardDeck(deck.Pop(countCardsForOnePlayer));
+                    //задать вместимость карты для игрока+точка старта
+                    startPointAndDeckForPlayer = new List<Card>(countCardsForOnePlayer + 1);
+
+                    //выдать сперва точку старта, потом все карты для игрока.
+                    startPointAndDeckForPlayer.Add(new Card((TreasureAndStartPointsType)(i + 2)));
+                    startPointAndDeckForPlayer = deck.Pop(countCardsForOnePlayer);
+
+                    //создать колоду для игрока
+                    deckForPlayer = new CardDeck(startPointAndDeckForPlayer);
+
+                    //Выдать координаты
                     Int32 startPointX = this.field.startPointsCoordinate[i].X;
                     Int32 startPointY = this.field.startPointsCoordinate[i].Y;
+
+                    //Создать игровое инфо игрока.
                     this.playersPrivate[i] = new GamePlayer(playerInfos[i], deckForPlayer, startPointX, startPointY);
                 }
 
