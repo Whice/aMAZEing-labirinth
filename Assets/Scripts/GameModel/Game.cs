@@ -71,6 +71,128 @@ namespace Assets.Scripts.GameModel
 
         #region Действия.
 
+
+        #region Конец игры.
+
+        /// <summary>
+        /// Игра окончилась.
+        /// </summary>
+        private Boolean isEndPrivate = false;
+        /// <summary>
+        /// Игра окончилась.
+        /// </summary>
+        public Boolean isEnd
+        {
+            get
+            {
+                if (this.isEndPrivate == false)
+                {
+                    Int32 winnersCount = 0;
+                    foreach (GamePlayer player in this.playersPrivate)
+                    {
+                        if (player.isWinner)
+                        {
+                            ++winnersCount;
+                        }
+                    }
+
+                    //Если играть остается один игрок или никого, то игра кончается.
+                    if (winnersCount + 1 >= this.playersPrivate.Length)
+                    {
+                        this.isEndPrivate = true;
+                    }
+                }
+
+                return this.isEndPrivate;
+            }
+        }
+        /// <summary>
+        /// Получить копию списка игроков.
+        /// </summary>
+        /// <returns></returns>
+        private GamePlayer[] GetPlayersListClone()
+        {
+            GamePlayer[] gamePlayers = new GamePlayer[this.playersPrivate.Length];
+            for(Int32 i = 0; i < gamePlayers.Length; i++)
+            {
+                gamePlayers[i] = this.playersPrivate[i].Clone();
+            }
+            return gamePlayers;
+        }
+        /// <summary>
+        /// Сравнитель победителей.
+        /// <br/>Сравнение идет честно для тех, кто уже победил.
+        /// А для тех, кто еще не победил происходит нечестное сравнение:
+        /// <br/>Сперва сравнивается, у кого больше осталось карт. У кого больше, тот ниже местом.
+        /// <br/>Если же их одинакого, то сравнивается хеш-код имени. У кого больше, тот выше местом.
+        /// </summary>
+        private class WinnerComparer : IComparer<GamePlayer>
+        {
+            /// <summary>
+            /// Сравнение идет честно для тех, кто уже победил.
+            /// А для тех, кто еще не победил происходит нечестное сравнение:
+            /// <br/>Сперва сравнивается, у кого больше осталось карт. У кого больше, тот ниже местом.
+            /// <br/>Если же их одинакого, то сравнивается хеш-код имени. У кого больше, тот выше местом.
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public int Compare(GamePlayer x, GamePlayer y)
+            {
+                if (x.winnerNumber > y.winnerNumber)
+                {
+                    return 1;
+                }
+                else if (x.winnerNumber < y.winnerNumber)
+                {
+                    return -1;
+                }
+                else
+                {
+                    if (x.countCardInDeck > y.countCardInDeck)
+                    {
+                        return -1;
+                    }
+                    else if (x.countCardInDeck < y.countCardInDeck)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        if (x.name.GetHashCode() > y.name.GetHashCode())
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Посчитать список победителей.
+        /// Массив сортируется специальным образом.
+        /// </summary>
+        private GamePlayer[] CalculateWinnerPlace()
+        {
+            GamePlayer[] gamePlayers = GetPlayersListClone();
+            Array.Sort(gamePlayers, new WinnerComparer());
+            return gamePlayers;
+        }
+        /// <summary>
+        /// Получить список победителей.
+        /// </summary>
+        /// <returns></returns>
+        public GamePlayer[] GetWinners()
+        {
+            return CalculateWinnerPlace();
+        }
+            
+
+        #endregion Конец игры.
+
         #region Во время игры.
 
         #region Предыдущий ход.
@@ -102,6 +224,7 @@ namespace Assets.Scripts.GameModel
         }
 
         #endregion Предыдущий ход.
+
 
         /// <summary>
         /// Номер следующего победителя.
@@ -146,7 +269,15 @@ namespace Assets.Scripts.GameModel
 
                 if (successfulMove)
                 {
-                    SetNextPhase();
+                    //Еслли игра закончилась, то ход уже невозможен.
+                    if (this.isEnd)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        SetNextPhase();
+                    }
 
                     this.lastNumberLine = numberLine;
                     this.lastFieldSide = side;
@@ -198,7 +329,16 @@ namespace Assets.Scripts.GameModel
             {
                 this.currentPlayer.SetPosition(x, y);
                 TryGetTreasureFromFieldForCurrentPlayer();
-                SetNextPhase();
+
+                //Еслли игра закончилась, то ход уже невозможен.
+                if (this.isEnd)
+                {
+                    return false;
+                }
+                else
+                {
+                    SetNextPhase();
+                }
             }
 
             return successfulMove;
