@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TestModel": {
+      "commandName": "Project"
+    },
+    "Unity": {
+      "commandName": "Project"
+    }
+  }
+}
