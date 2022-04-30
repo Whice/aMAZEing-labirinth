@@ -4,8 +4,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.GameView.Cells
 {
-    public class CellSlotFill : MonoBehaviour
+    /// <summary>
+    /// —лот дл€ €чейки пол€.
+    /// <br/>–азмер и позици€ слота завис€т от соответствующих параметров €чейки €чейки.
+    /// </summary>
+    public class CellSlotFill : CellSlotView
     {
+
         public GameObject cellObject = null;
 
         public CellType cellType = CellType.unknown;
@@ -20,10 +25,10 @@ namespace Assets.Scripts.GameView.Cells
             set=> this.cellObject.transform.localPosition = value;
         }
 
-        private GameObject GetPrefabClone(String name)
-        {
-            return GameManager.instance.prefabsProvider.GetPrefabClone(name);
-        }
+        /// <summary>
+        /// «аполнить слот €чейкой заданного типа.
+        /// </summary>
+        /// <param name="type"></param>
         public void SetCellType(CellType type)
         {
             this.cellType = type;
@@ -46,6 +51,8 @@ namespace Assets.Scripts.GameView.Cells
                         break;
                     }
             }
+
+            this.cellObject.transform.parent = this.transform;
         }
     }
 }
