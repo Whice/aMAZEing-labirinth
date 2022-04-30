@@ -1,59 +1,123 @@
 using System;
 using UnityEngine;
 
-public class MoveCamera : MonoBehaviour
+namespace UI
 {
-    public Transform camera;
-    public Single moveSpeed = 0.5f;
-
-    private Rect rightSide;
-    public RectTransform rightSideRectTransform;
-    private Rect leftSide;
-    public RectTransform leftSideRectTransform;
-    private Rect topSide;
-    public RectTransform topSideRectTransform;
-    private Rect bottomSide;
-    public RectTransform bottomSideRectTransform;
-
-    private Rect CalculateRectFromRectTransform(RectTransform rectTransform)
+    /// <summary>
+    /// Скрипт для перемещения камеры по игровому полю.
+    /// </summary>
+    public class MoveCamera : MonoBehaviour
     {
-        return new Rect(
-            new Vector2
-            (
-                rectTransform.position.x - rectTransform.rect.size.x / 2,
-                rectTransform.position.y - rectTransform.rect.size.y / 2
-                ),
-            rectTransform.rect.size);
-    }
+        /// <summary>
+        /// Данные о главной камере.
+        /// </summary>
+        public Transform camera;
+        /// <summary>
+        /// Скорость перемещения камеры.
+        /// </summary>
+        [SerializeField]
+        private Single moveSpeed = 0.05f;
 
-    private void Awake()
-    {
-        rightSide = CalculateRectFromRectTransform(rightSideRectTransform);
-        leftSide = CalculateRectFromRectTransform(leftSideRectTransform);
-        topSide = CalculateRectFromRectTransform(topSideRectTransform);
-        bottomSide = CalculateRectFromRectTransform(bottomSideRectTransform);
-    }
-    private void Update()
-    {
-        if (rightSide.Contains(Input.mousePosition))
+        /// <summary>
+        /// Прямоугольник захвата курсора с правой стороны.
+        /// </summary>
+        private Rect rightSide;
+        /// <summary>
+        /// Данные об области захвата курсора с правой стороны. 
+        /// </summary>
+        [SerializeField]
+        private RectTransform rightSideRectTransform;
+        /// <summary>
+        /// Прямоугольник захвата курсора с левой стороны.
+        /// </summary>
+        private Rect leftSide;
+        /// <summary>
+        /// Данные об области захвата курсора с левой стороны. 
+        /// </summary>
+        [SerializeField]
+        private RectTransform leftSideRectTransform;
+        /// <summary>
+        /// Прямоугольник захвата курсора с верхней стороны.
+        /// </summary>
+        private Rect topSide;
+        /// <summary>
+        /// Данные об области захвата курсора с верхней стороны. 
+        /// </summary>
+        [SerializeField]
+        private RectTransform topSideRectTransform;
+        /// <summary>
+        /// Прямоугольник захвата курсора с нижней стороны.
+        /// </summary>
+        private Rect bottomSide;
+        /// <summary>
+        /// Данные об области захвата курсора с нижней стороны. 
+        /// </summary>
+        [SerializeField]
+        private RectTransform bottomSideRectTransform;
+
+        /// <summary>
+        /// Преобразовать данные об области захвата в прямоугольник захвата.
+        /// </summary>
+        /// <param name="sideRectTransform"></param>
+        /// <returns></returns>
+        private Rect CalculateRectFromRectTransform(RectTransform sideRectTransform)
         {
-            Debug.Log("Mouse in right rect");
-            camera.position = new Vector3(camera.position.x+moveSpeed, camera.position.y, camera.position.z);
+            return new Rect(
+                new Vector2
+                (
+                    sideRectTransform.position.x - sideRectTransform.rect.size.x / 2,
+                    sideRectTransform.position.y - sideRectTransform.rect.size.y / 2
+                    ),
+                sideRectTransform.rect.size);
         }
-        else if (leftSide.Contains(Input.mousePosition))
+
+
+
+        private void Awake()
         {
-            Debug.Log("Mouse in left rect");
-            camera.position = new Vector3(camera.position.x-moveSpeed, camera.position.y, camera.position.z);
+            this.rightSide = CalculateRectFromRectTransform(this.rightSideRectTransform);
+            this.leftSide = CalculateRectFromRectTransform(this.leftSideRectTransform);
+            this.topSide = CalculateRectFromRectTransform(this.topSideRectTransform);
+            this.bottomSide = CalculateRectFromRectTransform(this.bottomSideRectTransform);
         }
-        if (topSide.Contains(Input.mousePosition))
+        private void Update()
         {
-            Debug.Log("Mouse in top rect");
-            camera.position = new Vector3(camera.position.x, camera.position.y, camera.position.z+ moveSpeed);
-        }
-        else if (bottomSide.Contains(Input.mousePosition))
-        {
-            Debug.Log("Mouse in bottom rect");
-            camera.position = new Vector3(camera.position.x, camera.position.y, camera.position.z- moveSpeed);
+            if (this.rightSide.Contains(Input.mousePosition))
+            {
+                this.camera.position = new Vector3
+                    (
+                    this.camera.position.x + this.moveSpeed,
+                    this.camera.position.y,
+                    this.camera.position.z
+                    );
+            }
+            else if (this.leftSide.Contains(Input.mousePosition))
+            {
+                this.camera.position = new Vector3
+                    (
+                    this.camera.position.x - this.moveSpeed,
+                    this.camera.position.y,
+                    this.camera.position.z
+                    );
+            }
+            if (this.topSide.Contains(Input.mousePosition))
+            {
+                this.camera.position = new Vector3
+                    (
+                    this.camera.position.x,
+                    this.camera.position.y,
+                    this.camera.position.z + this.moveSpeed
+                    );
+            }
+            else if (bottomSide.Contains(Input.mousePosition))
+            {
+                this.camera.position = new Vector3
+                    (
+                    this.camera.position.x,
+                    this.camera.position.y,
+                    this.camera.position.z - this.moveSpeed
+                    );
+            }
         }
     }
 }
