@@ -1,21 +1,10 @@
-namespace UnityEngine
+п»їnamespace UnityEngine
 {
     /// <summary>
-    /// Создан для упрощения выдачи сообщений в консоль,
-    /// а также формирования своих.
+    /// РЎРѕР·РґР°РЅ РґР»СЏ СѓРїСЂРѕС‰РµРЅРёСЏ РІС‹РґР°С‡Рё СЃРѕРѕР±С‰РµРЅРёР№ РІ РєРѕРЅСЃРѕР»СЊ,
+    /// Р° С‚Р°РєР¶Рµ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ СЃРІРѕРёС….
     /// </summary>
     public class MonoBehaviourLogger : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

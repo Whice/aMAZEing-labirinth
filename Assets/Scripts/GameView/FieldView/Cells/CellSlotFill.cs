@@ -1,37 +1,73 @@
-using Assets.Scripts.GameModel.PlayingField.FieldCells;
+﻿using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.GameView.Cells
+namespace Assets.Scripts.GameView
 {
     /// <summary>
-    /// ���� ��� ������ ����.
-    /// <br/>������ � ������� ����� ������� �� ��������������� ���������� ������ ������.
+    /// Слот для ячейки поля.
+    /// <br/>Размер и позиция слота зависят от соответствующих параметров ячейки ячейки.
     /// </summary>
-    public class CellSlotFill : CellSlotView
+    public class CellSlotFill : GameViewOriginScript
     {
-
-        public GameObject cellObject = null;
-
-        public CellType cellType = CellType.unknown;
-        public Vector3 size
+        /// <summary>
+        /// Объект ячейки в слоте.
+        /// </summary>
+        protected GameObject cellObject = null;
+        /// <summary>
+        /// Transform ячейкив в слоте.
+        /// </summary>
+        protected Transform cellTransform
         {
-            set=>this.cellObject.transform.localScale = value;
-            get => this.cellObject.transform.localScale;
-        }
-        public Vector3 position
-        {
-            get=> this.cellObject.transform.localPosition;
-            set=> this.cellObject.transform.localPosition = value;
+            get => this.cellObject.transform;
         }
 
         /// <summary>
-        /// ��������� ���� ������� ��������� ����.
+        /// Тип ячейки.
+        /// </summary>
+        private CellType cellTypePrivate = CellType.unknown;
+        /// <summary>
+        /// Тип ячейки.
+        /// </summary>
+        public CellType cellType
+        {
+            get => this.cellTypePrivate;
+        }
+
+
+        /// <summary>
+        /// Размер слота.
+        /// </summary>
+        public Vector3 size
+        {
+            set => this.transform.localScale = value;
+            get => this.transform.localScale;
+        }
+        /// <summary>
+        /// Положение слота.
+        /// </summary>
+        public Vector3 position
+        {
+            get => this.transform.localPosition;
+            set => this.transform.localPosition = value;
+        }
+
+        /// <summary>
+        /// Получить клон указанного по имени префаба из провайдер.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        protected GameObject GetPrefabClone(String name)
+        {
+            return GameManager.instance.prefabsProvider.GetPrefabClone(name);
+        }
+        /// <summary>
+        /// Заполнить слот ячейкой заданного типа.
         /// </summary>
         /// <param name="type"></param>
         public void SetCellType(CellType type)
         {
-            this.cellType = type;
+            this.cellTypePrivate = type;
 
             switch (type)
             {
@@ -52,7 +88,18 @@ namespace Assets.Scripts.GameView.Cells
                     }
             }
 
-            this.cellObject.transform.parent = this.transform;
+            this.cellTransform.parent = this.transform;
+            this.cellTransform.position = Vector3.zero;
+
+            //Подгонка размеры ячейки под размер слота
+            Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
+            this.cellTransform.localScale *= sizeRatio;
+        }
+
+
+        private void Awake()
+        {
+            this.cellObject = this.gameObject;
         }
     }
 }

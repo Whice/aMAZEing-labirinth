@@ -1,19 +1,19 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GraphicPrefabsProvider : MonoBehaviour
 {
-    #region Данные провайдера.
+    #region Р”Р°РЅРЅС‹Рµ РїСЂРѕРІР°Р№РґРµСЂР°.
 
     public String name
     {
         get => this.gameObject.name;
     }
 
-    #endregion Данные провайдера.
+    #endregion Р”Р°РЅРЅС‹Рµ РїСЂРѕРІР°Р№РґРµСЂР°.
 
-    #region Объекты в провайдере.
+    #region РћР±СЉРµРєС‚С‹ РІ РїСЂРѕРІР°Р№РґРµСЂРµ.
 
     [SerializeField]
     private GameObject[] prefabsList = new GameObject[0];
@@ -34,14 +34,14 @@ public class GraphicPrefabsProvider : MonoBehaviour
         }
     }
 
-    #endregion Объекты в провайдере.
+    #endregion РћР±СЉРµРєС‚С‹ РІ РїСЂРѕРІР°Р№РґРµСЂРµ.
 
-    #region Действия.
+    #region Р”РµР№СЃС‚РІРёСЏ.
 
     public GameObject GetPrefabClone(String prefabName)
     {
         return Instantiate(this.prefabsDictionary[prefabName]);
     }
 
-    #endregion Действия.
+    #endregion Р”РµР№СЃС‚РІРёСЏ.
 }

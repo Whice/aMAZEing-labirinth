@@ -45,4 +45,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellObject: {fileID: 5726640351132091102}
-  cellType: 0
