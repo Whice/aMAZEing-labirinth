@@ -4,15 +4,6 @@ using UnityEngine;
 
 public abstract class GeneralProvider : MonoBehaviourLogger
 {
-    #region Данные провайдера.
-
-    public String name
-    {
-        get => this.gameObject.name;
-    }
-
-    #endregion Данные провайдера.
-
     #region Объекты в провайдере.
 
     [SerializeField]

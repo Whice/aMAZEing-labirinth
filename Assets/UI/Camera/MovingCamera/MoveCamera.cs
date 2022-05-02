@@ -11,7 +11,7 @@ namespace UI
         /// <summary>
         /// Данные о главной камере.
         /// </summary>
-        public Transform camera;
+        public new Transform camera;
         /// <summary>
         /// Скорость перемещения камеры.
         /// </summary>
