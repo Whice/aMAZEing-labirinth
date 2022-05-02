@@ -65,28 +65,10 @@ namespace Assets.Scripts.GameView
         /// Заполнить слот ячейкой заданного типа.
         /// </summary>
         /// <param name="type"></param>
-        public void SetCellType(CellType type)
+        private void SetCellType(GameObject cellObject, CellType type)
         {
             this.cellTypePrivate = type;
-
-            switch (type)
-            {
-                case CellType.corner:
-                    {
-                        this.cellObject = GetPrefabClone("CornerCell");
-                        break;
-                    }
-                case CellType.line:
-                    {
-                        this.cellObject = GetPrefabClone("LineCell");
-                        break;
-                    }
-                case CellType.threeDirection:
-                    {
-                        this.cellObject = GetPrefabClone("ThreeDirectionCell");
-                        break;
-                    }
-            }
+            this.cellObject = cellObject;
 
             this.cellTransform.parent = this.transform;
             this.cellTransform.position = Vector3.zero;
@@ -94,6 +76,40 @@ namespace Assets.Scripts.GameView
             //Подгонка размеры ячейки под размер слота
             Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
             this.cellTransform.localScale *= sizeRatio;
+        }
+        /// <summary>
+        /// Заполнить слот ячейкой заданного типа.
+        /// </summary>
+        /// <param name="type"></param>
+        public void SetCellType(CellType type)
+        {
+
+            switch (type)
+            {
+                case CellType.corner:
+                    {
+                        SetCellType(GetPrefabClone("CornerCell"), type);
+                        break;
+                    }
+                case CellType.line:
+                    {
+                        SetCellType(GetPrefabClone("LineCell"), type);
+                        break;
+                    }
+                case CellType.threeDirection:
+                    {
+                        SetCellType(GetPrefabClone("ThreeDirectionCell"), type);
+                        break;
+                    }
+            }
+        }
+        /// <summary>
+        /// Установить ячейку для этого слота из указанного слота.
+        /// </summary>
+        /// <param name="slot"></param>
+        public void SetCellFromSlot(CellSlotFill slot)
+        {
+            SetCellType(slot.cellObject, slot.cellTypePrivate);
         }
         /// <summary>
         /// Повернуть слот по часовой стрелке.
