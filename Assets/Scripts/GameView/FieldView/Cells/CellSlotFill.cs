@@ -15,7 +15,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         protected GameObject cellObject = null;
         /// <summary>
-        /// Transform ячейкив в слоте.
+        /// Transform ячейки в слоте.
         /// </summary>
         protected Transform cellTransform
         {
@@ -94,6 +94,22 @@ namespace Assets.Scripts.GameView
             //Подгонка размеры ячейки под размер слота
             Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
             this.cellTransform.localScale *= sizeRatio;
+        }
+        /// <summary>
+        /// Повернуть слот по часовой стрелке.
+        /// </summary>
+        /// <param name="count"></param>
+        public void TurnClockwise(Int32 count)
+        {
+            count = count % 4;
+            Single newAngle = this.transform.eulerAngles.y + 90 * count;
+            Single correctAngle = (Single)((Int32)(newAngle) % 360);
+            this.transform.eulerAngles = new Vector3
+                (
+                this.transform.eulerAngles.x,
+                correctAngle,
+                this.transform.eulerAngles.z
+                );
         }
 
 

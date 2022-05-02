@@ -38,18 +38,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         [SerializeField]
         private GameObject arrowObject = null;
-        public void TurnClockwise(Int32 count)
-        {
-            count = count % 4;
-            Single newAngle = this.transform.eulerAngles.y + 90 * count;
-            Single correctAngle = (Single)((Int32)(newAngle) % 360);
-            this.transform.eulerAngles = new Vector3
-                (
-                this.transform.eulerAngles.x,
-                correctAngle,
-                this.transform.eulerAngles.z
-                );
-        }
+        
 
 
         private void Awake()

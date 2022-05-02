@@ -68,6 +68,30 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         #region Публичные данные ячейки.
 
         /// <summary>
+        /// Сколько раз надо повернуть по часовой стрелке ячейку из начального положения,
+        /// чтобы получить ее нынешние направления путей.
+        /// </summary>
+        public Int32 countTurnClockwiseFromDefaultRotateToCurrentRotate
+        {
+            get
+            {
+                FieldCell defaultCell = new FieldCell(this.CellType);
+                int count = 0;
+
+                while (
+                    defaultCell.IsHaveDirectionLeft != this.IsHaveDirectionLeft
+                    || defaultCell.IsHaveDirectionRight != this.IsHaveDirectionRight
+                    || defaultCell.IsHaveDirectionUp != this.IsHaveDirectionUp
+                    || defaultCell.IsHaveDirectionDown != this.IsHaveDirectionDown
+                    )
+                {
+                    defaultCell.TurnClockwise();
+                    count++;
+                }
+                return count;
+            }
+        }
+        /// <summary>
         /// Разрешено взаимодействие с этой ячейкой.
         /// </summary>
         public Boolean isInteractable { get; set; } = true;

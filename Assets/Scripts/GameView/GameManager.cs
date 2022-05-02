@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.GameModel;
+using Assets.Scripts.GameModel.Player;
+using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
@@ -7,5 +9,44 @@ public class GameManager : MonoSingleton<GameManager>
     public GraphicPrefabsProvider prefabsProvider
     {
         get=>this.prefabsProviderPrivate;
+    }
+
+    /// <summary>
+    /// Модель игры, реализовывает логику взаимодействия всех частей.
+    /// </summary>
+    private Game gameModelPrivate;
+    /// <summary>
+    /// Модель игры, реализовывает логику взаимодействия всех частей.
+    /// </summary>
+    public Game gameModel
+    {
+        get
+        {
+            if (this.gameModelPrivate == null)
+            {
+                this.gameModelPrivate = new Game();
+                bool isStartedGame = this.gameModelPrivate.Start
+                    (
+                    new PlayerInfo[]
+                        {
+                new PlayerInfo("test1", System.Drawing.Color.Black),
+                new PlayerInfo("test2", System.Drawing.Color.Yellow)
+                        },
+                    out var message);
+
+                if (!isStartedGame)
+                {
+                    Debug.LogError("Game not started:\n" + message);
+                }
+            }
+            return this.gameModelPrivate;
+        }
+    }
+
+
+
+    private void Awake()
+    {
+        
     }
 }
