@@ -110,6 +110,7 @@ namespace Assets.Scripts.GameView
                 this.arrowForFreeCellSlot[currentCellNumber] = Instantiate(this.arrowForFreeCellSlotPrefab);
                 this.arrowForFreeCellSlot[currentCellNumber].SetArrowForFreeCell();
                 this.arrowForFreeCellSlot[currentCellNumber].transform.parent = this.arrowsForFreeCellSlots;
+                this.arrowForFreeCellSlot[currentCellNumber].OnArrowClicked += SetPlaceForFreeCellSlot;
                 this.arrowForFreeCellSlot[currentCellNumber].position = new Vector3
                         (
                         leftLineStart.x - positionMultiplier,
@@ -121,6 +122,7 @@ namespace Assets.Scripts.GameView
                 this.arrowForFreeCellSlot[currentCellNumber] = Instantiate(this.arrowForFreeCellSlotPrefab);
                 this.arrowForFreeCellSlot[currentCellNumber].SetArrowForFreeCell();
                 this.arrowForFreeCellSlot[currentCellNumber].transform.parent = this.arrowsForFreeCellSlots;
+                this.arrowForFreeCellSlot[currentCellNumber].OnArrowClicked += SetPlaceForFreeCellSlot;
                 this.arrowForFreeCellSlot[currentCellNumber].TurnClockwise(3);
                 this.arrowForFreeCellSlot[currentCellNumber].position = new Vector3
                         (
@@ -133,6 +135,7 @@ namespace Assets.Scripts.GameView
                 this.arrowForFreeCellSlot[currentCellNumber] = Instantiate(this.arrowForFreeCellSlotPrefab);
                 this.arrowForFreeCellSlot[currentCellNumber].SetArrowForFreeCell();
                 this.arrowForFreeCellSlot[currentCellNumber].transform.parent = this.arrowsForFreeCellSlots;
+                this.arrowForFreeCellSlot[currentCellNumber].OnArrowClicked += SetPlaceForFreeCellSlot;
                 this.arrowForFreeCellSlot[currentCellNumber].TurnClockwise(2);
                 this.arrowForFreeCellSlot[currentCellNumber].position = new Vector3
                         (
@@ -145,6 +148,7 @@ namespace Assets.Scripts.GameView
                 this.arrowForFreeCellSlot[currentCellNumber] = Instantiate(this.arrowForFreeCellSlotPrefab);
                 this.arrowForFreeCellSlot[currentCellNumber].SetArrowForFreeCell();
                 this.arrowForFreeCellSlot[currentCellNumber].transform.parent = this.arrowsForFreeCellSlots;
+                this.arrowForFreeCellSlot[currentCellNumber].OnArrowClicked += SetPlaceForFreeCellSlot;
                 this.arrowForFreeCellSlot[currentCellNumber].TurnClockwise(1);
                 this.arrowForFreeCellSlot[currentCellNumber].position = new Vector3
                         (
@@ -165,6 +169,11 @@ namespace Assets.Scripts.GameView
         /// </summary>
         [SerializeField]
         private Transform slotForFreeCellSlot=null;
+        private void SetPlaceForFreeCellSlot(Transform parent)
+        {
+            this.freeCellSlot.transform.parent = parent;
+            this.freeCellSlot.transform.localPosition = Vector3.zero;
+        }
         /// <summary>
         /// Заполнить слот для свободной ячейкой.
         /// </summary>
@@ -173,7 +182,7 @@ namespace Assets.Scripts.GameView
             this.freeCellSlot = Instantiate(this.cellSlotPrefab);
             this.freeCellSlot.SetCellType(this.playingField.freeFieldCell.CellType);
             this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
-            this.freeCellSlot.position = Vector3.zero;
+            this.freeCellSlot.transform.localPosition = Vector3.zero;
             this.playingField.freeFieldCell.OnTurnedClockwise += this.freeCellSlot.TurnClockwise;
             this.playingField.freeFieldCell.OnTurnedCountclockwise += this.freeCellSlot.TurnCounterclockwise;
         }
