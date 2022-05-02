@@ -1,29 +1,33 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 
 namespace UI
 {
     /// <summary>
-    /// Скрипт для 
+    /// РЎРєСЂРёРїС‚ РґР»СЏ 
     /// </summary>
     public class UIFreeCell : GameViewOriginScript
     {
 
         /// <summary>
-        /// Ссылка на свободную ячейку в модели.
+        /// РЎСЃС‹Р»РєР° РЅР° СЃРІРѕР±РѕРґРЅСѓСЋ СЏС‡РµР№РєСѓ РІ РјРѕРґРµР»Рё.
         /// </summary>
         private FieldCell freeCellModel
         {
             get => this.gameModel.freeCell;
         }
+        /// <summary>
+        /// РЎРїСЂР°Р№С‚ СЃ РЅР°СЂРёСЃРѕРІР°РЅРЅРѕР№ Р»РёРЅРёРµР№.
+        /// </summary>
+        [SerializeField]
         private Sprite lineCellUISprite = null;
         /// <summary>
-        /// Спрайт с нарисованным уголком.
+        /// РЎРїСЂР°Р№С‚ СЃ РЅР°СЂРёСЃРѕРІР°РЅРЅС‹Рј СѓРіРѕР»РєРѕРј.
         /// </summary>
         [SerializeField]
         private Sprite cornerCellUISprite = null;
         /// <summary>
-        /// Спрайт с нарисованными тремя путями.
+        /// РЎРїСЂР°Р№С‚ СЃ РЅР°СЂРёСЃРѕРІР°РЅРЅС‹РјРё С‚СЂРµРјСЏ РїСѓС‚СЏРјРё.
         /// </summary>
         [SerializeField]
         private Sprite threeDirectionCellUISprite = null;
@@ -45,14 +49,14 @@ namespace UI
         }
 
         /// <summary>
-        /// Прямоугольник слота картинки ячейки, который нужен для вращения.
+        /// РџСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє СЃР»РѕС‚Р° РєР°СЂС‚РёРЅРєРё СЏС‡РµР№РєРё, РєРѕС‚РѕСЂС‹Р№ РЅСѓР¶РµРЅ РґР»СЏ РІСЂР°С‰РµРЅРёСЏ.
         /// </summary>
         [SerializeField]
         private RectTransform cellUIImageSlot = null;
         /// <summary>
-        /// Повернуть по часовой стрелке.
+        /// РџРѕРІРµСЂРЅСѓС‚СЊ РїРѕ С‡Р°СЃРѕРІРѕР№ СЃС‚СЂРµР»РєРµ.
         /// </summary>
-        /// <param name="count">Количество поворотов.</param>
+        /// <param name="count">РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕРІРѕСЂРѕС‚РѕРІ.</param>
         public void TurnClockwise()
         {
             this.cellUIImageSlot.eulerAngles = new Vector3
@@ -64,9 +68,9 @@ namespace UI
             this.freeCellModel.TurnClockwise();
         }
         /// <summary>
-        /// Повернуть против часовой стрелке.
+        /// РџРѕРІРµСЂРЅСѓС‚СЊ РїСЂРѕС‚РёРІ С‡Р°СЃРѕРІРѕР№ СЃС‚СЂРµР»РєРµ.
         /// </summary>
-        /// <param name="count">Количество поворотов.</param>
+        /// <param name="count">РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕРІРѕСЂРѕС‚РѕРІ.</param>
         public void TurnCounterclockwise()
         {
             this.cellUIImageSlot.eulerAngles = new Vector3

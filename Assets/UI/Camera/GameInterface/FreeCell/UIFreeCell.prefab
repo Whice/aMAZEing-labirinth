@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcfffe6664c4d8c4b8e0d6b8c018a58a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineCellUISprite: {fileID: 21300000, guid: d5950b9536e3aa6439a7aa858342d6d4, type: 3}
   cornerCellUISprite: {fileID: 21300000, guid: c288413d39caac0439f96b1824f604e5, type: 3}
   threeDirectionCellUISprite: {fileID: 21300000, guid: 38bfbb11fe7435046ab280b69240a1a8, type: 3}
   cellUIImageSlot: {fileID: 3762398356614106627}
