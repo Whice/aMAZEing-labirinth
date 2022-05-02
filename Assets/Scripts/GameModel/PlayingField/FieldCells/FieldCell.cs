@@ -156,6 +156,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         #region Действия с ячейкой.
 
         /// <summary>
+        /// Происходит поворот по часовой стрелке.
+        /// </summary>
+        public Action<Int32> OnTurnedClockwise;
+        /// <summary>
         /// Повернуть по часовой стрелке.
         /// </summary>
         /// <param name="count">Количество поворотов.</param>
@@ -164,6 +168,8 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
             if (!this.isInteractable)
                 return;
+
+            this.OnTurnedClockwise?.Invoke(count);
 
             for (Int32 numberTurn = 0; numberTurn < count; numberTurn++)
             {
@@ -178,6 +184,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             }
         }
         /// <summary>
+        /// Происходит поворот против часовой стрелки.
+        /// </summary>
+        public Action<Int32> OnTurnedCountclockwise;
+        /// <summary>
         /// Повернуть против часовой стрелке.
         /// </summary>
         /// <param name="count">Количество поворотов.</param>
@@ -186,6 +196,8 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
             if (!this.isInteractable)
                 return;
+
+            this.OnTurnedCountclockwise?.Invoke(count);
 
             for (Int32 numberTurn = 0; numberTurn < count; numberTurn++)
             {

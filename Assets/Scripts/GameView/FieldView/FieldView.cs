@@ -174,6 +174,8 @@ namespace Assets.Scripts.GameView
             this.freeCellSlot.SetCellType(this.playingField.freeFieldCell.CellType);
             this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
             this.freeCellSlot.position = Vector3.zero;
+            this.playingField.freeFieldCell.OnTurnedClockwise += this.freeCellSlot.TurnClockwise;
+            this.playingField.freeFieldCell.OnTurnedCountclockwise += this.freeCellSlot.TurnCounterclockwise;
         }
 
         private void Awake()

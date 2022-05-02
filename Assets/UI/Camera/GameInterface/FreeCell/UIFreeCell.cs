@@ -1,4 +1,5 @@
 using UnityEngine;
+using Assets.Scripts.GameModel.PlayingField.FieldCells;
 
 namespace UI
 {
@@ -7,10 +8,14 @@ namespace UI
     /// </summary>
     public class UIFreeCell : GameViewOriginScript
     {
+
         /// <summary>
-        /// Спрайт с нарисованной линией.
+        /// Ссылка на свободную ячейку в модели.
         /// </summary>
-        [SerializeField]
+        private FieldCell freeCellModel
+        {
+            get => this.gameModel.freeCell;
+        }
         private Sprite lineCellUISprite = null;
         /// <summary>
         /// Спрайт с нарисованным уголком.
@@ -39,26 +44,38 @@ namespace UI
             }
         }
 
-
+        /// <summary>
+        /// Прямоугольник слота картинки ячейки, который нужен для вращения.
+        /// </summary>
         [SerializeField]
-        private RectTransform cellUISlot = null;
+        private RectTransform cellUIImageSlot = null;
+        /// <summary>
+        /// Повернуть по часовой стрелке.
+        /// </summary>
+        /// <param name="count">Количество поворотов.</param>
         public void TurnClockwise()
         {
-            this.cellUISlot.eulerAngles = new Vector3
+            this.cellUIImageSlot.eulerAngles = new Vector3
                 (
-                this.cellUISlot.eulerAngles.x,
-                this.cellUISlot.eulerAngles.y,
-                this.cellUISlot.eulerAngles.z-90
+                this.cellUIImageSlot.eulerAngles.x,
+                this.cellUIImageSlot.eulerAngles.y,
+                this.cellUIImageSlot.eulerAngles.z-90
                 );
+            this.freeCellModel.TurnClockwise();
         }
+        /// <summary>
+        /// Повернуть против часовой стрелке.
+        /// </summary>
+        /// <param name="count">Количество поворотов.</param>
         public void TurnCounterclockwise()
         {
-            this.cellUISlot.eulerAngles = new Vector3
+            this.cellUIImageSlot.eulerAngles = new Vector3
                    (
-                   this.cellUISlot.eulerAngles.x,
-                   this.cellUISlot.eulerAngles.y,
-                   this.cellUISlot.eulerAngles.z + 90
+                   this.cellUIImageSlot.eulerAngles.x,
+                   this.cellUIImageSlot.eulerAngles.y,
+                   this.cellUIImageSlot.eulerAngles.z + 90
                    );
+            this.freeCellModel.TurnCounterClockwise();
         }
     }
 }

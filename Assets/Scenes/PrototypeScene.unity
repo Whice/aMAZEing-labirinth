@@ -341,6 +341,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1049312731419163000, guid: 30f669be8b6101945b7bdbd3a9af3086, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9999
+      objectReference: {fileID: 0}
     - target: {fileID: 1925089773068957917, guid: 30f669be8b6101945b7bdbd3a9af3086, type: 3}
       propertyPath: m_Name
       value: PlayigField
