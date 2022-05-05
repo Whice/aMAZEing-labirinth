@@ -222,6 +222,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6399425368016503623, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
   m_PrefabInstance: {fileID: 8967330122515249450}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &1513959385 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5056089084750828423, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+  m_PrefabInstance: {fileID: 8967330122515249450}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1970114013
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +416,10 @@ PrefabInstance:
       value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 1225450254052844893, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: rectForResolution
+      value: 
+      objectReference: {fileID: 1513959385}
+    - target: {fileID: 1225450254052844893, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: rightSideRectTransform
       value: 
       objectReference: {fileID: 1337503585}
@@ -485,6 +494,10 @@ PrefabInstance:
     - target: {fileID: 8967330121539881295, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8992301069018613772, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
