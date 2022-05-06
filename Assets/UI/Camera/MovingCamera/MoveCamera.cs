@@ -26,18 +26,74 @@ namespace UI
         /// Исходное разрешение, для которого расчитываются все скорости.
         /// </summary>
         private const Single  ORIGIN_RESOLUTION_WIDTH = 1920f;
-        public RectTransform rectForResolution;
+        /// <summary>
+        /// Прямоугльник главного канваса. Нужен, чтобы знать текущее разрешение.
+        /// </summary>
+        [SerializeField]
+        private RectTransform rectForResolution;
+        /// <summary>
+        /// Координаты центра экрана.
+        /// </summary>
+        private Vector2 centerCoordinate;
+        /// <summary>
+        /// Расчитать значение скорости для нестандартного разрешения (не 1920х1080).
+        /// </summary>
+        private Single resolutionScaling
+        {
+            get
+            {
+                Single largeSide = this.rectForResolution.rect.width > this.rectForResolution.rect.height ? this.rectForResolution.rect.width : this.rectForResolution.rect.height;
+                return ORIGIN_RESOLUTION_WIDTH / largeSide;
+            }
+        }
 
 
         /// <summary>
         /// Скорость перемещения камеры.
         /// </summary>
         [SerializeField]
-        private Single moveSpeed = 0.05f;
+        private Single moveSpeed = 0.03f;
+        /// <summary>
+        /// Увеличенная скорость перемещения камеры. Для движения правой кнопкой мыши.
+        /// </summary>
+        private Single increasedMoveSpeed = 99;
+        /// <summary>
+        /// Множитель при нажатии правой кнопки мыши.
+        /// </summary>
+        public Int32 rightClickMultiplier;
+        /// <summary>
+        /// Правая кнопка мыши зажата.
+        /// </summary>
+        private Boolean isRightButtonPressed = false;
+        /// <summary>
+        /// Предыдущая позиция мыши.
+        /// </summary>
+        private Vector2 firsrtMousePositionWithRightDown = Vector2.zero;
+        /// <summary>
+        /// Разница между первым и нынешним кадром при зажатой правой клавише мыши.
+        /// </summary>
+        private Vector2 deltaMousePositionWithRightDown
+        {
+            get => this.firsrtMousePositionWithRightDown - new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        }
+        /// <summary>
+        /// Удаленность курсора от центра в процентном соотношении, 
+        /// где центр экрана (0, 0), а левый край по центру, к примеру, (-1,0).
+        /// </summary>
+        private Vector2 distanceOfCursorFromCenterInPercent
+        {
+            get => new Vector2
+                (
+                (Input.mousePosition.x-this.centerCoordinate.x)/this.centerCoordinate.x,
+                (Input.mousePosition.y-this.centerCoordinate.y)/this.centerCoordinate.y
+                );
+        }
+
+
         /// <summary>
         /// Множитель для скорости перемещения камеры при касании на андроиде.
         /// </summary>
-        private Single androidSpeedMultiplier = 0.3f;
+        private Single androidSpeedMultiplier = 0.15f;
 
         #endregion Скорость движения камеры.
 
@@ -111,11 +167,12 @@ namespace UI
         /// <param name="zShift">Смещение вниз/вверх.</param>
         private void Move(Single xShift, Single zShift)
         {
+
             this.camera.position = new Vector3
                     (
-                    this.camera.position.x + xShift,
+                    this.camera.position.x + xShift * this.moveSpeed,
                     this.camera.position.y,
-                    this.camera.position.z + zShift
+                    this.camera.position.z + zShift * this.moveSpeed
                     );
         }
         /// <summary>
@@ -123,28 +180,28 @@ namespace UI
         /// </summary>
         private void MoveRight()
         {
-            Move(this.moveSpeed, 0);
+            Move(1, 0);
         }
         /// <summary>
         /// Передвинуть камеру над игровым полем влево.
         /// </summary>
         private void MoveLeft()
         {
-            Move(-this.moveSpeed, 0);
+            Move(-1, 0);
         }
         /// <summary>
         /// Передвинуть камеру над игровым полем вверх.
         /// </summary>
         private void MoveUp()
         {
-            Move(0, this.moveSpeed);
+            Move(0, 1);
         }
         /// <summary>
         /// Передвинуть камеру над игровым полем вниз.
         /// </summary>
         private void MoveDown()
         {
-            Move(0, -this.moveSpeed);
+            Move(0, -1);
         }
 
         #endregion Функции передвижения камеры.
@@ -152,17 +209,17 @@ namespace UI
         private void Awake()
         {
             //Расчитать значение скорости для нестандартного разрешения (не 1920х1080)
-            Single largeSide = this.rectForResolution.rect.width > this.rectForResolution.rect.height ? this.rectForResolution.rect.width : this.rectForResolution.rect.height;
-            Single speedScaling = ORIGIN_RESOLUTION_WIDTH / largeSide;
-            this.moveSpeed *= speedScaling;
+            this.moveSpeed *= this.resolutionScaling;
+            this.increasedMoveSpeed = this.moveSpeed * rightClickMultiplier;
 
+            this.centerCoordinate = new Vector2(this.rectForResolution.rect.width / 2, this.rectForResolution.rect.height / 2);
 
 #if UNITY_ANDROID
             //Пересчитать скорость перемещения для андроида.
             this.moveSpeed *= androidSpeedMultiplier;
-#else 
-            //Прямоугольники для отлавливания касания края экрана.
-            {
+#else
+                //Прямоугольники для отлавливания касания края экрана.
+                {
                 this.rightSide = CalculateRectFromRectTransform(this.rightSideRectTransform);
                 this.leftSide = CalculateRectFromRectTransform(this.leftSideRectTransform);
                 this.topSide = CalculateRectFromRectTransform(this.topSideRectTransform);
@@ -195,6 +252,20 @@ namespace UI
                     MoveDown();
                 }
             }
+
+            if(this.isRightButtonPressed && Input.GetMouseButtonUp(1))
+            {
+                this.isRightButtonPressed = false;
+            }
+            else if(!this.isRightButtonPressed && Input.GetMouseButtonDown(1))
+            {
+                this.isRightButtonPressed = true;
+                this.firsrtMousePositionWithRightDown = Input.mousePosition;
+            }
+            if (this.isRightButtonPressed)
+            {
+                Move(this.increasedMoveSpeed * this.distanceOfCursorFromCenterInPercent.x, this.increasedMoveSpeed * this.distanceOfCursorFromCenterInPercent.y);
+            }
 #endif
         }
 
@@ -203,7 +274,7 @@ namespace UI
         {
 #if UNITY_ANDROID
 
-            Move(eventData.delta.x * -this.moveSpeed, eventData.delta.y * -this.moveSpeed);
+            Move(-eventData.delta.x, -eventData.delta.y);
 
 #endif
         }
