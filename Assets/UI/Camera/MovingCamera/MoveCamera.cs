@@ -52,30 +52,19 @@ namespace UI
         /// Скорость перемещения камеры.
         /// </summary>
         [SerializeField]
-        private Single moveSpeed = 0.03f;
+        private Single moveSpeed = 1.5f;
         /// <summary>
         /// Увеличенная скорость перемещения камеры. Для движения правой кнопкой мыши.
         /// </summary>
-        private Single increasedMoveSpeed = 99;
+        private Single increasedMoveSpeed;
         /// <summary>
         /// Множитель при нажатии правой кнопки мыши.
         /// </summary>
-        public Int32 rightClickMultiplier;
+        private const Int32 RIGHT_CLICK_MULTIPLIER = 5;
         /// <summary>
         /// Правая кнопка мыши зажата.
         /// </summary>
         private Boolean isRightButtonPressed = false;
-        /// <summary>
-        /// Предыдущая позиция мыши.
-        /// </summary>
-        private Vector2 firsrtMousePositionWithRightDown = Vector2.zero;
-        /// <summary>
-        /// Разница между первым и нынешним кадром при зажатой правой клавише мыши.
-        /// </summary>
-        private Vector2 deltaMousePositionWithRightDown
-        {
-            get => this.firsrtMousePositionWithRightDown - new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-        }
         /// <summary>
         /// Удаленность курсора от центра в процентном соотношении, 
         /// где центр экрана (0, 0), а левый край по центру, к примеру, (-1,0).
@@ -93,7 +82,7 @@ namespace UI
         /// <summary>
         /// Множитель для скорости перемещения камеры при касании на андроиде.
         /// </summary>
-        private Single androidSpeedMultiplier = 0.15f;
+        private const Single ANDROID_SPEED_MIULTIPLUER = 0.3f;
 
         #endregion Скорость движения камеры.
 
@@ -170,9 +159,9 @@ namespace UI
 
             this.camera.position = new Vector3
                     (
-                    this.camera.position.x + xShift * this.moveSpeed,
+                    this.camera.position.x + xShift * this.moveSpeed * Time.deltaTime,
                     this.camera.position.y,
-                    this.camera.position.z + zShift * this.moveSpeed
+                    this.camera.position.z + zShift * this.moveSpeed * Time.deltaTime
                     );
         }
         /// <summary>
@@ -210,13 +199,13 @@ namespace UI
         {
             //Расчитать значение скорости для нестандартного разрешения (не 1920х1080)
             this.moveSpeed *= this.resolutionScaling;
-            this.increasedMoveSpeed = this.moveSpeed * rightClickMultiplier;
+            this.increasedMoveSpeed = this.moveSpeed * RIGHT_CLICK_MULTIPLIER;
 
             this.centerCoordinate = new Vector2(this.rectForResolution.rect.width / 2, this.rectForResolution.rect.height / 2);
 
 #if UNITY_ANDROID
             //Пересчитать скорость перемещения для андроида.
-            this.moveSpeed *= androidSpeedMultiplier;
+            this.moveSpeed *= ANDROID_SPEED_MIULTIPLUER;
 #else
                 //Прямоугольники для отлавливания касания края экрана.
                 {
