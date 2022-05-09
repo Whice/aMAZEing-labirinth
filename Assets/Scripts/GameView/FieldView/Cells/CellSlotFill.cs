@@ -46,11 +46,92 @@ namespace Assets.Scripts.GameView
         /// <summary>
         /// Положение слота.
         /// </summary>
-        public Vector3 position
+        public Vector3 localPosition
         {
             get => this.transform.localPosition;
             set => this.transform.localPosition = value;
         }
+        /// <summary>
+        /// Позиция на поле.
+        /// </summary>
+        protected Vector2Int positionInFieldPrivate;
+        /// <summary>
+        /// Позиция на поле.
+        /// </summary>
+        public Vector2Int positionInField
+        {
+            get => this.positionInFieldPrivate;
+        }
+        /// <summary>
+        /// Установить позицию слота в сетке поля.
+        /// </summary>
+        /// <param name="x">Позиция с лева на право.</param>
+        /// <param name="y">Позиция в глубину.</param>
+        /// <param name="positionMultiplier">Множитель расположения, чтобы было небольшое расстояние между слотами.</param>
+        public void SetSlotPosition(Int32 x, Int32 y, Single positionMultiplier)
+        {
+            this.positionInFieldPrivate.x = x;
+            this.positionInFieldPrivate.y = y;
+            this.localPosition = new Vector3
+                        (
+                        x * positionMultiplier,
+                        this.localPosition.y,
+                        y * positionMultiplier
+                        );
+        }
+
+        #region Перемещение слота со временем.
+
+        /// <summary>
+        /// Максимальное, требуемое время перемещения.
+        /// </summary>
+        private Single requiredTimeForMove;
+        /// <summary>
+        /// Общее время перемещения.
+        /// </summary>
+        private Single timeForMove;
+        /// <summary>
+        /// Целевое положение слота.
+        /// </summary>
+        private Vector3 targetLocalPosition;
+        /// <summary>
+        /// Изаначальное положение слота перед началом движения.
+        /// </summary>
+        private Vector3 originLocalPosition;
+        /// <summary>
+        /// Задать цель - новое положение слота.
+        /// </summary>
+        /// <param name="x">Позиция в поле с лева на право.</param>
+        /// <param name="y">Позиция в поле в глубину.</param>
+        /// <param name="positionMultiplier">Множитель позиции.</param>
+        /// <param name="requiredTimeForMove">Требуемое время на перемещение.</param>
+        public void SetTargetSlotPosition(Int32 x, Int32 y, Single positionMultiplier, Single requiredTimeForMove)
+        {
+            this.targetLocalPosition = new Vector3
+                        (
+                        x * positionMultiplier,
+                        this.localPosition.y,
+                        y * positionMultiplier
+                        );
+            this.originLocalPosition = this.localPosition;
+            this.requiredTimeForMove = requiredTimeForMove;
+            this.timeForMove = 0;
+        }
+        /// <summary>
+        /// Осуществлять движение слота к заданной цели - новой позиции.
+        /// </summary>
+        public void MoveToTargetLocalPosition()
+        {
+            this.timeForMove += Time.deltaTime;
+            Single percentOfMove = this.timeForMove / this.requiredTimeForMove;
+            if (percentOfMove > 1)
+            {
+                percentOfMove = 1;
+            }
+            this.localPosition = Vector3.Lerp(this.originLocalPosition, this.targetLocalPosition, percentOfMove);
+        }
+
+        #endregion Перемещение слота со временем.
 
         /// <summary>
         /// Получить клон указанного по имени префаба из провайдер.
@@ -144,10 +225,20 @@ namespace Assets.Scripts.GameView
                 );
         }
 
+        /// <summary>
+        /// Ссылка на слот для слота свободной ячейки.
+        /// </summary>
+        public CellSlotFill arrowForFreeCellSlotFill = null;
 
         private void Awake()
         {
             this.cellObject = this.gameObject;
+        }
+
+        public override string ToString()
+        {
+            return "Slot with " + nameof(this.positionInField) + ": "
+                + this.positionInField.x.ToString() + "; " + this.positionInField.y.ToString();
         }
     }
 }
