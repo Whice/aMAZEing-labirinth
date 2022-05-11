@@ -240,5 +240,20 @@ namespace Assets.Scripts.GameView
             return "Slot with " + nameof(this.positionInField) + ": "
                 + this.positionInField.x.ToString() + "; " + this.positionInField.y.ToString();
         }
+
+        /// <summary>
+        /// Проверить соответствие ячеки этого слота указанной ячейке модели.
+        /// </summary>
+        /// <param name="cell"></param>
+        /// <returns></returns>
+        public Boolean IsEqualWithModelCell(FieldCell cell)
+        {
+            if (cell.CellType != this.cellType)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

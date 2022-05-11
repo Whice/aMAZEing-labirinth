@@ -8,7 +8,7 @@ namespace Assets.Scripts.GameView
     /// <summary>
     /// Представление игрового поля.
     /// </summary>
-    public class FieldView: GameViewOriginScript
+    public class FieldView : GameViewOriginScript
     {
         #region Данные игрового поля.
 
@@ -72,13 +72,11 @@ namespace Assets.Scripts.GameView
                 for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
                 {
                     this.slots[i, j] = Instantiate(this.cellSlotPrefab);
-                    this.slots[i, j].SetCellType(this.playingField[i,j].CellType);
+                    this.slots[i, j].SetCellType(this.playingField[i, j].CellType);
                     this.slots[i, j].TurnClockwise(this.playingField[i, j].countTurnClockwiseFromDefaultRotateToCurrentRotate);
                     this.slots[i, j].SetSlotPosition(i, j, positionMultiplier);
                     this.slots[i, j].transform.parent = this.slotForFieldSlots;
                 }
-
-
         }
 
         #endregion Ячейки игрового поля.
@@ -209,23 +207,23 @@ namespace Assets.Scripts.GameView
             /// <summary>
             /// Неизвестно.
             /// </summary>
-            unknow=0,
+            unknow = 0,
             /// <summary>
             /// Вправо.
             /// </summary>
-            toRight=1,
+            toRight = 1,
             /// <summary>
             /// Вниз.
             /// </summary>
-            toBottom=2,
+            toBottom = 2,
             /// <summary>
             /// Влево.
             /// </summary>
-            toLeft=3,
+            toLeft = 3,
             /// <summary>
             /// Вверх.
             /// </summary>
-            toTop=4,
+            toTop = 4,
         }
         /// <summary>
         /// Напрвление, куда производится сдвиг.
@@ -304,33 +302,33 @@ namespace Assets.Scripts.GameView
                         positionLastCell = this.slots[numberLine, 0].positionInField.y;
                         for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
                         {
-                            this.slots[ numberLine, i].SetTargetSlotPosition
+                            this.slots[numberLine, i].SetTargetSlotPosition
                                    (
                                    this.slots[numberLine, i].positionInField.x,
-                                   this.slots[numberLine, i].positionInField.y+1,
+                                   this.slots[numberLine, i].positionInField.y + 1,
                                    positionMultiplier,
                                    MAX_TIME_SHIFT
                                    );
 
-                            this.slotsForShift[slotsForShiftCounter] = this.slots[ numberLine, i];
+                            this.slotsForShift[slotsForShiftCounter] = this.slots[numberLine, i];
                             slotsForShiftCounter++;
                         }
                         break;
                     }
                 case DirectionShift.toBottom:
                     {
-                        positionLastCell = this.slots[ numberLine, Field.FIELD_SIZE - 1].positionInField.y;
+                        positionLastCell = this.slots[numberLine, Field.FIELD_SIZE - 1].positionInField.y;
                         for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                         {
                             this.slots[numberLine, i].SetTargetSlotPosition
                                    (
-                                   this.slots[ numberLine, i].positionInField.x ,
-                                   this.slots[ numberLine, i].positionInField.y-1,
+                                   this.slots[numberLine, i].positionInField.x,
+                                   this.slots[numberLine, i].positionInField.y - 1,
                                    positionMultiplier,
                                    MAX_TIME_SHIFT
                                    );
 
-                            this.slotsForShift[slotsForShiftCounter] = this.slots[ numberLine, i];
+                            this.slotsForShift[slotsForShiftCounter] = this.slots[numberLine, i];
                             slotsForShiftCounter++;
                         }
                         break;
@@ -353,7 +351,7 @@ namespace Assets.Scripts.GameView
             }
             this.slotsForShift[Field.FIELD_SIZE] = oldFreeSlot;
         }
-        
+
         /// <summary>
         /// Выполнить Передвижение ячеек.
         /// </summary>
@@ -378,7 +376,7 @@ namespace Assets.Scripts.GameView
                 case DirectionShift.toRight:
                     {
 
-                        for (Int32 i = Field.FIELD_SIZE - 1; i >-1; i--)
+                        for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
                         {
                             this.slots[i, numberLine] = this.slotsForShift[slotsForShiftCounter];
                             slotsForShiftCounter++;
@@ -401,11 +399,11 @@ namespace Assets.Scripts.GameView
                 case DirectionShift.toTop:
                     {
 
-                        for (Int32 i = Field.FIELD_SIZE - 1; i >-1; i--)
+                        for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
                         {
                             this.slots[numberLine, i] = this.slotsForShift[slotsForShiftCounter];
                             slotsForShiftCounter++;
-                            this.slots[ numberLine, i].SetSlotPosition(numberLine, i, this.positionMultiplier);
+                            this.slots[numberLine, i].SetSlotPosition(numberLine, i, this.positionMultiplier);
                         }
 
                         break;
@@ -422,9 +420,39 @@ namespace Assets.Scripts.GameView
                         break;
                     }
             }
-            
+
+            ToCheckIfViewOfFieldCorrespondsToItModel();
         }
 
+        /// <summary>
+        /// Проверить соответсвие пердсталения поля его модели.
+        /// Если типы ячеек у поля и его медоле не совпадают, то сигнализировать.
+        /// </summary>
+        /// <returns></returns>
+        private void ToCheckIfViewOfFieldCorrespondsToItModel()
+        {
+            Boolean isCorresponds = true;
+            if (this.freeCellSlot.cellType != this.playingField.freeFieldCell.CellType)
+            {
+                isCorresponds = false;
+            }
+
+            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+            {
+                for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
+                {
+                    if (!this.slots[i, j].IsEqualWithModelCell(this.playingField[i, j]))
+                    {
+                        isCorresponds = false;
+                    }
+                }
+            }
+
+            if (!isCorresponds)
+            {
+                LogError("Field's view is inconsistent with field's model!");
+            }
+        }
         /// <summary>
         /// Выполнить подготовку к сдвигу ячеек.
         /// </summary>
@@ -442,6 +470,7 @@ namespace Assets.Scripts.GameView
                         {
                             this.numberLineForShift = slotWithFreeSlot.positionInField.y;
                             this.directionShift = DirectionShift.toLeft;
+                            this.playingField.MoveLineLeft(this.numberLineForShift);
                             BeginAnimationOfPerformShift();
                             break;
                         }
@@ -486,7 +515,7 @@ namespace Assets.Scripts.GameView
         /// Слот для слота свободной ячейки.
         /// </summary>
         [SerializeField]
-        private Transform slotForFreeCellSlot=null;
+        private Transform slotForFreeCellSlot = null;
         /// <summary>
         /// Задать местоположение для слота свободной ячейки через положение слота для нее.
         /// </summary>
@@ -554,6 +583,8 @@ namespace Assets.Scripts.GameView
 
             FillFreeCellSlot();
             FillFieldWithCell();
+            ToCheckIfViewOfFieldCorrespondsToItModel();
+
             AddArrowSlotsForFreeCell();
         }
     }

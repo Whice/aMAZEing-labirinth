@@ -75,7 +75,6 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="players">Список игроков.</param>
         public Field()
         {
             this.fieldCells = new FieldCell[FIELD_SIZE, FIELD_SIZE];
@@ -258,9 +257,9 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <returns></returns>
         private void MovePlayer(GamePlayer player, Int32 numberLine, Boolean isVerical, Boolean isForward)
         {
-            if(isVerical)
+            if (isVerical)
             {
-                if(numberLine == player.positionX)
+                if (numberLine == player.positionX)
                 {
                     //Игрок сам следит за "выходом" за пределы поля и 
                     // пересталяет на другую его сторону свою фишку, если надо.
@@ -292,7 +291,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <returns></returns>
         private void MovePlayers(Int32 numberLine, Boolean isVerical, Boolean isForward)
         {
-           foreach(GamePlayer player in this.players)
+            foreach (GamePlayer player in this.players)
             {
                 MovePlayer(player, numberLine, isVerical, isForward);
             }
@@ -453,7 +452,7 @@ namespace Assets.Scripts.GameModel.PlayingField
 
         public IEnumerator<FieldCell> GetEnumerator()
         {
-            foreach(FieldCell cell in this.fieldCells)
+            foreach (FieldCell cell in this.fieldCells)
             {
                 yield return cell;
             }
@@ -474,12 +473,12 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <param name="endX"></param>
         /// <param name="endY"></param>
         /// <returns></returns>
-        public Boolean IsPossibleMove(Int32 startX,Int32 startY,Int32 endX,Int32 endY)
+        public Boolean IsPossibleMove(Int32 startX, Int32 startY, Int32 endX, Int32 endY)
         {
             //Проверить, что все координаты оказались внутрии поля.
-            Boolean isWithinField = startX>-1 && startY>-1 && endX>-1 && endY>-1;
-            isWithinField &= startX<Field.FIELD_SIZE && startY<Field.FIELD_SIZE && endX<Field.FIELD_SIZE && endY>Field.FIELD_SIZE;
-            if(!isWithinField)
+            Boolean isWithinField = startX > -1 && startY > -1 && endX > -1 && endY > -1;
+            isWithinField &= startX < Field.FIELD_SIZE && startY < Field.FIELD_SIZE && endX < Field.FIELD_SIZE && endY > Field.FIELD_SIZE;
+            if (!isWithinField)
             {
                 return false;
             }
