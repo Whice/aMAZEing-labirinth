@@ -156,12 +156,24 @@ namespace UI
         /// <param name="zShift">Смещение вниз/вверх.</param>
         private void Move(Single xShift, Single zShift)
         {
+            Single newPosX = this.camera.position.x + xShift * this.moveSpeed * Time.deltaTime;
+            Single newPosY = this.camera.position.z + zShift * this.moveSpeed * Time.deltaTime;
+            
+            //Проверка выхода за указанные границы для камеры.
+            if (newPosX < this.bordersForMinMaxX.x || newPosX > this.bordersForMinMaxX.y)
+            {
+                newPosX = this.camera.position.x;
+            }
+            if (newPosY < this.bordersForMinMaxY.x || newPosY > this.bordersForMinMaxY.y)
+            {
+                newPosY = this.camera.position.z;
+            }
 
             this.camera.position = new Vector3
                     (
-                    this.camera.position.x + xShift * this.moveSpeed * Time.deltaTime,
+                    newPosX,
                     this.camera.position.y,
-                    this.camera.position.z + zShift * this.moveSpeed * Time.deltaTime
+                   newPosY
                     );
         }
         /// <summary>
@@ -195,6 +207,15 @@ namespace UI
 
         #endregion Функции передвижения камеры.
 
+        #region Границы, за которые нельзя выходить.
+
+        [SerializeField]
+        private Transform objectsForBorders = null;
+        private Vector2 bordersForMinMaxX = Vector2.zero;
+        private Vector2 bordersForMinMaxY = Vector2.zero;
+
+        #endregion Границы, за которые нельзя выходить.
+
         private void Awake()
         {
             //Расчитать значение скорости для нестандартного разрешения (не 1920х1080)
@@ -202,6 +223,27 @@ namespace UI
             this.increasedMoveSpeed = this.moveSpeed * RIGHT_CLICK_MULTIPLIER;
 
             this.centerCoordinate = new Vector2(this.rectForResolution.rect.width / 2, this.rectForResolution.rect.height / 2);
+
+            //посчитать границы, закоторые не должна выходить камера.
+            //Рассчет приведен для невращающейся камеры.
+            if (this.objectsForBorders != null)
+            {
+                Single borderShiftX = this.objectsForBorders.localScale.x * this.camera.position.y;
+                this.bordersForMinMaxX = new Vector2(
+                    this.objectsForBorders.position.x - borderShiftX,
+                    this.objectsForBorders.position.x + borderShiftX
+                    );
+                Single borderShiftY = this.objectsForBorders.localScale.y * this.camera.position.y/4;
+                this.bordersForMinMaxY = new Vector2(
+                    this.objectsForBorders.position.y - borderShiftY,
+                    this.objectsForBorders.position.y + borderShiftY
+                    );
+            }
+            else
+            {
+                this.bordersForMinMaxX = new Vector2(Single.MinValue, Single.MaxValue);
+                this.bordersForMinMaxY = new Vector2(Single.MinValue, Single.MaxValue);
+            }
 
 #if UNITY_ANDROID
             //Пересчитать скорость перемещения для андроида.
