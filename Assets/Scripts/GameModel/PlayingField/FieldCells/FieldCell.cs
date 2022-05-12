@@ -161,7 +161,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 return;
 
             count = count % 4;
-            this.turnsClockwiseCountPrivate = count;
+            this.turnsClockwiseCountPrivate = (this.turnsClockwiseCount + count) % 4;
 
             this.OnTurnedClockwise?.Invoke(count);
 
@@ -192,7 +192,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 return;
 
             count = count % 4;
-            this.turnsClockwiseCountPrivate = 4 - count;
+            this.turnsClockwiseCountPrivate = 4 - ((this.turnsClockwiseCount + count) % 4);
 
             this.OnTurnedCountclockwise?.Invoke(count);
 

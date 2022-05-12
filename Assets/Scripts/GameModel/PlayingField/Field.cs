@@ -36,10 +36,34 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             get => this.fieldCells[hIndex, vIndex];
         }
+
+        #region Свободная ячейка.
+
+        /// <summary>
+        /// Событие происходит при смене свободной ячейки.
+        /// </summary>
+        public event Action OnFreeCellChange;
         /// <summary>
         /// Свободная ячейка.
         /// </summary>
-        public FieldCell freeFieldCell = null;
+        private FieldCell freeFieldCellPrivate = null;
+        /// <summary>
+        /// Свободная ячейка.
+        /// </summary>
+        public FieldCell freeFieldCell
+        {
+            get
+            {
+                return this.freeFieldCellPrivate;
+            }
+            set
+            {
+                this.freeFieldCellPrivate = value;
+                this.OnFreeCellChange?.Invoke();
+            }
+        }
+
+        #endregion Свободная ячейка.
 
         #endregion Данные игрового поля.
 
@@ -324,6 +348,7 @@ namespace Assets.Scripts.GameModel.PlayingField
                 //Выпавшая ячейка
                 FieldCell plowingCell;
                 FieldCell[,] field = this.fieldCells;
+                this.freeFieldCell.isInteractable = false;
                 if (isVerical)
                 {
                     if (isForward)
@@ -334,7 +359,6 @@ namespace Assets.Scripts.GameModel.PlayingField
                             field[numberLine, i] = field[numberLine, i - 1];
                         }
                         field[numberLine, 0] = this.freeFieldCell;
-                        this.freeFieldCell = plowingCell;
                     }
                     else
                     {
@@ -344,7 +368,6 @@ namespace Assets.Scripts.GameModel.PlayingField
                             field[numberLine, i] = field[numberLine, i + 1];
                         }
                         field[numberLine, field.GetLength(1) - 1] = this.freeFieldCell;
-                        this.freeFieldCell = plowingCell;
                     }
                 }
                 else
@@ -357,7 +380,6 @@ namespace Assets.Scripts.GameModel.PlayingField
                             field[i, numberLine] = field[i - 1, numberLine];
                         }
                         field[0, numberLine] = this.freeFieldCell;
-                        this.freeFieldCell = plowingCell;
                     }
                     else
                     {
@@ -367,9 +389,11 @@ namespace Assets.Scripts.GameModel.PlayingField
                             field[i, numberLine] = field[i + 1, numberLine];
                         }
                         field[field.GetLength(0) - 1, numberLine] = this.freeFieldCell;
-                        this.freeFieldCell = plowingCell;
                     }
                 }
+
+                this.freeFieldCell = plowingCell;
+                this.freeFieldCell.isInteractable = true;
 
                 return true;
             }

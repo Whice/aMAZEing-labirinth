@@ -5,7 +5,13 @@ using UnityEngine;
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField]
-    private GraphicPrefabsProvider prefabsProviderPrivate;
+    private GameObject mainCameraObjectPrivate = null;
+    public GameObject mainCameraObject
+    {
+        get => this.mainCameraObjectPrivate;
+    }
+    [SerializeField]
+    private GraphicPrefabsProvider prefabsProviderPrivate=null;
     public GraphicPrefabsProvider prefabsProvider
     {
         get=>this.prefabsProviderPrivate;

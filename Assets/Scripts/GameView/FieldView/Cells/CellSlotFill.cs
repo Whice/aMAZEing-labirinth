@@ -203,7 +203,7 @@ namespace Assets.Scripts.GameView
         public void TurnClockwise(Int32 count)
         {
             count = count % 4;
-            this.turnsClockwiseCount = count;
+            this.turnsClockwiseCount = (this.turnsClockwiseCount + count) % 4;
             Single newAngle = this.transform.eulerAngles.y + 90 * count;
             Single correctAngle = (Single)((Int32)(newAngle) % 360);
             this.transform.eulerAngles = new Vector3
@@ -220,7 +220,7 @@ namespace Assets.Scripts.GameView
         public void TurnCounterclockwise(Int32 count)
         {
             count = count % 4;
-            this.turnsClockwiseCount = 4 - count;
+            this.turnsClockwiseCount = 4 - ((this.turnsClockwiseCount + count) % 4);
             Single newAngle = this.transform.eulerAngles.y - 90 * count;
             Single correctAngle = (Single)((Int32)(newAngle) % 360);
             this.transform.eulerAngles = new Vector3
