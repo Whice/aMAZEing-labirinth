@@ -67,14 +67,13 @@ namespace Assets.Scripts.GameView
         private void FillFieldWithCell()
         {
             //Заполнение ячейками.
-            Single positionMultiplier = this.positionMultiplier;
+            CellSlotFill.positionMultiplier = this.positionMultiplier;
             for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                 for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
                 {
                     this.slots[i, j] = Instantiate(this.cellSlotPrefab);
-                    this.slots[i, j].SetCellType(this.playingField[i, j].CellType);
-                    this.slots[i, j].TurnClockwise(this.playingField[i, j].countTurnClockwiseFromDefaultRotateToCurrentRotate);
-                    this.slots[i, j].SetSlotPosition(i, j, positionMultiplier);
+                    this.slots[i, j].SetCellFromModelCell(this.playingField[i, j]);
+                    this.slots[i, j].SetSlotPosition(i, j);
                     this.slots[i, j].transform.parent = this.slotForFieldSlots;
                 }
         }
@@ -256,7 +255,6 @@ namespace Assets.Scripts.GameView
         {
             Int32 numberLine = this.numberLineForShift;
             Int32 positionLastCell = 0;
-            Single positionMultiplier = this.positionMultiplier;
             Int32 slotsForShiftCounter = 0;
 
             switch (this.directionShift)
@@ -270,7 +268,6 @@ namespace Assets.Scripts.GameView
                                    (
                                    this.slots[i, numberLine].positionInField.x + 1,
                                    this.slots[i, numberLine].positionInField.y,
-                                   positionMultiplier,
                                    MAX_TIME_SHIFT
                                    );
 
@@ -288,7 +285,6 @@ namespace Assets.Scripts.GameView
                                    (
                                    this.slots[i, numberLine].positionInField.x - 1,
                                    this.slots[i, numberLine].positionInField.y,
-                                   positionMultiplier,
                                    MAX_TIME_SHIFT
                                    );
 
@@ -306,7 +302,6 @@ namespace Assets.Scripts.GameView
                                    (
                                    this.slots[numberLine, i].positionInField.x,
                                    this.slots[numberLine, i].positionInField.y + 1,
-                                   positionMultiplier,
                                    MAX_TIME_SHIFT
                                    );
 
@@ -324,7 +319,6 @@ namespace Assets.Scripts.GameView
                                    (
                                    this.slots[numberLine, i].positionInField.x,
                                    this.slots[numberLine, i].positionInField.y - 1,
-                                   positionMultiplier,
                                    MAX_TIME_SHIFT
                                    );
 
@@ -343,11 +337,11 @@ namespace Assets.Scripts.GameView
 
             if (this.directionShift == DirectionShift.toLeft || this.directionShift == DirectionShift.toRight)
             {
-                oldFreeSlot.SetTargetSlotPosition(positionLastCell, numberLine, positionMultiplier, MAX_TIME_SHIFT);
+                oldFreeSlot.SetTargetSlotPosition(positionLastCell, numberLine, MAX_TIME_SHIFT);
             }
             else
             {
-                oldFreeSlot.SetTargetSlotPosition(numberLine, positionLastCell, positionMultiplier, MAX_TIME_SHIFT);
+                oldFreeSlot.SetTargetSlotPosition(numberLine, positionLastCell, MAX_TIME_SHIFT);
             }
             this.slotsForShift[Field.FIELD_SIZE] = oldFreeSlot;
         }
@@ -367,69 +361,76 @@ namespace Assets.Scripts.GameView
         /// </summary>
         private void EndPerformShift()
         {
-            Int32 numberLine = this.numberLineForShift;
-            SetFreeCell(this.slotsForShift[0]);
-            Int32 slotsForShiftCounter = 1;
-
-            switch (this.directionShift)
+            if (this.directionShift != DirectionShift.unknow)
             {
-                case DirectionShift.toRight:
-                    {
 
-                        for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
+                Int32 numberLine = this.numberLineForShift;
+                SetFreeCell(this.slotsForShift[0]);
+                Int32 slotsForShiftCounter = 1;
+
+                Action<Int32, Int32> setNewPosition = (Int32 i, Int32 j) =>
+                {
+                    this.slots[i, j] = this.slotsForShift[slotsForShiftCounter];
+                    slotsForShiftCounter++;
+                    this.slots[i, j].SetSlotPosition(i, j);
+                };
+
+                switch (this.directionShift)
+                {
+                    case DirectionShift.toRight:
                         {
-                            this.slots[i, numberLine] = this.slotsForShift[slotsForShiftCounter];
-                            slotsForShiftCounter++;
-                            this.slots[i, numberLine].SetSlotPosition(i, numberLine, this.positionMultiplier);
-                        }
 
-                        break;
-                    }
-                case DirectionShift.toLeft:
-                    {
-                        for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                            for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
+                            {
+                                setNewPosition(i, numberLine);
+                            }
+
+                            break;
+                        }
+                    case DirectionShift.toLeft:
                         {
-                            this.slots[i, numberLine] = this.slotsForShift[slotsForShiftCounter];
-                            slotsForShiftCounter++;
-                            this.slots[i, numberLine].SetSlotPosition(i, numberLine, this.positionMultiplier);
+                            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                            {
+                                setNewPosition(i, numberLine);
+                            }
+
+                            break;
                         }
-
-                        break;
-                    }
-                case DirectionShift.toTop:
-                    {
-
-                        for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
+                    case DirectionShift.toTop:
                         {
-                            this.slots[numberLine, i] = this.slotsForShift[slotsForShiftCounter];
-                            slotsForShiftCounter++;
-                            this.slots[numberLine, i].SetSlotPosition(numberLine, i, this.positionMultiplier);
-                        }
 
-                        break;
-                    }
-                case DirectionShift.toBottom:
-                    {
-                        for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                            for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
+                            {
+                                setNewPosition(numberLine, i);
+                            }
+
+                            break;
+                        }
+                    case DirectionShift.toBottom:
                         {
-                            this.slots[numberLine, i] = this.slotsForShift[slotsForShiftCounter];
-                            slotsForShiftCounter++;
-                            this.slots[numberLine, i].SetSlotPosition(numberLine, i, this.positionMultiplier);
-                        }
+                            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                            {
+                                setNewPosition(numberLine, i);
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
+                }
+
+                ToCheckIfViewOfFieldCorrespondsToItModel();
             }
-
-            ToCheckIfViewOfFieldCorrespondsToItModel();
+            else
+            {
+                LogError("In " + nameof(EndPerformShift) + " " + nameof(DirectionShift) + " is " + nameof(DirectionShift.unknow));
+            }
         }
 
-        /// <summary>
-        /// Проверить соответсвие пердсталения поля его модели.
-        /// Если типы ячеек у поля и его медоле не совпадают, то сигнализировать.
-        /// </summary>
-        /// <returns></returns>
-        private void ToCheckIfViewOfFieldCorrespondsToItModel()
+            /// <summary>
+            /// Проверить соответсвие пердсталения поля его модели.
+            /// Если типы ячеек у поля и его медоле не совпадают, то сигнализировать.
+            /// </summary>
+            /// <returns></returns>
+            private void ToCheckIfViewOfFieldCorrespondsToItModel()
         {
             Boolean isCorresponds = true;
             if (this.freeCellSlot.cellType != this.playingField.freeFieldCell.CellType)
@@ -471,31 +472,31 @@ namespace Assets.Scripts.GameView
                             this.numberLineForShift = slotWithFreeSlot.positionInField.y;
                             this.directionShift = DirectionShift.toLeft;
                             this.playingField.MoveLineLeft(this.numberLineForShift);
-                            BeginAnimationOfPerformShift();
                             break;
                         }
                     case FieldSide.left:
                         {
                             this.numberLineForShift = slotWithFreeSlot.positionInField.y;
                             this.directionShift = DirectionShift.toRight;
-                            BeginAnimationOfPerformShift();
+                            this.playingField.MoveLineRight(this.numberLineForShift);
                             break;
                         }
                     case FieldSide.top:
                         {
                             this.numberLineForShift = slotWithFreeSlot.positionInField.x;
                             this.directionShift = DirectionShift.toBottom;
-                            BeginAnimationOfPerformShift();
+                            this.playingField.MoveLineUp(this.numberLineForShift);
                             break;
                         }
                     case FieldSide.bottom:
                         {
                             this.numberLineForShift = slotWithFreeSlot.positionInField.x;
                             this.directionShift = DirectionShift.toTop;
-                            BeginAnimationOfPerformShift();
+                            this.playingField.MoveLineDown(this.numberLineForShift);
                             break;
                         }
                 }
+                BeginAnimationOfPerformShift();
             }
             else
             {
@@ -547,7 +548,7 @@ namespace Assets.Scripts.GameView
         private void FillFreeCellSlot()
         {
             CellSlotFill freeCellSlot = Instantiate(this.cellSlotPrefab);
-            freeCellSlot.SetCellType(this.playingField.freeFieldCell.CellType);
+            freeCellSlot.SetCellFromModelCell(this.playingField.freeFieldCell);
             SetFreeCell(freeCellSlot);
         }
         /// <summary>
@@ -555,12 +556,10 @@ namespace Assets.Scripts.GameView
         /// </summary>
         private void ClearFreeCellSlot()
         {
-            this.playingField.freeFieldCell.OnTurnedClockwise -= this.freeCellSlot.TurnClockwise;
-            this.playingField.freeFieldCell.OnTurnedCountclockwise -= this.freeCellSlot.TurnCounterclockwise;
             this.freeCellSlot = null;
         }
         /// <summary>
-        /// Задачть указанную ячейку как свободную и посметить в слот.
+        /// Задать указанную ячейку как свободную и посметить в слот.
         /// </summary>
         /// <param name="slot"></param>
         private void SetFreeCell(CellSlotFill slot)
@@ -568,8 +567,6 @@ namespace Assets.Scripts.GameView
             this.freeCellSlot = slot;
             this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
             this.freeCellSlot.transform.localPosition = Vector3.zero;
-            this.playingField.freeFieldCell.OnTurnedClockwise += this.freeCellSlot.TurnClockwise;
-            this.playingField.freeFieldCell.OnTurnedCountclockwise += this.freeCellSlot.TurnCounterclockwise;
         }
 
         #endregion Свободная ячейка.

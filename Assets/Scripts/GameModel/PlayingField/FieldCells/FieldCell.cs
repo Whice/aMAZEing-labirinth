@@ -68,30 +68,6 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         #region Публичные данные ячейки.
 
         /// <summary>
-        /// Сколько раз надо повернуть по часовой стрелке ячейку из начального положения,
-        /// чтобы получить ее нынешние направления путей.
-        /// </summary>
-        public Int32 countTurnClockwiseFromDefaultRotateToCurrentRotate
-        {
-            get
-            {
-                FieldCell defaultCell = new FieldCell(this.CellType);
-                int count = 0;
-
-                while (
-                    defaultCell.IsHaveDirectionLeft != this.IsHaveDirectionLeft
-                    || defaultCell.IsHaveDirectionRight != this.IsHaveDirectionRight
-                    || defaultCell.IsHaveDirectionUp != this.IsHaveDirectionUp
-                    || defaultCell.IsHaveDirectionDown != this.IsHaveDirectionDown
-                    )
-                {
-                    defaultCell.TurnClockwise();
-                    count++;
-                }
-                return count;
-            }
-        }
-        /// <summary>
         /// Разрешено взаимодействие с этой ячейкой.
         /// </summary>
         public Boolean isInteractable { get; set; } = true;
@@ -156,9 +132,24 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         #region Действия с ячейкой.
 
         /// <summary>
+        /// Количество поворотов по часовой стрелке.
+        /// <br/>По сути определяет направление.
+        /// <br/>Значение может быть с 0 по 3.
+        /// </summary>
+        private Int32 turnsClockwiseCountPrivate = 0;
+        /// <summary>
+        /// Количество поворотов по часовой стрелке.
+        /// <br/>По сути определяет направление.
+        /// <br/>Значение может быть с 0 по 3.
+        /// </summary>
+        public Int32 turnsClockwiseCount
+        {
+            get=>this.turnsClockwiseCountPrivate;
+        }
+        /// <summary>
         /// Происходит поворот по часовой стрелке.
         /// </summary>
-        public Action<Int32> OnTurnedClockwise;
+        public event Action<Int32> OnTurnedClockwise;
         /// <summary>
         /// Повернуть по часовой стрелке.
         /// </summary>
@@ -168,6 +159,9 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
             if (!this.isInteractable)
                 return;
+
+            count = count % 4;
+            this.turnsClockwiseCountPrivate = count;
 
             this.OnTurnedClockwise?.Invoke(count);
 
@@ -186,7 +180,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         /// <summary>
         /// Происходит поворот против часовой стрелки.
         /// </summary>
-        public Action<Int32> OnTurnedCountclockwise;
+        public event Action<Int32> OnTurnedCountclockwise;
         /// <summary>
         /// Повернуть против часовой стрелке.
         /// </summary>
@@ -196,6 +190,9 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
             if (!this.isInteractable)
                 return;
+
+            count = count % 4;
+            this.turnsClockwiseCountPrivate = 4 - count;
 
             this.OnTurnedCountclockwise?.Invoke(count);
 
@@ -223,6 +220,11 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 
             if (obj is FieldCell otherCell)
             {
+                if (this.CellType != otherCell.CellType)
+                    return false;
+
+                if (this.directionCount != otherCell.directionCount)
+                    return false;
 
                 if (this.IsHaveDirectionUp != otherCell.IsHaveDirectionUp)
                     return false;
@@ -231,12 +233,6 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 if (this.IsHaveDirectionDown != otherCell.IsHaveDirectionDown)
                     return false;
                 if (this.IsHaveDirectionLeft != otherCell.IsHaveDirectionLeft)
-                    return false;
-
-                if (this.directionCount != otherCell.directionCount)
-                    return false;
-
-                if (this.CellType != otherCell.CellType)
                     return false;
 
                 return true;

@@ -313,6 +313,10 @@ namespace Assets.Scripts.GameModel.PlayingField
             {
                 MovePlayers(numberLine, isVerical, isForward);
             }
+            else
+            {
+                //сообщить об ошибке.
+            }
 
             //Двигать можно только четные(нечетные. т.к. нумерация идет с 0) линии.
             if (numberLine % 2 != 0)

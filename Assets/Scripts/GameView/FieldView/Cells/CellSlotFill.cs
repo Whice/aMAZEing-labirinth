@@ -25,16 +25,17 @@ namespace Assets.Scripts.GameView
         /// <summary>
         /// Тип ячейки.
         /// </summary>
-        private CellType cellTypePrivate = CellType.unknown;
-        /// <summary>
-        /// Тип ячейки.
-        /// </summary>
         public CellType cellType
         {
-            get => this.cellTypePrivate;
+            get => this.modelCell.CellType;
         }
 
+        #region Положение слота в пространстве.
 
+        /// <summary>
+        /// Множитель расположения, чтобы было небольшое расстояние между слотами.
+        /// </summary>
+        public static Single positionMultiplier;
         /// <summary>
         /// Размер слота.
         /// </summary>
@@ -68,7 +69,7 @@ namespace Assets.Scripts.GameView
         /// <param name="x">Позиция с лева на право.</param>
         /// <param name="y">Позиция в глубину.</param>
         /// <param name="positionMultiplier">Множитель расположения, чтобы было небольшое расстояние между слотами.</param>
-        public void SetSlotPosition(Int32 x, Int32 y, Single positionMultiplier)
+        public void SetSlotPosition(Int32 x, Int32 y)
         {
             this.positionInFieldPrivate.x = x;
             this.positionInFieldPrivate.y = y;
@@ -79,6 +80,8 @@ namespace Assets.Scripts.GameView
                         y * positionMultiplier
                         );
         }
+
+        #endregion Положение слота в пространстве.
 
         #region Перемещение слота со временем.
 
@@ -105,7 +108,7 @@ namespace Assets.Scripts.GameView
         /// <param name="y">Позиция в поле в глубину.</param>
         /// <param name="positionMultiplier">Множитель позиции.</param>
         /// <param name="requiredTimeForMove">Требуемое время на перемещение.</param>
-        public void SetTargetSlotPosition(Int32 x, Int32 y, Single positionMultiplier, Single requiredTimeForMove)
+        public void SetTargetSlotPosition(Int32 x, Int32 y, Single requiredTimeForMove)
         {
             this.targetLocalPosition = new Vector3
                         (
@@ -146,10 +149,27 @@ namespace Assets.Scripts.GameView
         /// Заполнить слот ячейкой заданного типа.
         /// </summary>
         /// <param name="type"></param>
-        private void SetCellType(GameObject cellObject, CellType type)
+        private void SetCellType(CellType type)
         {
-            this.cellTypePrivate = type;
-            this.cellObject = cellObject;
+
+            switch (type)
+            {
+                case CellType.corner:
+                    {
+                        this.cellObject = GetPrefabClone("CornerCell");
+                        break;
+                    }
+                case CellType.line:
+                    {
+                        this.cellObject = GetPrefabClone("LineCell");
+                        break;
+                    }
+                case CellType.threeDirection:
+                    {
+                        this.cellObject = GetPrefabClone("ThreeDirectionCell");
+                        break;
+                    }
+            }
 
             this.cellTransform.parent = this.transform;
             this.cellTransform.position = Vector3.zero;
@@ -159,46 +179,31 @@ namespace Assets.Scripts.GameView
             this.cellTransform.localScale *= sizeRatio;
         }
         /// <summary>
-        /// Заполнить слот ячейкой заданного типа.
-        /// </summary>
-        /// <param name="type"></param>
-        public void SetCellType(CellType type)
-        {
-
-            switch (type)
-            {
-                case CellType.corner:
-                    {
-                        SetCellType(GetPrefabClone("CornerCell"), type);
-                        break;
-                    }
-                case CellType.line:
-                    {
-                        SetCellType(GetPrefabClone("LineCell"), type);
-                        break;
-                    }
-                case CellType.threeDirection:
-                    {
-                        SetCellType(GetPrefabClone("ThreeDirectionCell"), type);
-                        break;
-                    }
-            }
-        }
-        /// <summary>
         /// Установить ячейку для этого слота из указанного слота.
         /// </summary>
         /// <param name="slot"></param>
         public void SetCellFromSlot(CellSlotFill slot)
         {
-            SetCellType(slot.cellObject, slot.cellTypePrivate);
+            this.cellObject = slot.cellObject;
+            SetCellFromModelCell(slot.modelCell);
         }
+
+        #region Поворот.
+
+        /// <summary>
+        /// Количество поворотов по часовой стрелке.
+        /// <br/>По сути определяет направление.
+        /// <br/>Значение может быть с 0 по 3.
+        /// </summary>
+        private Int32 turnsClockwiseCount = 0;
         /// <summary>
         /// Повернуть слот по часовой стрелке.
         /// </summary>
-        /// <param name="count"></param>
+        /// <param name="count">Количество вращений.</param>
         public void TurnClockwise(Int32 count)
         {
             count = count % 4;
+            this.turnsClockwiseCount = count;
             Single newAngle = this.transform.eulerAngles.y + 90 * count;
             Single correctAngle = (Single)((Int32)(newAngle) % 360);
             this.transform.eulerAngles = new Vector3
@@ -211,10 +216,11 @@ namespace Assets.Scripts.GameView
         /// <summary>
         /// Повернуть слот против часовой стрелке.
         /// </summary>
-        /// <param name="count"></param>
+        /// <param name="count">Количество вращений.</param>
         public void TurnCounterclockwise(Int32 count)
         {
             count = count % 4;
+            this.turnsClockwiseCount = 4 - count;
             Single newAngle = this.transform.eulerAngles.y - 90 * count;
             Single correctAngle = (Single)((Int32)(newAngle) % 360);
             this.transform.eulerAngles = new Vector3
@@ -224,6 +230,36 @@ namespace Assets.Scripts.GameView
                 this.transform.eulerAngles.z
                 );
         }
+
+        #endregion Поворот.
+
+        #region Ячейка модели.
+
+        /// <summary>
+        /// Ячейка поля из модели.
+        /// </summary>
+        private FieldCell modelCell;
+        /// <summary>
+        /// Задать параметры для слота через ячейку поля из модели.
+        /// </summary>
+        /// <param name="cell">Ячейка поля из модели.</param>
+        public void SetCellFromModelCell(FieldCell cell)
+        {
+            if (this.modelCell != null)
+            {
+                this.modelCell.OnTurnedClockwise -= this.TurnClockwise;
+                this.modelCell.OnTurnedCountclockwise -= this.TurnCounterclockwise;
+            }
+
+            this.modelCell = cell;
+            SetCellType(cell.CellType);
+            TurnClockwise(cell.turnsClockwiseCount);
+
+            this.modelCell.OnTurnedClockwise += TurnClockwise;
+            this.modelCell.OnTurnedCountclockwise += TurnCounterclockwise;
+        }
+
+        #endregion Ячейка модели.
 
         /// <summary>
         /// Ссылка на слот для слота свободной ячейки.
@@ -250,6 +286,12 @@ namespace Assets.Scripts.GameView
         {
             if (cell.CellType != this.cellType)
             {
+                return false;
+            }
+            if (cell.turnsClockwiseCount != this.turnsClockwiseCount)
+            {
+                LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
+                    nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";");
                 return false;
             }
 
