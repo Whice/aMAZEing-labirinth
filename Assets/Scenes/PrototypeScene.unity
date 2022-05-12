@@ -509,6 +509,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1204082596643354486, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_IgnoreReversedGraphics
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1225450254052844893, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: moveSpeed
       value: 1.5
@@ -525,6 +529,10 @@ PrefabInstance:
       propertyPath: rightSideRectTransform
       value: 
       objectReference: {fileID: 1337503585}
+    - target: {fileID: 1263438789393010036, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_SortingOrder
+      value: -10000
+      objectReference: {fileID: 0}
     - target: {fileID: 2333812487336852108, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -539,6 +547,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3151809149719352850, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175156083764945801, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3199565882887638435, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3501240074537551147, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666749070031644041, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5210264683692929199, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8260519190865004490, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}

@@ -291,7 +291,6 @@ namespace UI
             else if(!this.isRightButtonPressed && Input.GetMouseButtonDown(1))
             {
                 this.isRightButtonPressed = true;
-                this.firsrtMousePositionWithRightDown = Input.mousePosition;
             }
             if (this.isRightButtonPressed)
             {

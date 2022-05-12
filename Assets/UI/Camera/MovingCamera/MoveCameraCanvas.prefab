@@ -203,12 +203,12 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 10000
+  m_SortingOrder: -10000
   m_TargetDisplay: 0
 --- !u!114 &7886919773441555691
 MonoBehaviour:
@@ -223,11 +223,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
+  rectForResolution: {fileID: 0}
   moveSpeed: 0.5
   rightSideRectTransform: {fileID: 2647281275562941169}
   leftSideRectTransform: {fileID: 5071618276678852437}
   topSideRectTransform: {fileID: 52153212173537722}
   bottomSideRectTransform: {fileID: 1298107324051195606}
+  objectsForBorders: {fileID: 0}
 --- !u!222 &8562265743597201334
 CanvasRenderer:
   m_ObjectHideFlags: 0

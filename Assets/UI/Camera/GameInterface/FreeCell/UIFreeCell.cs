@@ -56,7 +56,6 @@ namespace UI
         /// <summary>
         /// Повернуть по часовой стрелке.
         /// </summary>
-        /// <param name="count">Количество поворотов.</param>
         public void TurnClockwise()
         {
             this.cellUIImageSlot.eulerAngles = new Vector3
@@ -70,7 +69,6 @@ namespace UI
         /// <summary>
         /// Повернуть против часовой стрелке.
         /// </summary>
-        /// <param name="count">Количество поворотов.</param>
         public void TurnCounterclockwise()
         {
             this.cellUIImageSlot.eulerAngles = new Vector3
