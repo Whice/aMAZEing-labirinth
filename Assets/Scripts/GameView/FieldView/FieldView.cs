@@ -91,7 +91,6 @@ namespace Assets.Scripts.GameView
                 if (this.timeShift > MAX_TIME_SHIFT)
                 {
                     EndPerformShift();
-                    this.isShifting = false;
                 }
             }
         }
@@ -199,6 +198,14 @@ namespace Assets.Scripts.GameView
         #region Сдвиг линии при толчке свободной ячейкой.
 
         /// <summary>
+        /// Началось движение линии ячеек.
+        /// </summary>
+        public event Action OnBeginLineMove;
+        /// <summary>
+        /// Закончилось движение линии ячеек.
+        /// </summary>
+        public event Action OnEndLineMove;
+        /// <summary>
         /// Направления для сдвига.
         /// </summary>
         private enum DirectionShift
@@ -233,9 +240,31 @@ namespace Assets.Scripts.GameView
         /// </summary>
         private Int32 numberLineForShift;
         /// <summary>
-        /// Происходить сдвиг.
+        /// Происходит сдвиг.
         /// </summary>
-        private Boolean isShifting = false;
+        private Boolean isShiftingField = false;
+        /// <summary>
+        /// Происходит сдвиг.
+        /// </summary>
+        private Boolean isShifting
+        {
+            get
+            {
+                return this.isShiftingField;
+            }
+            set
+            {
+                this.isShiftingField = value;
+                if (value)
+                {
+                    this.OnBeginLineMove?.Invoke();
+                }
+                else
+                {
+                    this.OnEndLineMove?.Invoke();
+                }
+            }
+        }
         /// <summary>
         /// Максимальное время передвижения ячеек.
         /// </summary>
@@ -423,14 +452,16 @@ namespace Assets.Scripts.GameView
             {
                 LogError("In " + nameof(EndPerformShift) + " " + nameof(DirectionShift) + " is " + nameof(DirectionShift.unknow));
             }
+
+            this.isShifting = false;
         }
 
-            /// <summary>
-            /// Проверить соответсвие пердсталения поля его модели.
-            /// Если типы ячеек у поля и его медоле не совпадают, то сигнализировать.
-            /// </summary>
-            /// <returns></returns>
-            private void ToCheckIfViewOfFieldCorrespondsToItModel()
+        /// <summary>
+        /// Проверить соответсвие пердсталения поля его модели.
+        /// Если типы ячеек у поля и его медоле не совпадают, то сигнализировать.
+        /// </summary>
+        /// <returns></returns>
+        private void ToCheckIfViewOfFieldCorrespondsToItModel()
         {
             Boolean isCorresponds = true;
             if (this.freeCellSlot.cellType != this.playingField.freeFieldCell.CellType)
@@ -460,47 +491,52 @@ namespace Assets.Scripts.GameView
         /// <param name="slotWithFreeSlot">Слот, куда была помещена свободная ячейка при начале движения.</param>
         private void BeginPerformShift(ArrowForFreeCellSlotFill slotWithFreeSlot)
         {
-            if (slotWithFreeSlot.side != FieldSide.unknow)
+            if (!this.isShifting)
             {
-                this.isShifting = true;
-                this.timeShift = 0;
 
-                switch (slotWithFreeSlot.side)
+                if (slotWithFreeSlot.side != FieldSide.unknow)
                 {
-                    case FieldSide.right:
-                        {
-                            this.numberLineForShift = slotWithFreeSlot.positionInField.y;
-                            this.directionShift = DirectionShift.toLeft;
-                            this.playingField.MoveLineLeft(this.numberLineForShift);
-                            break;
-                        }
-                    case FieldSide.left:
-                        {
-                            this.numberLineForShift = slotWithFreeSlot.positionInField.y;
-                            this.directionShift = DirectionShift.toRight;
-                            this.playingField.MoveLineRight(this.numberLineForShift);
-                            break;
-                        }
-                    case FieldSide.top:
-                        {
-                            this.numberLineForShift = slotWithFreeSlot.positionInField.x;
-                            this.directionShift = DirectionShift.toBottom;
-                            this.playingField.MoveLineUp(this.numberLineForShift);
-                            break;
-                        }
-                    case FieldSide.bottom:
-                        {
-                            this.numberLineForShift = slotWithFreeSlot.positionInField.x;
-                            this.directionShift = DirectionShift.toTop;
-                            this.playingField.MoveLineDown(this.numberLineForShift);
-                            break;
-                        }
+
+                    this.isShifting = true;
+                    this.timeShift = 0;
+
+                    switch (slotWithFreeSlot.side)
+                    {
+                        case FieldSide.right:
+                            {
+                                this.numberLineForShift = slotWithFreeSlot.positionInField.y;
+                                this.directionShift = DirectionShift.toLeft;
+                                this.playingField.MoveLineLeft(this.numberLineForShift);
+                                break;
+                            }
+                        case FieldSide.left:
+                            {
+                                this.numberLineForShift = slotWithFreeSlot.positionInField.y;
+                                this.directionShift = DirectionShift.toRight;
+                                this.playingField.MoveLineRight(this.numberLineForShift);
+                                break;
+                            }
+                        case FieldSide.top:
+                            {
+                                this.numberLineForShift = slotWithFreeSlot.positionInField.x;
+                                this.directionShift = DirectionShift.toBottom;
+                                this.playingField.MoveLineUp(this.numberLineForShift);
+                                break;
+                            }
+                        case FieldSide.bottom:
+                            {
+                                this.numberLineForShift = slotWithFreeSlot.positionInField.x;
+                                this.directionShift = DirectionShift.toTop;
+                                this.playingField.MoveLineDown(this.numberLineForShift);
+                                break;
+                            }
+                    }
+                    BeginAnimationOfPerformShift();
                 }
-                BeginAnimationOfPerformShift();
-            }
-            else
-            {
-                LogError("Side is unknow!");
+                else
+                {
+                    LogError("Side is unknow!");
+                }
             }
         }
 
@@ -523,22 +559,25 @@ namespace Assets.Scripts.GameView
         /// <param name="parent"></param>
         private void SetPlaceForFreeCellSlot(Transform parent, ArrowForFreeCellSlotFill slot)
         {
-            //Если слот остался прежним, то должен произойти сдвиг.
-            if (slot == this.freeCellSlot.arrowForFreeCellSlotFill)
+            if (!this.isShifting)
             {
-                BeginPerformShift(slot);
-            }
-            else
-            {
-                this.freeCellSlot.transform.parent = parent;
-                this.freeCellSlot.transform.localPosition = Vector3.zero;
-
-                ArrowForFreeCellSlotFill oldSlot = this.freeCellSlot.arrowForFreeCellSlotFill as ArrowForFreeCellSlotFill;
-                slot.freeCellSlot = this.freeCellSlot;
-                this.freeCellSlot.arrowForFreeCellSlotFill = slot;
-                if (oldSlot != null)
+                //Если слот остался прежним, то должен произойти сдвиг.
+                if (slot == this.freeCellSlot.arrowForFreeCellSlotFill)
                 {
-                    oldSlot.freeCellSlot = null;
+                    BeginPerformShift(slot);
+                }
+                else
+                {
+                    this.freeCellSlot.transform.parent = parent;
+                    this.freeCellSlot.transform.localPosition = Vector3.zero;
+
+                    ArrowForFreeCellSlotFill oldSlot = this.freeCellSlot.arrowForFreeCellSlotFill as ArrowForFreeCellSlotFill;
+                    slot.freeCellSlot = this.freeCellSlot;
+                    this.freeCellSlot.arrowForFreeCellSlotFill = slot;
+                    if (oldSlot != null)
+                    {
+                        oldSlot.freeCellSlot = null;
+                    }
                 }
             }
         }
