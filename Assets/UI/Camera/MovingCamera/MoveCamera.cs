@@ -62,10 +62,6 @@ namespace UI
         /// </summary>
         private const Int32 RIGHT_CLICK_MULTIPLIER = 5;
         /// <summary>
-        /// Правая кнопка мыши зажата.
-        /// </summary>
-        private Boolean isRightButtonPressed = false;
-        /// <summary>
         /// Удаленность курсора от центра в процентном соотношении, 
         /// где центр экрана (0, 0), а левый край по центру, к примеру, (-1,0).
         /// </summary>
