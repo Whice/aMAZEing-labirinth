@@ -29,7 +29,7 @@ namespace Assets.Scripts.GameView
         /// Размер слота ячейки.
         /// </summary>
         [SerializeField]
-        private Single sizeCellSlot = 1f;
+        private Single sizeCellSlot = 3f;
         /// <summary>
         /// Размер слота ячейки.
         /// Зависит от размера ячейки.
@@ -37,7 +37,7 @@ namespace Assets.Scripts.GameView
         [SerializeField]
         private Single spacingBetweenCellSlot
         {
-            get => this.sizeCellSlot * 0.2f;
+            get => this.sizeCellSlot * 0.05f;
         }
 
         #endregion Данные игрового поля.
@@ -613,10 +613,6 @@ namespace Assets.Scripts.GameView
 
         private void Awake()
         {
-            //Задать слотам размер
-            this.cellSlotPrefab.transform.localScale = new Vector3(sizeCellSlot, sizeCellSlot, sizeCellSlot);
-            this.arrowForFreeCellSlotPrefab.transform.localScale = new Vector3(sizeCellSlot, sizeCellSlot, sizeCellSlot);
-
             FillFreeCellSlot();
             FillFieldWithCell();
             ToCheckIfViewOfFieldCorrespondsToItModel();

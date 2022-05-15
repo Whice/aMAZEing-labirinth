@@ -229,7 +229,7 @@ namespace UI
                     this.objectsForBorders.position.x - borderShiftX,
                     this.objectsForBorders.position.x + borderShiftX
                     );
-                Single borderShiftY = this.objectsForBorders.localScale.y * this.camera.position.y/4;
+                Single borderShiftY = this.objectsForBorders.localScale.y * this.camera.position.y/3;
                 this.bordersForMinMaxY = new Vector2(
                     this.objectsForBorders.position.y - borderShiftY,
                     this.objectsForBorders.position.y + borderShiftY
