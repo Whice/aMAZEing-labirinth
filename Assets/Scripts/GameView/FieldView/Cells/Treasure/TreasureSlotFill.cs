@@ -15,6 +15,8 @@ namespace Assets.Scripts.GameView
         private GameObject treasureObject = null;
         [SerializeField]
         private Transform model3DSlot=null;
+        [SerializeField]
+        private SpriteRenderer treasureIconSlot=null;
         public void SetTreasure(TreasureAndStartPointsType type)
         {
             Int32 typeID = (Int32)type;
@@ -25,6 +27,7 @@ namespace Assets.Scripts.GameView
                 this.treasureObject.transform.localPosition = Vector3.zero;
                 //delete
                 this.treasureObject.SetActive(false);
+                this.treasureIconSlot.sprite = GameManager.instance.treasureSpriteProvider.GetSpriteClone(typeID);
                 this.transform.gameObject.SetActive(true);
             }
         }

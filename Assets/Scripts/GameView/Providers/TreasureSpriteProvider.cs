@@ -47,11 +47,11 @@ namespace Assets.Scripts.GameView
 
 
         /// <summary>
-        /// ѕолучить клон сокровища с указанным id.
+        /// ѕолучить клон картинки сокровища с указанным id.
         /// </summary>
         /// <param name="treasureID"></param>
         /// <returns></returns>
-        public Sprite GetPrefabClone(Int32 treasureID)
+        public Sprite GetSpriteClone(Int32 treasureID)
         {
             if (this.resourcesDictionary.ContainsKey(treasureID))
             {
