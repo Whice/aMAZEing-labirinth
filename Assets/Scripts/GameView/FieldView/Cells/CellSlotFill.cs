@@ -136,58 +136,6 @@ namespace Assets.Scripts.GameView
 
         #endregion Перемещение слота со временем.
 
-        /// <summary>
-        /// Получить клон указанного по имени префаба из провайдер.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        protected GameObject GetPrefabClone(String name)
-        {
-            return GameManager.instance.prefabsProvider.GetPrefabClone(name);
-        }
-        /// <summary>
-        /// Заполнить слот ячейкой заданного типа.
-        /// </summary>
-        /// <param name="type"></param>
-        private void SetCellType(CellType type)
-        {
-
-            switch (type)
-            {
-                case CellType.corner:
-                    {
-                        this.cellObject = GetPrefabClone("CornerCell");
-                        break;
-                    }
-                case CellType.line:
-                    {
-                        this.cellObject = GetPrefabClone("LineCell");
-                        break;
-                    }
-                case CellType.threeDirection:
-                    {
-                        this.cellObject = GetPrefabClone("ThreeDirectionCell");
-                        break;
-                    }
-            }
-
-            this.cellTransform.parent = this.transform;
-            this.cellTransform.position = Vector3.zero;
-
-            //Подгонка размеры ячейки под размер слота
-            Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
-            this.cellTransform.localScale *= sizeRatio;
-        }
-        /// <summary>
-        /// Установить ячейку для этого слота из указанного слота.
-        /// </summary>
-        /// <param name="slot"></param>
-        public void SetCellFromSlot(CellSlotFill slot)
-        {
-            this.cellObject = slot.cellObject;
-            SetCellFromModelCell(slot.modelCell);
-        }
-
         #region Поворот.
 
         /// <summary>
@@ -236,6 +184,48 @@ namespace Assets.Scripts.GameView
         #region Ячейка модели.
 
         /// <summary>
+        /// Заполнить слот ячейкой заданного типа.
+        /// </summary>
+        /// <param name="type"></param>
+        private void SetCellType(CellType type)
+        {
+
+            switch (type)
+            {
+                case CellType.corner:
+                    {
+                        this.cellObject = GetPrefabClone("CornerCell");
+                        break;
+                    }
+                case CellType.line:
+                    {
+                        this.cellObject = GetPrefabClone("LineCell");
+                        break;
+                    }
+                case CellType.threeDirection:
+                    {
+                        this.cellObject = GetPrefabClone("ThreeDirectionCell");
+                        break;
+                    }
+            }
+
+            this.cellTransform.parent = this.transform;
+            this.cellTransform.position = Vector3.zero;
+
+            //Подгонка размеры ячейки под размер слота
+            Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
+            this.cellTransform.localScale *= sizeRatio;
+        }
+        /// <summary>
+        /// Установить ячейку для этого слота из указанного слота.
+        /// </summary>
+        /// <param name="slot"></param>
+        public void SetCellFromSlot(CellSlotFill slot)
+        {
+            this.cellObject = slot.cellObject;
+            SetCellFromModelCell(slot.modelCell);
+        }
+        /// <summary>
         /// Ячейка поля из модели.
         /// </summary>
         private FieldCell modelCell;
@@ -260,6 +250,23 @@ namespace Assets.Scripts.GameView
         }
 
         #endregion Ячейка модели.
+
+        #region Сокровище ячейки.
+
+        /// <summary>
+        /// Ячейка для сокровища. Може быть null, не забывать проверять.
+        /// </summary>
+        [SerializeField]
+        private TreasureSlotFill treasureSlot = null;
+        private void FillTreasureSlot()
+        {
+            if (this.treasureSlot != null)
+            {
+
+            }
+        }
+
+        #endregion Сокровище ячейки.
 
         /// <summary>
         /// Ссылка на слот для слота свободной ячейки.

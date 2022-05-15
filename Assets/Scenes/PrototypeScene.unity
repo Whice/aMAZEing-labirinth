@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCameraObjectPrivate: {fileID: 1578473052}
-  prefabsProviderPrivate: {fileID: 1043742808447103870, guid: 2c0432a4225c4754291377a641cc9880, type: 3}
+  prefabsProviderPrivate: {fileID: 11400000, guid: 93a1ccc5f20372340a54d289ed3c2753, type: 2}
 --- !u!4 &2127494192
 Transform:
   m_ObjectHideFlags: 0

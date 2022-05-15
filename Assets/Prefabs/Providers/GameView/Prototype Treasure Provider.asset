@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6224ead423270429cc3329e474fecc, type: 3}
+  m_Name: Prototype Treasure Provider
+  m_EditorClassIdentifier: 
+  resourcesList:
+  - treausre: {fileID: 1908099169025329425, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
+    ID: 6
+  - treausre: {fileID: 1908099169025329425, guid: 5b55eb1d27306204080abad228c5ea38, type: 3}
+    ID: 7
+  - treausre: {fileID: 105756, guid: 6cd0c7b3308fc7544ad2a49e762470f0, type: 3}
+    ID: 8
+  - treausre: {fileID: 1193301868869138, guid: 0c6d87199f687400184146c841adf2bd, type: 3}
+    ID: 9
+  - treausre: {fileID: 1596872523515200, guid: dea84a3662be77b4bad1db42d2b32262, type: 3}
+    ID: 10
+  - treausre: {fileID: 3533622891631013718, guid: a0791d88bce3181448898be1a0689a3e, type: 3}
+    ID: 11
+  - treausre: {fileID: 3533622891631013718, guid: 440fbad3584a7104183db552bdd7722a, type: 3}
+    ID: 12
+  - treausre: {fileID: 3533622891631013718, guid: 7cf088c9a4708684fb8439626ed06571, type: 3}
+    ID: 13
+  - treausre: {fileID: 3533622891631013718, guid: f18b7137d8c55314b97e6334c62eef82, type: 3}
+    ID: 14
+  - treausre: {fileID: 3533622891631013718, guid: 79e06fd561d90c44bb0a48e0ae20b4ca, type: 3}
+    ID: 15
+  - treausre: {fileID: 3533622891631013718, guid: a617e01c178dbe74b9f3b8f3775d0734, type: 3}
+    ID: 16
+  - treausre: {fileID: 3533622891631013718, guid: 1e70b5a9e2bd51446a153e59f51ac002, type: 3}
+    ID: 17
+  - treausre: {fileID: 3533622891631013718, guid: 51faa412d35df7c479e8d0f901952045, type: 3}
+    ID: 18
+  - treausre: {fileID: 88617388462801489, guid: bcdfafca639498942835e9913b4f2145, type: 3}
+    ID: 19
+  - treausre: {fileID: 0}
+    ID: 20
+  - treausre: {fileID: 0}
+    ID: 21
+  - treausre: {fileID: 0}
+    ID: 22
+  - treausre: {fileID: 0}
+    ID: 23
+  - treausre: {fileID: 0}
+    ID: 24
+  - treausre: {fileID: 0}
+    ID: 0
+  - treausre: {fileID: 0}
+    ID: 0
+  - treausre: {fileID: 0}
+    ID: 0
+  - treausre: {fileID: 0}
+    ID: 0
+  - treausre: {fileID: 0}
+    ID: 0

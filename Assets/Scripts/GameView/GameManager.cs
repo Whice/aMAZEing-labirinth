@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameModel;
 using Assets.Scripts.GameModel.Player;
+using Assets.Scripts.GameView;
 using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
