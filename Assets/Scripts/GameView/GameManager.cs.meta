@@ -7,6 +7,7 @@ MonoImporter:
   - mainCameraObjectPrivate: {instanceID: 0}
   - prefabsProviderPrivate: {fileID: 11400000, guid: 93a1ccc5f20372340a54d289ed3c2753, type: 2}
   - treasureProviderPrivate: {fileID: 11400000, guid: 6441ed65c7d2d5b409d39ba133226d10, type: 2}
+  - treasureSpriteProviderPrivate: {fileID: 11400000, guid: 20d0724d271c52d4abf9b768d646cd58, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

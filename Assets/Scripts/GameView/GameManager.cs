@@ -26,6 +26,12 @@ public class GameManager : MonoSingleton<GameManager>
     {
         get=>this.treasureProviderPrivate;
     }
+    [SerializeField]
+    private TreasureSpriteProvider treasureSpriteProviderPrivate = null;
+    public TreasureSpriteProvider treasureSpriteProvider
+    {
+        get=>this.treasureSpriteProviderPrivate;
+    }
 
     #endregion Провайдеры.
 

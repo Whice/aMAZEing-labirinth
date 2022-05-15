@@ -23,6 +23,8 @@ namespace Assets.Scripts.GameView
                 this.treasureObject = GameManager.instance.treasureProvider.GetPrefabClone(typeID);
                 this.treasureObject.transform.parent = this.model3DSlot;
                 this.treasureObject.transform.localPosition = Vector3.zero;
+                //delete
+                this.treasureObject.SetActive(false);
                 this.transform.gameObject.SetActive(true);
             }
         }

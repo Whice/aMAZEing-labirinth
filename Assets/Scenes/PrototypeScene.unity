@@ -428,6 +428,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCameraObjectPrivate: {fileID: 1578473052}
   prefabsProviderPrivate: {fileID: 11400000, guid: 93a1ccc5f20372340a54d289ed3c2753, type: 2}
+  treasureProviderPrivate: {fileID: 11400000, guid: 6441ed65c7d2d5b409d39ba133226d10, type: 2}
+  treasureSpriteProviderPrivate: {fileID: 11400000, guid: 20d0724d271c52d4abf9b768d646cd58, type: 2}
 --- !u!4 &2127494192
 Transform:
   m_ObjectHideFlags: 0
