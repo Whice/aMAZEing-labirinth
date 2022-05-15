@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 275876970843238747}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5557207086561977039
 MeshFilter:
@@ -126,10 +126,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7852535121522449128}
+  m_Children: []
   m_Father: {fileID: 275876970843238747}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2140384718514212103
 Animator:
@@ -258,6 +257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 275876970843238747}
+  - component: {fileID: -8635445048541626964}
   m_Layer: 0
   m_Name: TreasureSlot
   m_TagString: Untagged
@@ -278,70 +278,21 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8730083517795347010}
-  - {fileID: 6673085290092734774}
   - {fileID: 3388026203032712096}
+  - {fileID: 6673085290092734774}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &8062570920580588219
-PrefabInstance:
+--- !u!114 &-8635445048541626964
+MonoBehaviour:
   m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 3388026203032712096}
-    m_Modifications:
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908099169025329425, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-      propertyPath: m_Name
-      value: Treasure1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
---- !u!4 &7852535121522449128 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 224562735932143699, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
-  m_PrefabInstance: {fileID: 8062570920580588219}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8877801747106602795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6fe8dd0680a04da4796f91fa6c52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  model3DSlot: {fileID: 3388026203032712096}

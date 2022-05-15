@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.FieldCells;
+using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using UnityEngine;
 
@@ -247,6 +248,8 @@ namespace Assets.Scripts.GameView
 
             this.modelCell.OnTurnedClockwise += TurnClockwise;
             this.modelCell.OnTurnedCountclockwise += TurnCounterclockwise;
+
+            FillTreasureSlot();
         }
 
         #endregion Ячейка модели.
@@ -260,9 +263,13 @@ namespace Assets.Scripts.GameView
         private TreasureSlotFill treasureSlot = null;
         private void FillTreasureSlot()
         {
-            if (this.treasureSlot != null)
+            if (this.treasureSlot != null && this.modelCell!=null)
             {
-
+                TreasureAndStartPointsType type = this.modelCell.treasureOrStartPoints;
+                if (type != TreasureAndStartPointsType.empty)
+                {
+                    this.treasureSlot.SetTreasure(this.modelCell.treasureOrStartPoints);
+                }
             }
         }
 

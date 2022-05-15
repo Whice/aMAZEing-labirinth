@@ -11,12 +11,23 @@ public class GameManager : MonoSingleton<GameManager>
     {
         get => this.mainCameraObjectPrivate;
     }
+
+    #region Провайдеры.
+
     [SerializeField]
     private GraphicPrefabsProvider prefabsProviderPrivate=null;
     public GraphicPrefabsProvider prefabsProvider
     {
         get=>this.prefabsProviderPrivate;
     }
+    [SerializeField]
+    private TreasureProvider treasureProviderPrivate = null;
+    public TreasureProvider treasureProvider
+    {
+        get=>this.treasureProviderPrivate;
+    }
+
+    #endregion Провайдеры.
 
     /// <summary>
     /// Модель игры, реализовывает логику взаимодействия всех частей.

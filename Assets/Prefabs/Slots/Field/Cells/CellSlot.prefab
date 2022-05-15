@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92fb052a943c4fd4fbb1bea9f238412e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treasureSlot: {fileID: 834425000555255617}
   arrowForFreeCellSlotFill: {fileID: 0}
 --- !u!1001 &269307123530738413
 PrefabInstance:
@@ -102,6 +103,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TreasureSlot
       objectReference: {fileID: 0}
+    - target: {fileID: 8877801747106602795, guid: 57382ca2b2176b9489064a929ac6d41f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57382ca2b2176b9489064a929ac6d41f, type: 3}
 --- !u!4 &29512826323884982 stripped
@@ -109,6 +114,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 275876970843238747, guid: 57382ca2b2176b9489064a929ac6d41f, type: 3}
   m_PrefabInstance: {fileID: 269307123530738413}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &834425000555255617 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -8635445048541626964, guid: 57382ca2b2176b9489064a929ac6d41f, type: 3}
+  m_PrefabInstance: {fileID: 269307123530738413}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc6fe8dd0680a04da4796f91fa6c52f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9156019677603377583
 PrefabInstance:
   m_ObjectHideFlags: 0

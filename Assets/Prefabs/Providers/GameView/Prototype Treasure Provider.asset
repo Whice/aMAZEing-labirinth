@@ -13,51 +13,51 @@ MonoBehaviour:
   m_Name: Prototype Treasure Provider
   m_EditorClassIdentifier: 
   resourcesList:
-  - treausre: {fileID: 1908099169025329425, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
+  - treasure: {fileID: 1908099169025329425, guid: 2e5f3cb6a91e1ec458860cf721e830a6, type: 3}
     ID: 6
-  - treausre: {fileID: 1908099169025329425, guid: 5b55eb1d27306204080abad228c5ea38, type: 3}
+  - treasure: {fileID: 1908099169025329425, guid: 5b55eb1d27306204080abad228c5ea38, type: 3}
     ID: 7
-  - treausre: {fileID: 105756, guid: 6cd0c7b3308fc7544ad2a49e762470f0, type: 3}
+  - treasure: {fileID: 105756, guid: 6cd0c7b3308fc7544ad2a49e762470f0, type: 3}
     ID: 8
-  - treausre: {fileID: 1193301868869138, guid: 0c6d87199f687400184146c841adf2bd, type: 3}
+  - treasure: {fileID: 1193301868869138, guid: 0c6d87199f687400184146c841adf2bd, type: 3}
     ID: 9
-  - treausre: {fileID: 1596872523515200, guid: dea84a3662be77b4bad1db42d2b32262, type: 3}
+  - treasure: {fileID: 1596872523515200, guid: dea84a3662be77b4bad1db42d2b32262, type: 3}
     ID: 10
-  - treausre: {fileID: 3533622891631013718, guid: a0791d88bce3181448898be1a0689a3e, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: a0791d88bce3181448898be1a0689a3e, type: 3}
     ID: 11
-  - treausre: {fileID: 3533622891631013718, guid: 440fbad3584a7104183db552bdd7722a, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: 440fbad3584a7104183db552bdd7722a, type: 3}
     ID: 12
-  - treausre: {fileID: 3533622891631013718, guid: 7cf088c9a4708684fb8439626ed06571, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: 7cf088c9a4708684fb8439626ed06571, type: 3}
     ID: 13
-  - treausre: {fileID: 3533622891631013718, guid: f18b7137d8c55314b97e6334c62eef82, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: f18b7137d8c55314b97e6334c62eef82, type: 3}
     ID: 14
-  - treausre: {fileID: 3533622891631013718, guid: 79e06fd561d90c44bb0a48e0ae20b4ca, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: 79e06fd561d90c44bb0a48e0ae20b4ca, type: 3}
     ID: 15
-  - treausre: {fileID: 3533622891631013718, guid: a617e01c178dbe74b9f3b8f3775d0734, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: a617e01c178dbe74b9f3b8f3775d0734, type: 3}
     ID: 16
-  - treausre: {fileID: 3533622891631013718, guid: 1e70b5a9e2bd51446a153e59f51ac002, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: 1e70b5a9e2bd51446a153e59f51ac002, type: 3}
     ID: 17
-  - treausre: {fileID: 3533622891631013718, guid: 51faa412d35df7c479e8d0f901952045, type: 3}
+  - treasure: {fileID: 3533622891631013718, guid: 51faa412d35df7c479e8d0f901952045, type: 3}
     ID: 18
-  - treausre: {fileID: 88617388462801489, guid: bcdfafca639498942835e9913b4f2145, type: 3}
+  - treasure: {fileID: 88617388462801489, guid: bcdfafca639498942835e9913b4f2145, type: 3}
     ID: 19
-  - treausre: {fileID: 0}
+  - treasure: {fileID: 88617388462801489, guid: b8542a94dea84874d9f978e939e8111e, type: 3}
     ID: 20
-  - treausre: {fileID: 0}
+  - treasure: {fileID: 88617388462801489, guid: b19c01cc9551c2540b382a67bdcd6f1c, type: 3}
     ID: 21
-  - treausre: {fileID: 0}
+  - treasure: {fileID: 88617388462801489, guid: 69e65e6d0de59a14987af6e35b15cf7c, type: 3}
     ID: 22
-  - treausre: {fileID: 0}
+  - treasure: {fileID: 88617388462801489, guid: a38e28bb4c1bf0847aa4108d93589d55, type: 3}
     ID: 23
-  - treausre: {fileID: 0}
+  - treasure: {fileID: 88617388462801489, guid: 66732924f3e4e1e46869d499f2af38d3, type: 3}
     ID: 24
-  - treausre: {fileID: 0}
-    ID: 0
-  - treausre: {fileID: 0}
-    ID: 0
-  - treausre: {fileID: 0}
-    ID: 0
-  - treausre: {fileID: 0}
-    ID: 0
-  - treausre: {fileID: 0}
-    ID: 0
+  - treasure: {fileID: 88617388462801489, guid: fa2aefe3a37f6b446bf1cc1abe9c9632, type: 3}
+    ID: 25
+  - treasure: {fileID: 88617388462801489, guid: 30afb4456caef6447aa1ed8a83b8e15f, type: 3}
+    ID: 26
+  - treasure: {fileID: 88617388462801489, guid: d8604fb760c6eea4c8f4548715c8d74d, type: 3}
+    ID: 27
+  - treasure: {fileID: 88617388462801489, guid: c178a41130372504da19de1d382a770b, type: 3}
+    ID: 28
+  - treasure: {fileID: 88617388462801489, guid: f33a9113837eeba49830fcd9ebe31b22, type: 3}
+    ID: 29

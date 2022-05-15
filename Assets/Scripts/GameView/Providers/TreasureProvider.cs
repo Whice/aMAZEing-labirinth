@@ -12,8 +12,12 @@ namespace Assets.Scripts.GameView
         [Serializable]
         private class ObjectWithID
         {
-            public GameObject treausre;
+#pragma warning disable CS0649
+
+            public GameObject treasure;
             public Int32 ID;
+
+#pragma warning restore CS0649
         }
 
         #region Объекты в провайдере.
@@ -30,7 +34,7 @@ namespace Assets.Scripts.GameView
                     this.resourcesDictionaryField = new Dictionary<Int32, GameObject>(this.resourcesList.Length);
                     foreach (ObjectWithID obj in this.resourcesList)
                     {
-                        this.resourcesDictionaryField.Add(obj.ID, obj.treausre);
+                        this.resourcesDictionaryField.Add(obj.ID, obj.treasure);
                     }
                 }
                 return this.resourcesDictionaryField;
@@ -55,7 +59,7 @@ namespace Assets.Scripts.GameView
             }
             else
             {
-                Debug.Log("In " + nameof(this.name) + " not found treasure with ID: " + treasureID + "!");
+                Debug.LogError("In " + nameof(TreasureProvider) + " not found treasure with ID: " + treasureID + "!");
                 return null;
             }
         }
