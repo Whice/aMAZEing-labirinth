@@ -13,10 +13,20 @@ namespace Assets.Scripts.GameView
         /// Объект сокровища в слоте.
         /// </summary>
         private GameObject treasureObject = null;
+        /// <summary>
+        /// Слот для объемной моделки сокровища.
+        /// </summary>
         [SerializeField]
         private Transform model3DSlot=null;
+        /// <summary>
+        /// Слот для иконки сокровища.
+        /// </summary>
         [SerializeField]
         private SpriteRenderer treasureIconSlot=null;
+        /// <summary>
+        /// Установить сокровище в слот.
+        /// </summary>
+        /// <param name="type"></param>
         public void SetTreasure(TreasureAndStartPointsType type)
         {
             Int32 typeID = (Int32)type;

@@ -261,6 +261,9 @@ namespace Assets.Scripts.GameView
         /// </summary>
         [SerializeField]
         private TreasureSlotFill treasureSlot = null;
+        /// <summary>
+        /// Заполнить слот с сокровищем.
+        /// </summary>
         private void FillTreasureSlot()
         {
             if (this.treasureSlot != null && this.modelCell!=null)
