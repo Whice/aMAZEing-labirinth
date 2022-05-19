@@ -9,7 +9,7 @@
 /// Override <code>Init()</code> method instead of using <code>Awake()</code>
 /// from this class.
 /// </summary>
-public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
+public abstract class MonoSingleton<T> : MonoBehaviourLogger where T : MonoSingleton<T>
 {
     private static T instancePrivate = null;
     public static T instance

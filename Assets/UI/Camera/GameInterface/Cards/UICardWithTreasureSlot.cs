@@ -8,7 +8,7 @@ namespace UI
     /// <summary>
     /// Слот для карты с сокровищем.
     /// </summary>
-    public class UICardWithTreasureSlot : GameViewOriginScript
+    public class UICardWithTreasureSlot : GameUIOriginScript
     {
         #region Внешние даные.
 

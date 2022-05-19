@@ -164,23 +164,18 @@ namespace Assets.Scripts.GameView
             this.arrowObject = this.cellObject = this.gameObject;
         }
 
+        #region Симуляция/считывание клика по слоту.
+
         /// <summary>
         /// Событие клика на стрелочку.
         /// </summary>
         public Action<Transform, ArrowForFreeCellSlotFill> OnArrowClicked;
-        /// <summary>
-        /// Симулировать клик по слоту со стрелочкой.
-        /// </summary>
-        public void SimulateOnArrowSlotClick()
+        public override void SimulateOnSlotClick()
         {
             this.OnArrowClicked?.Invoke(this.transform, this);
         }
-        private void OnMouseUp()
-        {
-            SimulateOnArrowSlotClick();
-        }
-        private void OnMouseDown()
-        {
-        }
+
+        #endregion Симуляция/считывание клика по слоту.
+
     }
 }

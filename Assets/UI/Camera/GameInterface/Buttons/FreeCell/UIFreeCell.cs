@@ -9,7 +9,7 @@ namespace UI
     /// <summary>
     /// Скрипт для 
     /// </summary>
-    public class UIFreeCell : GameViewOriginScript
+    public class UIFreeCell : GameUIOriginScript
     {
 
         /// <summary>
@@ -74,8 +74,9 @@ namespace UI
             }
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             if (this.lineCellUISprite == null)
             {
                 LogError(nameof(this.lineCellUISprite) + " not found!");

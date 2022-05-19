@@ -2,6 +2,7 @@
 using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.GameView
 {
@@ -314,5 +315,35 @@ namespace Assets.Scripts.GameView
 
             return true;
         }
+
+
+        #region Симуляция/считывание клика по слоту.
+
+        /// <summary>
+        /// Событие клика на стрелочку.
+        /// </summary>
+        public Action OnSlotClicked;
+        /// <summary>
+        /// Симулировать клик по слоту.
+        /// </summary>
+        public virtual void SimulateOnSlotClick()
+        {
+            this.OnSlotClicked?.Invoke();
+        }
+        private void OnMouseUp()
+        {
+            LogInfo(EventSystem.current.IsPointerOverGameObject().ToString());
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+            {
+                SimulateOnSlotClick();
+            }
+        }
+        private void OnMouseDown()
+        {
+            LogInfo(EventSystem.current.IsPointerOverGameObject().ToString());
+        }
+
+        #endregion Симуляция/считывание клика по слоту.
+
     }
 }
