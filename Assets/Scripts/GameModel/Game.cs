@@ -230,6 +230,10 @@ namespace Assets.Scripts.GameModel
         /// Номер следующего победителя.
         /// </summary>
         private Int32 numberOfNextWinner = 0;
+        /// <summary>
+        /// Переход к следующему ходу.
+        /// </summary>
+        public event Action onNextTurnMoved;
 
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
@@ -370,6 +374,7 @@ namespace Assets.Scripts.GameModel
             if(this.currentPhasePrivate==TurnPhase.movingCell)
             {
                 SetNextPlayer();
+                this.onNextTurnMoved?.Invoke();
             }
         }
 
