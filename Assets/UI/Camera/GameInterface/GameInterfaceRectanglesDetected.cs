@@ -7,15 +7,31 @@ namespace UI
 
     public class GameInterfaceRectanglesDetected : MonoSingleton<GameInterfaceRectanglesDetected>
     {
+        /// <summary>
+        /// Инфо о положении всех видимых UI элементов.
+        /// </summary>
         private List<Transform> gameUIOriginScriptTransforms = new List<Transform>();
+        /// <summary>
+        /// Добавить скрипт видимого элемента.
+        /// </summary>
+        /// <param name="gameViewOriginScript"></param>
         public void AddGameViewOriginScripts(GameUIOriginScript gameViewOriginScript)
         {
             this.gameUIOriginScriptTransforms.Add(gameViewOriginScript.transform);
         }
+        /// <summary>
+        /// Удалить скрипт видимого элемента.
+        /// </summary>
+        /// <param name="gameViewOriginScript"></param>
         public void RemoveGameViewOriginScripts(GameUIOriginScript gameViewOriginScript)
         {
             this.gameUIOriginScriptTransforms.Remove(gameViewOriginScript.transform);
         }
+        /// <summary>
+        /// Получить прямоугольник видимого элемента.
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
         private Rect GetElementRect(Transform element)
         {
             Vector3 currentPosition = element.position;
@@ -48,14 +64,6 @@ namespace UI
                 }
 
                 return false;
-            }
-        }
-
-        private void Update()
-        {
-            if (isPointerOnUIElement)
-            {
-                Debug.Log("Elemetn!!" + Input.mousePosition);
             }
         }
     }

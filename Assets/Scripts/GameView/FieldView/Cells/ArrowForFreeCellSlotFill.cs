@@ -169,9 +169,10 @@ namespace Assets.Scripts.GameView
         /// <summary>
         /// Событие клика на стрелочку.
         /// </summary>
-        public Action<Transform, ArrowForFreeCellSlotFill> OnArrowClicked;
-        public override void SimulateOnSlotClick()
+        public event Action<Transform, ArrowForFreeCellSlotFill> OnArrowClicked;
+        public override void SimulateOnClick()
         {
+            base.SimulateOnClick();
             this.OnArrowClicked?.Invoke(this.transform, this);
         }
 
