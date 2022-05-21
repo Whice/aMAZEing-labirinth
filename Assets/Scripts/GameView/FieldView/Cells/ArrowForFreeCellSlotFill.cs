@@ -37,6 +37,10 @@ namespace Assets.Scripts.GameView
     public class ArrowForFreeCellSlotFill : CellSlotFill
     {
         /// <summary>
+        /// Высота слота стрелочки.
+        /// </summary>
+        public const Single HEIGHT_FOR_ARROW_SLOT = 0.0f;
+        /// <summary>
         /// Изначальный поворот ячейки.
         /// </summary>
         private Vector3 originRotate = new Vector3(999, 0, 0);
@@ -62,12 +66,6 @@ namespace Assets.Scripts.GameView
             this.arrowTransform.parent = this.transform;
             this.cellTransform.position = Vector3.zero;
             this.arrowTransform.position = Vector3.zero;
-
-            //Подгонка размеры ячейки под размер слота
-            Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
-            this.cellTransform.localScale *= sizeRatio;
-            sizeRatio = this.transform.localScale.x / this.arrowTransform.localScale.x;
-            this.arrowTransform.localScale *= sizeRatio;
         }
         /// <summary>
         /// Объект стрелочки из провайдера для слота.

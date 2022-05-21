@@ -212,10 +212,6 @@ namespace Assets.Scripts.GameView
 
             this.cellTransform.parent = this.transform;
             this.cellTransform.position = Vector3.zero;
-
-            //Подгонка размеры ячейки под размер слота
-            Single sizeRatio = this.transform.localScale.x / this.cellTransform.localScale.x;
-            this.cellTransform.localScale *= sizeRatio;
         }
         /// <summary>
         /// Установить ячейку для этого слота из указанного слота.

@@ -134,7 +134,7 @@ namespace Assets.Scripts.GameView
             Single positionMultiplier = this.sizeCellSlot + this.spacingBetweenCellSlot;
             Int32 currentCellNumber = 0;
             const Int32 COUNT_SLOTS_IN_LINE = Field.FIELD_SIZE / 2;
-            Vector3 leftLineStart = new Vector3(0, 0, 0);
+            Vector3 leftLineStart = new Vector3(0, ArrowForFreeCellSlotFill.HEIGHT_FOR_ARROW_SLOT, 0);
             for (Int32 i = 0; i < COUNT_SLOTS_IN_LINE; i++)
             {
                 //левая линия
@@ -568,7 +568,7 @@ namespace Assets.Scripts.GameView
                 else
                 {
                     this.freeCellSlot.transform.parent = parent;
-                    this.freeCellSlot.transform.localPosition = Vector3.zero;
+                    this.freeCellSlot.transform.localPosition = new Vector3(0, -ArrowForFreeCellSlotFill.HEIGHT_FOR_ARROW_SLOT, 0);
 
                     ArrowForFreeCellSlotFill oldSlot = this.freeCellSlot.arrowForFreeCellSlotFill as ArrowForFreeCellSlotFill;
                     slot.freeCellSlot = this.freeCellSlot;

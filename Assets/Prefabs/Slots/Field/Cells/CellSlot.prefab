@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThreeDirectionCell
       objectReference: {fileID: 0}
+    - target: {fileID: 4609701199679685033, guid: 7c0d7f4d4c481a04ab91a4c1c314ce5b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c0d7f4d4c481a04ab91a4c1c314ce5b, type: 3}
 --- !u!4 &4788489880389597062 stripped
