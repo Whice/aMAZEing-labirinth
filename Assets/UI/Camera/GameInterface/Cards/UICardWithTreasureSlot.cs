@@ -91,5 +91,14 @@ namespace UI
                 this.treasureSlot.sprite = GameManager.instance.treasureSpriteProvider.GetSpriteClone(treasureID);
             }
         }
+        /// <summary>
+        /// Скрыть слот с картой.
+        /// Родитель при этом становится null.
+        /// </summary>
+        public void Hide()
+        {
+            this.gameObject.SetActive(false);
+            this.transform.parent = null;
+        }
     }
 }

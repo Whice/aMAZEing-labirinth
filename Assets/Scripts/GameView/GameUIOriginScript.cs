@@ -14,7 +14,6 @@ namespace UI
         protected virtual void Awake()
         {
             GameInterfaceRectanglesDetected.instance.AddGameViewOriginScripts(this);
-            LogInfo(this.gameObject.name);
         }
     }
 }

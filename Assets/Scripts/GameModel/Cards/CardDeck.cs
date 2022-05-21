@@ -72,11 +72,27 @@ namespace Assets.Scripts.GameModel.Cards
         /// <summary>
         /// Список карт.
         /// </summary>
-        List<Card> cards = null;
+        private List<Card> cards = null;
         /// <summary>
-        /// Верхняя карта в колоде.
-        /// <br/>Эта карта будет вытащена из колоды первой.
+        /// Сокровища в картах этой колоды.
         /// </summary>
+        public TreasureAndStartPointsType[] treasuresOfThisDeck
+        {
+            get
+            {
+                TreasureAndStartPointsType[] treasures = new TreasureAndStartPointsType[this.count];
+                for (Int32 i = 0; i < this.cards.Count; i++)
+                {
+                    treasures[i] = this.cards[i].treasure;
+                }
+                return treasures;
+            }
+
+        }    
+        /// <summary>
+                 /// Верхняя карта в колоде.
+                 /// <br/>Эта карта будет вытащена из колоды первой.
+                 /// </summary>
         public Card topCard
         {
             get => this.lastCardNumber > -1 ? this.cards[this.lastCardNumber] : null;

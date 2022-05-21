@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameModel.Cards;
 using Assets.Scripts.GameModel.PlayingField;
+using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Drawing;
 
@@ -187,6 +188,14 @@ namespace Assets.Scripts.GameModel.Player
         public Card cardForSearch
         {
             get => this.cardDeck.topCard;
+        }
+        /// <summary>
+        /// Сокровища в картах колоды этого игрока.
+        /// </summary>
+        public TreasureAndStartPointsType[] treasuresOfThisDeck
+        {
+            get => this.cardDeck.treasuresOfThisDeck;
+
         }
         /// <summary>
         /// Количество карт в колоде.

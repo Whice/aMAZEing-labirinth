@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.GameView
 {
     [Serializable]
-    public class GameObjectProvider : ScriptableObject
+    public abstract class GameObjectProvider : ScriptableObject
     {
         #region Объекты в провайдере.
 
@@ -39,7 +39,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         /// <param name="prefabName"></param>
         /// <returns></returns>
-        public GameObject GetPrefabClone(String prefabName)
+        public virtual GameObject GetPrefabClone(String prefabName)
         {
             if (this.resourcesDictionary.ContainsKey(prefabName))
             {

@@ -32,6 +32,12 @@ public class GameManager : MonoSingleton<GameManager>
     {
         get=>this.treasureSpriteProviderPrivate;
     }
+    [SerializeField]
+    private UICardWithTreasureSlotProvider uiCardWithTreasureSlotProviderPrivate = null;
+    public UICardWithTreasureSlotProvider uiCardWithTreasureSlotProvider
+    {
+        get=>this.uiCardWithTreasureSlotProviderPrivate;
+    }
 
     #endregion Провайдеры.
 
@@ -66,6 +72,13 @@ public class GameManager : MonoSingleton<GameManager>
             return this.gameModelPrivate;
         }
     }
+
+    #region Pulls
+
+
+
+    #endregion Pulls
+
 
     private void Awake()
     {

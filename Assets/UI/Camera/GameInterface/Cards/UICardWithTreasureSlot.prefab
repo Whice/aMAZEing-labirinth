@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8070872841867578857}
   - component: {fileID: 1992334409061845673}
   m_Layer: 0
-  m_Name: CardWithTreasure
+  m_Name: UICardWithTreasureSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
