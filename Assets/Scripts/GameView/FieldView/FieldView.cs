@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.GameModel.PlayingField;
-using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using System;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace Assets.Scripts.GameView
     /// <summary>
     /// Представление игрового поля.
     /// </summary>
-    public class FieldView : GameViewOriginScript
+    public class FieldView : GameWorldViewOriginScript
     {
         #region Данные игрового поля.
 

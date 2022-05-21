@@ -7,7 +7,7 @@ namespace Assets.Scripts.GameView
     /// <summary>
     /// Скрипт заполнения и управления представлением сокровища.
     /// </summary>
-    public class TreasureSlotFill : GameViewOriginScript
+    public class TreasureSlotFill : GameWorldViewOriginScript
     {
         /// <summary>
         /// Объект сокровища в слоте.

@@ -1,10 +1,8 @@
 using Assets.Scripts.GameModel;
 using System;
-using UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class GameViewOriginScript : MonoBehaviourLogger
+public abstract class GameViewOriginScript : MonoBehaviourLogger
 {
     /// <summary>
     /// Модель игры, реализовывает логику взаимодействия всех частей.
@@ -25,29 +23,4 @@ public class GameViewOriginScript : MonoBehaviourLogger
         return GameManager.instance.prefabsProvider.GetPrefabClone(name);
     }
 
-    #region Симуляция/считывание клика по объекту.
-
-    /// <summary>
-    /// Событие клика на стрелочку.
-    /// </summary>
-    public event Action OnSlotClicked;
-    /// <summary>
-    /// Симулировать клик по объекту.
-    /// </summary>
-    public virtual void SimulateOnClick()
-    {
-        this.OnSlotClicked?.Invoke();
-    }
-    private void OnMouseUp()
-    {
-        if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
-        {
-            SimulateOnClick();
-        }
-    }
-    private void OnMouseDown()
-    {
-    }
-
-    #endregion Симуляция/считывание клика по объекту.
 }

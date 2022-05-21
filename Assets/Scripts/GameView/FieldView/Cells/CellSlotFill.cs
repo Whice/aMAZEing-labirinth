@@ -2,7 +2,6 @@
 using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.GameView
 {
@@ -10,7 +9,7 @@ namespace Assets.Scripts.GameView
     /// Слот для ячейки поля.
     /// <br/>Размер и позиция слота зависят от соответствующих параметров ячейки ячейки.
     /// </summary>
-    public class CellSlotFill : GameViewOriginScript
+    public class CellSlotFill : GameWorldViewOriginScript
     {
         /// <summary>
         /// Объект ячейки в слоте.
