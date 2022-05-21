@@ -314,5 +314,11 @@ namespace Assets.Scripts.GameView
 
             return true;
         }
+
+        public override void SimulateOnClick()
+        {
+            base.SimulateOnClick();
+            LogInfo("Cell: " + this.positionInField.x.ToString() + " " + this.positionInField.y.ToString());
+        }
     }
 }

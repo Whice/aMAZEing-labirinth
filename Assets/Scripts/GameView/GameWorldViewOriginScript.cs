@@ -1,5 +1,6 @@
 ﻿using System;
 using UI;
+using UnityEngine;
 
 namespace Assets.Scripts.GameView
 {
@@ -21,15 +22,23 @@ namespace Assets.Scripts.GameView
         {
             this.OnSlotClicked?.Invoke();
         }
+        /// <summary>
+        /// Позиция курсора мыши до нажатия на кнопку.
+        /// </summary>
+        private Vector3 cursorPositionBeforeMouseDown;
         private void OnMouseUp()
         {
-            if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
+            if (this.cursorPositionBeforeMouseDown==Input.mousePosition)
             {
-                SimulateOnClick();
+                if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
+                {
+                    SimulateOnClick();
+                }
             }
         }
         private void OnMouseDown()
         {
+            this.cursorPositionBeforeMouseDown = Input.mousePosition;
         }
 
         #endregion Симуляция/считывание клика по объекту.
