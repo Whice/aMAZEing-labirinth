@@ -262,7 +262,7 @@ namespace Assets.Scripts.GameModel
             {
                 switch (side)
                 {
-                    case FieldSide.up:
+                    case FieldSide.top:
                         {
                             successfulMove = this.field.MoveLineUp(numberLine);
                             break;
@@ -272,7 +272,7 @@ namespace Assets.Scripts.GameModel
                             successfulMove = this.field.MoveLineRight(numberLine);
                             break;
                         }
-                    case FieldSide.down:
+                    case FieldSide.bottom:
                         {
                             successfulMove = this.field.MoveLineDown(numberLine);
                             break;
@@ -340,13 +340,15 @@ namespace Assets.Scripts.GameModel
         /// <returns>true, если аватар игрока был перемещен.</returns>
         public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
         {
-            Boolean successfulMove = this.field.IsPossibleMove(this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
+            Boolean successfulMove = this.currentPhase == TurnPhase.movingAvatar;
+            successfulMove = this.field.IsPossibleMove(this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
 
-            Int32 oldPositionX = this.currentPlayer.positionX;
-            Int32 oldPositionY = this.currentPlayer.positionY;
 
             if (successfulMove)
             {
+                Int32 oldPositionX = this.currentPlayer.positionX;
+                Int32 oldPositionY = this.currentPlayer.positionY;
+
                 this.currentPlayer.SetPosition(x, y);
                 TryGetTreasureFromFieldForCurrentPlayer();
 
@@ -366,6 +368,10 @@ namespace Assets.Scripts.GameModel
             return successfulMove;
         }
         /// <summary>
+        /// Ход перешел к следующему игроку.
+        /// </summary>
+        public event Action onPlayerChanged;
+        /// <summary>
         /// Установить следующего играющего игрока.
         /// <br/>Выбирается следующий игрок из массива, который не победил.
         /// </summary>
@@ -381,6 +387,8 @@ namespace Assets.Scripts.GameModel
                 }
             }
             while (this.currentPlayer.isWinner);
+
+            this.onPlayerChanged?.Invoke();
         }
         /// <summary>
         /// Установить следующую фазу, с переходом хода к следующиму игроку.

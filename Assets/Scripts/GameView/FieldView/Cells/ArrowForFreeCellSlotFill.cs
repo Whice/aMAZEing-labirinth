@@ -1,35 +1,9 @@
-﻿using System;
+﻿using Assets.Scripts.GameModel.PlayingField;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.GameView
 {
-    /// <summary>
-    /// Сторона игрового поля.
-    /// </summary>
-    public enum FieldSide
-    {
-        /// <summary>
-        /// Неопознано.
-        /// </summary>
-        unknow=0,
-        /// <summary>
-        /// Левая.
-        /// </summary>
-        left=1,
-        /// <summary>
-        /// Правая.
-        /// </summary>
-        right=2,
-        /// <summary>
-        /// Верхняя.
-        /// </summary>
-        top=3,
-        /// <summary>
-        /// Нижняя.
-        /// </summary>
-        bottom=4,
-    }
-
     /// <summary>
     /// Слот стрелочки, куда будет помещена свободная ячейка.
     /// <br/>Размер и позиция слота зависят от соответствующих параметров ячейки ячейки.

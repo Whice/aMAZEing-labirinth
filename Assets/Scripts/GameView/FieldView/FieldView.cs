@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
+using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
 using UnityEngine;
 
@@ -123,7 +124,10 @@ namespace Assets.Scripts.GameView
         }
         private void MoveAvatarInModel(CellSlotFill cellSlot)
         {
-            this.gameModel.SetPlayerAvatarToField(cellSlot.positionInField.x, cellSlot.positionInField.y);
+            if (this.gameModel.currentPhase == TurnPhase.movingAvatar)
+            {
+                this.gameModel.SetPlayerAvatarToField(cellSlot.positionInField.x, cellSlot.positionInField.y);
+            }
         }
 
         #endregion Игровые аватары.
@@ -239,35 +243,9 @@ namespace Assets.Scripts.GameView
         /// </summary>
         public event Action OnEndLineMove;
         /// <summary>
-        /// Направления для сдвига.
+        /// Сторона, к которой производится сдвиг.
         /// </summary>
-        private enum DirectionShift
-        {
-            /// <summary>
-            /// Неизвестно.
-            /// </summary>
-            unknow = 0,
-            /// <summary>
-            /// Вправо.
-            /// </summary>
-            toRight = 1,
-            /// <summary>
-            /// Вниз.
-            /// </summary>
-            toBottom = 2,
-            /// <summary>
-            /// Влево.
-            /// </summary>
-            toLeft = 3,
-            /// <summary>
-            /// Вверх.
-            /// </summary>
-            toTop = 4,
-        }
-        /// <summary>
-        /// Напрвление, куда производится сдвиг.
-        /// </summary>
-        private DirectionShift directionShift;
+        private FieldSide sideWhereToMove;
         /// <summary>
         /// Номер линии, по которой выполняется сдвиг.
         /// </summary>
@@ -319,9 +297,9 @@ namespace Assets.Scripts.GameView
             Int32 positionLastCell = 0;
             Int32 slotsForShiftCounter = 0;
 
-            switch (this.directionShift)
+            switch (this.sideWhereToMove)
             {
-                case DirectionShift.toRight:
+                case FieldSide.right:
                     {
                         positionLastCell = this.slots[0, numberLine].positionInField.x;
                         for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
@@ -338,7 +316,7 @@ namespace Assets.Scripts.GameView
                         }
                         break;
                     }
-                case DirectionShift.toLeft:
+                case FieldSide.left:
                     {
                         positionLastCell = this.slots[Field.FIELD_SIZE - 1, numberLine].positionInField.x;
                         for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
@@ -355,7 +333,7 @@ namespace Assets.Scripts.GameView
                         }
                         break;
                     }
-                case DirectionShift.toTop:
+                case FieldSide.top:
                     {
                         positionLastCell = this.slots[numberLine, 0].positionInField.y;
                         for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
@@ -372,7 +350,7 @@ namespace Assets.Scripts.GameView
                         }
                         break;
                     }
-                case DirectionShift.toBottom:
+                case FieldSide.bottom:
                     {
                         positionLastCell = this.slots[numberLine, Field.FIELD_SIZE - 1].positionInField.y;
                         for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
@@ -397,7 +375,7 @@ namespace Assets.Scripts.GameView
             oldArrow.freeCellSlot = null;
             oldFreeSlot.arrowForFreeCellSlotFill = null;
 
-            if (this.directionShift == DirectionShift.toLeft || this.directionShift == DirectionShift.toRight)
+            if (this.sideWhereToMove == FieldSide.left || this.sideWhereToMove == FieldSide.right)
             {
                 oldFreeSlot.SetTargetSlotPosition(positionLastCell, numberLine, MAX_TIME_SHIFT);
             }
@@ -423,7 +401,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         private void EndPerformShift()
         {
-            if (this.directionShift != DirectionShift.unknow)
+            if (this.sideWhereToMove != FieldSide.unknow)
             {
 
                 Int32 numberLine = this.numberLineForShift;
@@ -437,9 +415,9 @@ namespace Assets.Scripts.GameView
                     this.slots[i, j].SetSlotPosition(i, j);
                 };
 
-                switch (this.directionShift)
+                switch (this.sideWhereToMove)
                 {
-                    case DirectionShift.toRight:
+                    case FieldSide.right:
                         {
 
                             for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
@@ -449,7 +427,7 @@ namespace Assets.Scripts.GameView
 
                             break;
                         }
-                    case DirectionShift.toLeft:
+                    case FieldSide.left:
                         {
                             for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                             {
@@ -458,7 +436,7 @@ namespace Assets.Scripts.GameView
 
                             break;
                         }
-                    case DirectionShift.toTop:
+                    case FieldSide.top:
                         {
 
                             for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
@@ -468,7 +446,7 @@ namespace Assets.Scripts.GameView
 
                             break;
                         }
-                    case DirectionShift.toBottom:
+                    case FieldSide.bottom:
                         {
                             for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                             {
@@ -483,7 +461,7 @@ namespace Assets.Scripts.GameView
             }
             else
             {
-                LogError("In " + nameof(EndPerformShift) + " " + nameof(DirectionShift) + " is " + nameof(DirectionShift.unknow));
+                LogError("In " + nameof(EndPerformShift) + " " + nameof(FieldSide) + " is " + nameof(FieldSide.unknow));
             }
 
             this.isShifting = false;
@@ -524,46 +502,45 @@ namespace Assets.Scripts.GameView
         /// <param name="slotWithFreeSlot">Слот, куда была помещена свободная ячейка при начале движения.</param>
         private void BeginPerformShift(ArrowForFreeCellSlotFill slotWithFreeSlot)
         {
-            if (!this.isShifting)
+            if (!this.isShifting && this.gameModel.currentPhase == TurnPhase.movingCell)
             {
-
-                if (slotWithFreeSlot.side != FieldSide.unknow)
+                FieldSide side = slotWithFreeSlot.side;
+                if (side != FieldSide.unknow)
                 {
 
                     this.isShifting = true;
                     this.timeShift = 0;
 
-                    switch (slotWithFreeSlot.side)
+                    switch (side)
                     {
                         case FieldSide.right:
                             {
                                 this.numberLineForShift = slotWithFreeSlot.positionInField.y;
-                                this.directionShift = DirectionShift.toLeft;
-                                this.playingField.MoveLineLeft(this.numberLineForShift);
+                                this.sideWhereToMove = FieldSide.left;
+                                //this.playingField.MoveLineLeft(this.numberLineForShift);
                                 break;
                             }
                         case FieldSide.left:
                             {
                                 this.numberLineForShift = slotWithFreeSlot.positionInField.y;
-                                this.directionShift = DirectionShift.toRight;
-                                this.playingField.MoveLineRight(this.numberLineForShift);
+                                this.sideWhereToMove = FieldSide.right;
                                 break;
                             }
                         case FieldSide.top:
                             {
                                 this.numberLineForShift = slotWithFreeSlot.positionInField.x;
-                                this.directionShift = DirectionShift.toBottom;
-                                this.playingField.MoveLineUp(this.numberLineForShift);
+                                this.sideWhereToMove = FieldSide.bottom;
                                 break;
                             }
                         case FieldSide.bottom:
                             {
                                 this.numberLineForShift = slotWithFreeSlot.positionInField.x;
-                                this.directionShift = DirectionShift.toTop;
-                                this.playingField.MoveLineDown(this.numberLineForShift);
+                                this.sideWhereToMove = FieldSide.top;
                                 break;
                             }
                     }
+                    side = (FieldSide)(((Int32)side) * -1);
+                    this.gameModel.SetFreeCellToField(this.numberLineForShift, side);
                     BeginAnimationOfPerformShift();
                 }
                 else

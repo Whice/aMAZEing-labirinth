@@ -431,6 +431,7 @@ MonoBehaviour:
   treasureProviderPrivate: {fileID: 11400000, guid: 6441ed65c7d2d5b409d39ba133226d10, type: 2}
   treasureSpriteProviderPrivate: {fileID: 11400000, guid: 20d0724d271c52d4abf9b768d646cd58, type: 2}
   uiCardWithTreasureSlotProviderPrivate: {fileID: 11400000, guid: 8a9874ed93328184883afa386624e777, type: 2}
+  playerAvatarsProviderPrivate: {fileID: 11400000, guid: a8d66ba1405150440a50dda1c6cdbba8, type: 2}
 --- !u!4 &2127494192
 Transform:
   m_ObjectHideFlags: 0

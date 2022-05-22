@@ -14,7 +14,7 @@
         /// <summary>
         /// Верхняя сторона.
         /// </summary>
-        up = 1,
+        top = 1,
         /// <summary>
         /// Правая сторона.
         /// </summary>
@@ -22,7 +22,7 @@
         /// <summary>
         /// Нижняя сторона.
         /// </summary>
-        down = -1,
+        bottom = -1,
         /// <summary>
         /// Левая сторона.
         /// </summary>

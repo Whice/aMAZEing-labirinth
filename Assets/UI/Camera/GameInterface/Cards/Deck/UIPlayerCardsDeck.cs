@@ -1,4 +1,5 @@
 using Assets.Scripts.GameModel.PlayingField.Treasures;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,14 +13,31 @@ namespace UI
         /// </summary>
         private List<UICardWithTreasureSlot> cardSlots;
 
+        private Int32 countCards
+        {
+            get => this.gameModel.currentPlayer.countCardInDeck;
+        }
+        private void CreateDeck()
+        {
+            this.cardSlots = new List<UICardWithTreasureSlot>(this.countCards);
+        }
+        private void ClearDeck()
+        {
+            for (Int32 i = 0; i < this.cardSlots.Count; i++)
+            {
+                this.cardSlots[i].Hide();
+            }
+            this.cardSlots.Clear();
+        }
+
         /// <summary>
         /// Заполнить ui колоду игрока.
         /// </summary>
         private void FillPlayersDeck()
         {
+            ClearDeck();
             UICardWithTreasureSlot currentSlot = null;
             TreasureAndStartPointsType[] treasures = this.gameModel.currentPlayer.treasuresOfThisDeck;
-            this.cardSlots = new List<UICardWithTreasureSlot>(treasures.Length);
             foreach (TreasureAndStartPointsType treasure in treasures)
             {
                 currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
@@ -34,7 +52,17 @@ namespace UI
         {
             base.Awake();
 
+            this.gameModel.onPlayerChanged += FillPlayersDeck;
+
+            CreateDeck();
             FillPlayersDeck();
+        }
+
+        protected override void OnDestroy()
+        {
+
+            this.gameModel.onPlayerChanged -= FillPlayersDeck;
+            base.OnDestroy();
         }
     }
 }

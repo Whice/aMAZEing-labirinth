@@ -81,7 +81,7 @@ namespace Assets.Scripts.GameModel.Cards
             get
             {
                 TreasureAndStartPointsType[] treasures = new TreasureAndStartPointsType[this.count];
-                for (Int32 i = 0; i < this.cards.Count; i++)
+                for (Int32 i = 0; i < this.count; i++)
                 {
                     treasures[i] = this.cards[i].treasure;
                 }
