@@ -56,7 +56,8 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="cardDeck">Карты для колоды игрока.</param>
         /// <param name="positionX">Местоположение по оси X.</param>
         /// <param name="positionY">Местоположение по оси Y.</param>
-        public GamePlayer(String name, Color color, CardDeck cardDeck, Int32 positionX, Int32 positionY) : base(name, color)
+        public GamePlayer(String name, Color color, CardDeck cardDeck, Int32 positionX, Int32 positionY, Int32 playerNumer)
+            : base(name, color, playerNumer)
         {
             this.cardDeck = cardDeck;
             SetPosition(positionX, positionY);
@@ -69,7 +70,7 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="positionX">Местоположение по оси X.</param>
         /// <param name="positionY">Местоположение по оси Y.</param>
         public GamePlayer(PlayerInfo info, CardDeck cardDeck, Int32 positionX, Int32 positionY)
-            : this(info.name, info.color, cardDeck, positionX, positionY) { }
+            : this(info.name, info.color, cardDeck, positionX, positionY, info.playerNumer) { }
 
 
         #region Местоположение.
@@ -223,7 +224,7 @@ namespace Assets.Scripts.GameModel.Player
         public GamePlayer Clone()
         {
             CardDeck cardDeck = this.cardDeck.Clone();
-            return new GamePlayer(this.name, this.color, cardDeck, this.positionX, this.positionY);
+            return new GamePlayer(this.name, this.color, cardDeck, this.positionX, this.positionY, playerNumer);
         }
 
         #region Сравнение.

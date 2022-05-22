@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.GameModel.PlayingField;
+﻿using Assets.Scripts.GameModel.Player;
+using Assets.Scripts.GameModel.PlayingField;
 using System;
 using UnityEngine;
 
@@ -74,25 +75,58 @@ namespace Assets.Scripts.GameView
                     this.slots[i, j].SetCellFromModelCell(this.playingField[i, j]);
                     this.slots[i, j].SetSlotPosition(i, j);
                     this.slots[i, j].transform.parent = this.slotForFieldSlots;
+                    this.slots[i, j].OnCellSlotClicked += MoveAvatarInModel;
                 }
+
+            
+            //Установить игроков на поле.
+            Int32 playerPositionX;
+            Int32 playerPositionY;
+            for (Int32 i = 0; i < this.gameModel.players.Length; ++i)
+            {
+                playerPositionX = this.gameModel.players[i].positionX;
+                playerPositionY = this.gameModel.players[i].positionY;
+                this.slots[playerPositionX, playerPositionY].SetPlayerAvatarSlot(i);
+            }
         }
 
         #endregion Ячейки игрового поля.
 
-        private void Update()
+        #region Игровые аватары.
+
+        /// <summary>
+        ///  Игрок, которому принадлежит текущий ход.
+        /// </summary>
+        private GamePlayer gamePlayer
         {
-            if (this.isShifting)
-            {
-                this.timeShift += Time.deltaTime;
-
-                PerformShift();
-
-                if (this.timeShift > MAX_TIME_SHIFT)
-                {
-                    EndPerformShift();
-                }
-            }
+            get => this.gameModel.currentPlayer;
         }
+        /// <summary>
+        ///  Номер игрока, которому принадлежит текущий ход.
+        /// </summary>
+        private Int32 currentPlayerNumber
+        {
+            get => this.gameModel.currentPlayerNumber;
+        }
+        /// <summary>
+        /// Передвинуть аватар игрока в представлении.
+        /// </summary>
+        /// <param name="fromX"></param>
+        /// <param name="fromY"></param>
+        /// <param name="toX"></param>
+        /// <param name="toY"></param>
+        private void MoveAvatarView(Int32 fromX, Int32 fromY, Int32 toX, Int32 toY)
+        {
+            Int32 playerNumber = this.currentPlayerNumber;
+            this.slots[toX, toY].SwapAvatarSlot(this.slots[fromX, fromY], playerNumber);
+
+        }
+        private void MoveAvatarInModel(CellSlotFill cellSlot)
+        {
+            this.gameModel.SetPlayerAvatarToField(cellSlot.positionInField.x, cellSlot.positionInField.y);
+        }
+
+        #endregion Игровые аватары.
 
         #region Стрелочки игрового поля.
 
@@ -617,6 +651,35 @@ namespace Assets.Scripts.GameView
             ToCheckIfViewOfFieldCorrespondsToItModel();
 
             AddArrowSlotsForFreeCell();
+
+            this.gameModel.onAvatarMoved += MoveAvatarView;
+        }
+        private void Update()
+        {
+            if (this.isShifting)
+            {
+                this.timeShift += Time.deltaTime;
+
+                PerformShift();
+
+                if (this.timeShift > MAX_TIME_SHIFT)
+                {
+                    EndPerformShift();
+                }
+            }
+        }
+
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            foreach (CellSlotFill slot in this.slots)
+            {
+                slot.OnCellSlotClicked -= MoveAvatarInModel;
+            }
+
+
+            this.gameModel.onAvatarMoved -= MoveAvatarView;
         }
     }
 }

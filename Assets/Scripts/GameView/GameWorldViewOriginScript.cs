@@ -12,7 +12,7 @@ namespace Assets.Scripts.GameView
         #region Симуляция/считывание клика по объекту.
 
         /// <summary>
-        /// Событие клика на стрелочку.
+        /// Событие клика на объект в сцене.
         /// </summary>
         public event Action OnSlotClicked;
         /// <summary>

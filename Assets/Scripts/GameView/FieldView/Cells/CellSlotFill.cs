@@ -31,6 +31,56 @@ namespace Assets.Scripts.GameView
             get => this.modelCell.CellType;
         }
 
+        #region Слоты для аватаров игроков.
+
+        /// <summary>
+        /// Слоты для игроков.
+        /// </summary>
+        [SerializeField]
+        private PlayerAvatarSlot[] avatarSlots = new PlayerAvatarSlot[4];
+        /// <summary>
+        /// Содежит слот аватара игрока под указанным номером.
+        /// </summary>
+        /// <param name="playerNumber"></param>
+        /// <returns></returns>
+        public Boolean IsContainsPlayerAvatar(Int32 playerNumber)
+        {
+            if (avatarSlots[playerNumber].currentPlayer == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        /// <summary>
+        /// Получить игрока под указанным номером.
+        /// </summary>
+        /// <param name="playerNumber"></param>
+        /// <returns></returns>
+        public PlayerAvatarSlot GetPlayerAvatarSlot(Int32 playerNumber)
+        {
+            return avatarSlots[playerNumber];
+        }
+        /// <summary>
+        /// Установить аватар игрока по номеру игрока.
+        /// </summary>
+        public void SetPlayerAvatarSlot(Int32 playerNumber)
+        {
+            this.avatarSlots[playerNumber].SetPlayer(playerNumber);
+        }
+        public void SwapAvatarSlot(CellSlotFill cellSlot, Int32 playerNumber)
+        {
+            (this.avatarSlots[playerNumber], cellSlot.avatarSlots[playerNumber]) = (cellSlot.avatarSlots[playerNumber], this.avatarSlots[playerNumber]);
+            (this.avatarSlots[playerNumber].transform.parent, cellSlot.avatarSlots[playerNumber].transform.parent) 
+                = (cellSlot.avatarSlots[playerNumber].transform.parent, this.avatarSlots[playerNumber].transform.parent);
+            this.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
+            cellSlot.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
+        }
+
+        #endregion Слоты для аватаров игроков.
+
         #region Положение слота в пространстве.
 
         /// <summary>
@@ -311,10 +361,19 @@ namespace Assets.Scripts.GameView
             return true;
         }
 
+
+        #region Симуляция/считывание клика по объекту.
+
+        /// <summary>
+        /// Событие клика на этот слот.
+        /// </summary>
+        public event Action<CellSlotFill> OnCellSlotClicked;
         public override void SimulateOnClick()
         {
             base.SimulateOnClick();
-            LogInfo("Cell: " + this.positionInField.x.ToString() + " " + this.positionInField.y.ToString());
+            this.OnCellSlotClicked?.Invoke(this);
         }
+
+        #endregion Симуляция/считывание клика по объекту.
     }
 }

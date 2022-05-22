@@ -38,6 +38,12 @@ public class GameManager : MonoSingleton<GameManager>
     {
         get=>this.uiCardWithTreasureSlotProviderPrivate;
     }
+    [SerializeField]
+    private PlayerAvatarsProvider playerAvatarsProviderPrivate = null;
+    public PlayerAvatarsProvider playerAvatarsProvider
+    {
+        get=>this.playerAvatarsProviderPrivate;
+    }
 
     #endregion Провайдеры.
 
@@ -59,8 +65,8 @@ public class GameManager : MonoSingleton<GameManager>
                     (
                     new PlayerInfo[]
                         {
-                new PlayerInfo("test1", System.Drawing.Color.Black),
-                new PlayerInfo("test2", System.Drawing.Color.Yellow)
+                new PlayerInfo("test1", System.Drawing.Color.Black, 1),
+                new PlayerInfo("test2", System.Drawing.Color.Yellow, 2)
                         },
                     out var message);
 

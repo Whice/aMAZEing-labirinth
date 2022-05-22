@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a03b32eaacf12654cbc8e4c2ce87036f, type: 3}
+  m_Name: Prototype PlayerAvatarsProvider
+  m_EditorClassIdentifier: 
+  resourcesList:
+  - {fileID: 6542800175510022199, guid: c1a437187d65e4549b46172ed9cdcb14, type: 3}
+  - {fileID: 6542800175510022199, guid: b4919ef5832d36d43a37912ef16451c0, type: 3}
+  - {fileID: 6542800175510022199, guid: 9cfb4d2aff78d8446bc665d68e69ab27, type: 3}
+  - {fileID: 6542800175510022199, guid: 9a81ea8cc6156b847a478da8543a0c02, type: 3}

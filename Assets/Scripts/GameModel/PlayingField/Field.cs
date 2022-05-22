@@ -505,7 +505,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             //Проверить, что все координаты оказались внутрии поля.
             Boolean isWithinField = startX > -1 && startY > -1 && endX > -1 && endY > -1;
-            isWithinField &= startX < Field.FIELD_SIZE && startY < Field.FIELD_SIZE && endX < Field.FIELD_SIZE && endY > Field.FIELD_SIZE;
+            isWithinField &= startX < Field.FIELD_SIZE && startY < Field.FIELD_SIZE && endX < Field.FIELD_SIZE && endY < Field.FIELD_SIZE;
             if (!isWithinField)
             {
                 return false;
