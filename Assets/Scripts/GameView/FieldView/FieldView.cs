@@ -442,7 +442,6 @@ namespace Assets.Scripts.GameView
                         }
                     case FieldSide.top:
                         {
-
                             for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
                             {
                                 setNewPosition(numberLine, i);
@@ -490,6 +489,7 @@ namespace Assets.Scripts.GameView
                 {
                     if (!this.slots[i, j].IsEqualWithModelCell(this.playingField[i, j]))
                     {
+                        LogInfo(this.slots[i, j].ToString() + "\n\n" + this.playingField[i, j].ToString()+"\n");
                         isCorresponds = false;
                     }
                 }
@@ -521,7 +521,6 @@ namespace Assets.Scripts.GameView
                             {
                                 this.numberLineForShift = slotWithFreeSlot.positionInField.y;
                                 this.sideWhereToMove = FieldSide.left;
-                                //this.playingField.MoveLineLeft(this.numberLineForShift);
                                 break;
                             }
                         case FieldSide.left:
@@ -543,8 +542,7 @@ namespace Assets.Scripts.GameView
                                 break;
                             }
                     }
-                    side = (FieldSide)(((Int32)side) * -1);
-                    this.gameModel.SetFreeCellToField(this.numberLineForShift, side);
+                    this.gameModel.SetFreeCellToField(this.numberLineForShift, this.sideWhereToMove);
                     BeginAnimationOfPerformShift();
                 }
                 else

@@ -342,7 +342,9 @@ namespace Assets.Scripts.GameView
         public override string ToString()
         {
             return "Slot with " + nameof(this.positionInField) + ": "
-                + this.positionInField.x.ToString() + "; " + this.positionInField.y.ToString();
+                + this.positionInField.x.ToString() + "; " + this.positionInField.y.ToString()
+                + "\nRotate count: " + this.turnsClockwiseCount.ToString()
+                + "; TypeCell: " + this.cellType.ToString();
         }
 
         /// <summary>
@@ -358,8 +360,8 @@ namespace Assets.Scripts.GameView
             }
             if (cell.turnsClockwiseCount != this.turnsClockwiseCount)
             {
-                LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
-                    nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";");
+                /*LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
+                    nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";");*/
                 return false;
             }
 

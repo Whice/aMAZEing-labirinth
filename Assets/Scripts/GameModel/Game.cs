@@ -262,7 +262,7 @@ namespace Assets.Scripts.GameModel
             {
                 switch (side)
                 {
-                    case FieldSide.top:
+                    case FieldSide.bottom:
                         {
                             successfulMove = this.field.MoveLineUp(numberLine);
                             break;
@@ -272,7 +272,7 @@ namespace Assets.Scripts.GameModel
                             successfulMove = this.field.MoveLineRight(numberLine);
                             break;
                         }
-                    case FieldSide.bottom:
+                    case FieldSide.top:
                         {
                             successfulMove = this.field.MoveLineDown(numberLine);
                             break;

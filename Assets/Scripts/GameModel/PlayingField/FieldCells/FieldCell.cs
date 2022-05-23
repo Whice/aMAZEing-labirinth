@@ -296,5 +296,11 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         }
 
         #endregion Клонирование.
+
+        public override string ToString()
+        {
+            return "Field cell rotate count: " + this.turnsClockwiseCount.ToString()
+                + "; type: " + this.CellType.ToString();
+        }
     }
 }
