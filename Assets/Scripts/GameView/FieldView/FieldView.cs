@@ -116,11 +116,21 @@ namespace Assets.Scripts.GameView
         /// <param name="fromY"></param>
         /// <param name="toX"></param>
         /// <param name="toY"></param>
-        private void MoveAvatarView(Int32 fromX, Int32 fromY, Int32 toX, Int32 toY)
+        private void MoveAvatarView(Int32 fromX, Int32 fromY, Int32 toX, Int32 toY, Int32 playerNumber)
         {
-            Int32 playerNumber = this.currentPlayerNumber;
-            this.slots[toX, toY].SwapAvatarSlot(this.slots[fromX, fromY], playerNumber);
-
+            //Передвижение выполняется в двух случаях:
+            // 1) Аватара надо переместить на другую сторону поля, 
+            //      т.к. его вынесло за пределы поля.
+            // 2) Если фаза хода аватаром и его переместили. 
+            if (this.gameModel.players[playerNumber].isMoveToOppositeSide)
+            {
+                this.gameModel.players[playerNumber].isMoveToOppositeSide = false;
+                this.freeCellSlot.SwapAvatarSlot(this.slots[fromX, fromY], playerNumber);
+            }
+            else if (this.gameModel.currentPhase == TurnPhase.movingAvatar)
+            {
+                this.slots[toX, toY].SwapAvatarSlot(this.slots[fromX, fromY], playerNumber);
+            }
         }
         /// <summary>
         /// Передвинуть аватар игрока в модели.
@@ -631,7 +641,10 @@ namespace Assets.Scripts.GameView
 
             AddArrowSlotsForFreeCell();
 
-            this.gameModel.onAvatarMoved += MoveAvatarView;
+            foreach (GamePlayer player in this.gameModel.players)
+            {
+                player.onAvatarMoved += MoveAvatarView;
+            }
         }
         private void Update()
         {
@@ -651,14 +664,17 @@ namespace Assets.Scripts.GameView
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
             foreach (CellSlotFill slot in this.slots)
             {
                 slot.OnCellSlotClicked -= MoveAvatarInModel;
             }
 
+            foreach (GamePlayer player in this.gameModel.players)
+            {
+                player.onAvatarMoved -= MoveAvatarView;
+            }
 
-            this.gameModel.onAvatarMoved -= MoveAvatarView;
+            base.OnDestroy();
         }
     }
 }

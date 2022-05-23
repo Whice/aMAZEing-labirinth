@@ -411,10 +411,10 @@ namespace TestModel.ModelTests
             //выдать полю игроков
             GamePlayer[] players = new GamePlayer[]
             {
-                new GamePlayer("1", Color.Red, new CardDeck(), 1, 0),
-                new GamePlayer("1", Color.Red, new CardDeck(), 1, 2),
-                new GamePlayer("1", Color.Red, new CardDeck(), 3, 0),
-                new GamePlayer("1", Color.Red, new CardDeck(), 3, 2)
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, 0, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, 2, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 0, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 2, 0)
             };
             field.SetPlayers(players);
 
@@ -439,10 +439,10 @@ namespace TestModel.ModelTests
             //выдать полю игроков
             GamePlayer[] players = new GamePlayer[]
             {
-                new GamePlayer("1", Color.Red, new CardDeck(), Field.FIELD_SIZE-1, 1),
-                new GamePlayer("1", Color.Red, new CardDeck(), 2, 1),
-                new GamePlayer("1", Color.Red, new CardDeck(), 0, 3),
-                new GamePlayer("1", Color.Red, new CardDeck(), 2, 3)
+                new GamePlayer("1", Color.Red, new CardDeck(), Field.FIELD_SIZE-1, 1, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 1, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 0, 3, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 3, 0)
             };
             field.SetPlayers(players);
 
@@ -467,10 +467,10 @@ namespace TestModel.ModelTests
             //выдать полю игроков
             GamePlayer[] players = new GamePlayer[]
             {
-                new GamePlayer("1", Color.Red, new CardDeck(), 1, Field.FIELD_SIZE-1),
-                new GamePlayer("1", Color.Red, new CardDeck(), 1, 2),
-                new GamePlayer("1", Color.Red, new CardDeck(), 3, 0),
-                new GamePlayer("1", Color.Red, new CardDeck(), 3, 2)
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, Field.FIELD_SIZE-1, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 1, 2, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 0, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 3, 2, 0)
             };
             field.SetPlayers(players);
 
@@ -495,10 +495,10 @@ namespace TestModel.ModelTests
             //выдать полю игроков
             GamePlayer[] players = new GamePlayer[]
             {
-                new GamePlayer("1", Color.Red, new CardDeck(), 0, 1),
-                new GamePlayer("1", Color.Red, new CardDeck(), 2, 1),
-                new GamePlayer("1", Color.Red, new CardDeck(), 0, 3),
-                new GamePlayer("1", Color.Red, new CardDeck(), 2, 3)
+                new GamePlayer("1", Color.Red, new CardDeck(), 0, 1, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 1, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 0, 3, 0),
+                new GamePlayer("1", Color.Red, new CardDeck(), 2, 3, 0)
             };
             field.SetPlayers(players);
 

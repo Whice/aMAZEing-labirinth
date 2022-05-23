@@ -11,6 +11,14 @@ namespace Assets.Scripts.GameModel.Player
     /// </summary>
     public class GamePlayer : PlayerInfo
     {
+        /// <summary>
+        /// Номер игрока.
+        /// </summary>
+        public readonly Int32 playerNumer;
+        /// <summary>
+        /// Игрок при перемещении ячеек был перемещен на противоположную сторону.
+        /// </summary>
+        public Boolean isMoveToOppositeSide = false;
 
         #region Номер игрока в списке победителей.
 
@@ -57,9 +65,10 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="positionX">Местоположение по оси X.</param>
         /// <param name="positionY">Местоположение по оси Y.</param>
         public GamePlayer(String name, Color color, CardDeck cardDeck, Int32 positionX, Int32 positionY, Int32 playerNumer)
-            : base(name, color, playerNumer)
+            : base(name, color)
         {
             this.cardDeck = cardDeck;
+            this.playerNumer = playerNumer;
             SetPosition(positionX, positionY);
         }
         /// <summary>
@@ -69,8 +78,8 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="cardDeck">Карты для колоды игрока.</param>
         /// <param name="positionX">Местоположение по оси X.</param>
         /// <param name="positionY">Местоположение по оси Y.</param>
-        public GamePlayer(PlayerInfo info, CardDeck cardDeck, Int32 positionX, Int32 positionY)
-            : this(info.name, info.color, cardDeck, positionX, positionY, info.playerNumer) { }
+        public GamePlayer(PlayerInfo info, CardDeck cardDeck, Int32 positionX, Int32 positionY, Int32 playerNumer)
+            : this(info.name, info.color, cardDeck, positionX, positionY, playerNumer) { }
 
 
         #region Местоположение.
@@ -83,10 +92,24 @@ namespace Assets.Scripts.GameModel.Player
             get => Field.FIELD_SIZE;
         }
 
+
+        /// <summary>
+        /// Движение аватара игрока.
+        /// </summary>
+        /// <param name="fromX">Позиция по x, откуда происходит перемещение.</param>
+        /// <param name="fromY">Позиция по y, откуда происходит перемещение.</param>
+        /// <param name="toX">Позиция по x, куда происходит перемещение.</param>
+        /// <param name="toY">Позиция по y, куда происходит перемещение.</param>
+        /// <param name="playerNumber">Номер игрока, который сделал ход.</param>
+        public delegate void OnAvatarMove(Int32 fromX, Int32 fromY, Int32 toX, Int32 toY, Int32 playerNumber);
+        /// <summary>
+        /// Аватар игрока был передвинут.
+        /// </summary>
+        public event OnAvatarMove onAvatarMoved;
         /// <summary>
         /// Местоположение на поле по оси X.
         /// </summary>
-        private Int32 positionXField;
+        private Int32 positionXPrivate;
         /// <summary>
         /// Местоположение на поле по оси X.
         /// <br/>Игрок сам следит за "выходом" за пределы поля и 
@@ -96,30 +119,13 @@ namespace Assets.Scripts.GameModel.Player
         {
             get
             {
-                return this.positionXField;
-            }
-            set
-            {
-                //Если положэение игрока выходит за пределы поля,
-                //то он появляется с другой стороны.
-                if (value >= this.FIELD_SIZE)
-                {
-                    this.positionXField = 0;
-                }
-                else if(value < 0)
-                {
-                    this.positionXField = this.FIELD_SIZE - 1;
-                }
-                else
-                {
-                    this.positionXField = value;
-                }
+                return this.positionXPrivate;
             }
         }
         /// <summary>
         /// Местоположение на поле по оси Y.
         /// </summary>
-        private Int32 positionYField;
+        private Int32 positionYPrivate;
         /// <summary>
         /// Местоположение на поле по оси Y.
         /// <br/>Игрок сам следит за "выходом" за пределы поля и 
@@ -129,24 +135,7 @@ namespace Assets.Scripts.GameModel.Player
         {
             get
             {
-                return this.positionYField;
-            }
-            set
-            {
-                //Если положэение игрока выходит за пределы поля,
-                //то он появляется с другой стороны.
-                if (value >= this.FIELD_SIZE)
-                {
-                    this.positionYField = 0;
-                }
-                else if (value < 0)
-                {
-                    this.positionYField = this.FIELD_SIZE - 1;
-                }
-                else
-                {
-                    this.positionYField = value;
-                }
+                return this.positionYPrivate;
             }
         }
         /// <summary>
@@ -158,11 +147,6 @@ namespace Assets.Scripts.GameModel.Player
             {
                 return new Point(this.positionX, this.positionY);
             }
-            set
-            {
-                this.positionX = value.X;
-                this.positionY = value.Y;
-            }
         }
         /// <summary>
         /// Установить новое местоположение для игрока.
@@ -171,8 +155,53 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="y"></param>
         public void SetPosition(Int32 x, Int32 y)
         {
-            this.positionX = x;
-            this.positionY = y;
+
+            Int32 oldPositionX = this.positionXPrivate;
+            Int32 oldPositionY = this.positionYPrivate;
+
+            //Если положение игрока выходит за пределы поля,
+            //то он появляется с другой стороны.
+            {
+                //Проверка по X
+                if (x >= this.FIELD_SIZE)
+                {
+                    this.positionXPrivate = 0;
+                    this.isMoveToOppositeSide = true;
+                }
+                else if (x < 0)
+                {
+                    this.positionXPrivate = this.FIELD_SIZE - 1;
+                    this.isMoveToOppositeSide = true;
+                }
+                else
+                {
+                    this.positionXPrivate = x;
+                }
+
+
+                //Проверка по Y
+                if (y >= this.FIELD_SIZE)
+                {
+                    this.positionYPrivate = 0;
+                    this.isMoveToOppositeSide = true;
+                }
+                else if (y < 0)
+                {
+                    this.positionYPrivate = this.FIELD_SIZE - 1;
+                    this.isMoveToOppositeSide = true;
+                }
+                else
+                {
+                    this.positionYPrivate = y;
+                }
+            }
+
+
+            //Если положение игрока изменилось, то надо сообщить.
+            if (oldPositionX != this.positionX || oldPositionY != this.positionY)
+            {
+                this.onAvatarMoved?.Invoke(oldPositionX, oldPositionY, this.positionX, this.positionY, this.playerNumer);
+            }
         }
 
         #endregion Местоположение.

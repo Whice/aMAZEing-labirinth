@@ -32,10 +32,10 @@ namespace UI
             this.playerName.text = this.currentPlayer.name;
             this.gameModel.onNextTurnMoved += FillPlayerName;
         }
-
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
             this.gameModel.onNextTurnMoved -= FillPlayerName;
+            base.OnDestroy();
         }
     }
 }

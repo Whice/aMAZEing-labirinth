@@ -236,19 +236,6 @@ namespace Assets.Scripts.GameModel
         public event Action onNextTurnMoved;
 
         /// <summary>
-        /// Движение аватара игрока.
-        /// </summary>
-        /// <param name="fromX">Позиция по x, откуда происходит перемещение.</param>
-        /// <param name="fromY">Позиция по y, откуда происходит перемещение.</param>
-        /// <param name="toX">Позиция по x, куда происходит перемещение.</param>
-        /// <param name="toY">Позиция по y, куда происходит перемещение.</param>
-        public delegate void OnAvatarMove(Int32 fromX, Int32 fromY, Int32 toX, Int32 toY);
-        /// <summary>
-        /// Аватар игрока был передвинут.
-        /// </summary>
-        public event OnAvatarMove onAvatarMoved;
-
-        /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
         /// </summary>
         /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
@@ -346,13 +333,8 @@ namespace Assets.Scripts.GameModel
 
             if (successfulMove)
             {
-                Int32 oldPositionX = this.currentPlayer.positionX;
-                Int32 oldPositionY = this.currentPlayer.positionY;
-
                 this.currentPlayer.SetPosition(x, y);
                 TryGetTreasureFromFieldForCurrentPlayer();
-
-                this.onAvatarMoved?.Invoke(oldPositionX, oldPositionY, x, y);
 
                 //Если игра закончилась, то ход уже невозможен.
                 if (this.isEnd)
@@ -486,7 +468,7 @@ namespace Assets.Scripts.GameModel
                     Int32 startPointY = this.field.startPointsCoordinate[i].Y;
 
                     //Создать игровое инфо игрока.
-                    this.playersPrivate[i] = new GamePlayer(playerInfos[i], deckForPlayer, startPointX, startPointY);
+                    this.playersPrivate[i] = new GamePlayer(playerInfos[i], deckForPlayer, startPointX, startPointY, i);
                 }
 
                 return true;

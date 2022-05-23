@@ -93,9 +93,11 @@ namespace UI
 
             this.fieldCells.OnFreeCellChange += ChageSprite;
         }
-        private void OnDestroy()
+
+        protected override void OnDestroy()
         {
             this.fieldCells.OnFreeCellChange -= ChageSprite;
+            base.OnDestroy();
         }
 
         #region Поворот.

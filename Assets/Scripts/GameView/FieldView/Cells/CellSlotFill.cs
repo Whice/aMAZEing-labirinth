@@ -78,8 +78,11 @@ namespace Assets.Scripts.GameView
         public void SwapAvatarSlot(CellSlotFill cellSlot, Int32 playerNumber)
         {
             (this.avatarSlots[playerNumber], cellSlot.avatarSlots[playerNumber]) = (cellSlot.avatarSlots[playerNumber], this.avatarSlots[playerNumber]);
+
             (this.avatarSlots[playerNumber].transform.parent, cellSlot.avatarSlots[playerNumber].transform.parent) 
                 = (cellSlot.avatarSlots[playerNumber].transform.parent, this.avatarSlots[playerNumber].transform.parent);
+
+
             this.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
             cellSlot.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
         }

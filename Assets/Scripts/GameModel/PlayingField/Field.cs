@@ -288,9 +288,9 @@ namespace Assets.Scripts.GameModel.PlayingField
                     //Игрок сам следит за "выходом" за пределы поля и 
                     // пересталяет на другую его сторону свою фишку, если надо.
                     if (isForward)
-                        ++player.positionY;
+                        player.SetPosition(player.positionX, player.positionY + 1);
                     else
-                        --player.positionY;
+                        player.SetPosition(player.positionX, player.positionY - 1);
                 }
             }
             else
@@ -300,9 +300,9 @@ namespace Assets.Scripts.GameModel.PlayingField
                     //Игрок сам следит за "выходом" за пределы поля и 
                     // пересталяет на другую его сторону свою фишку, если надо.
                     if (isForward)
-                        ++player.positionX;
+                        player.SetPosition(player.positionX + 1, player.positionY);
                     else
-                        --player.positionX;
+                        player.SetPosition(player.positionX - 1, player.positionY);
                 }
             }
         }

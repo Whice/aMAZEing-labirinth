@@ -16,10 +16,6 @@ namespace Assets.Scripts.GameModel.Player
         /// Цвет игрока.
         /// </summary>
         public readonly Color color;
-        /// <summary>
-        /// Номер игрока.
-        /// </summary>
-        public readonly Int32 playerNumer;
 
         /// <summary>
         /// Заполнить инфо о игроке, которая не относиться к игровой логике.
@@ -27,11 +23,10 @@ namespace Assets.Scripts.GameModel.Player
         /// <param name="name"></param>
         /// <param name="color"></param>
         /// <param name="playerNumer"></param>
-        public PlayerInfo(String name, Color color, Int32 playerNumer)
+        public PlayerInfo(String name, Color color)
         {
             this.name = name;
             this.color = color;
-            this.playerNumer = playerNumer;
         }
 
         #region Сравнение.

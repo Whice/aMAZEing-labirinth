@@ -65,8 +65,8 @@ public class GameManager : MonoSingleton<GameManager>
                     (
                     new PlayerInfo[]
                         {
-                new PlayerInfo("test1", System.Drawing.Color.Black, 1),
-                new PlayerInfo("test2", System.Drawing.Color.Yellow, 2)
+                new PlayerInfo("test1", System.Drawing.Color.Black),
+                new PlayerInfo("test2", System.Drawing.Color.Yellow)
                         },
                     out var message);
 
