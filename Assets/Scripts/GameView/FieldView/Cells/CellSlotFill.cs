@@ -70,6 +70,11 @@ namespace Assets.Scripts.GameView
         {
             this.avatarSlots[playerNumber].SetPlayer(playerNumber);
         }
+        /// <summary>
+        /// Поменять местами слоты аватара игрока для указанного игрока.
+        /// </summary>
+        /// <param name="cellSlot">Слот, с которым будет происходить обмен.</param>
+        /// <param name="playerNumber">Номер игрока.</param>
         public void SwapAvatarSlot(CellSlotFill cellSlot, Int32 playerNumber)
         {
             (this.avatarSlots[playerNumber], cellSlot.avatarSlots[playerNumber]) = (cellSlot.avatarSlots[playerNumber], this.avatarSlots[playerNumber]);

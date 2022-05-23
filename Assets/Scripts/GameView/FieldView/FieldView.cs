@@ -122,11 +122,15 @@ namespace Assets.Scripts.GameView
             this.slots[toX, toY].SwapAvatarSlot(this.slots[fromX, fromY], playerNumber);
 
         }
-        private void MoveAvatarInModel(CellSlotFill cellSlot)
+        /// <summary>
+        /// Передвинуть аватар игрока в модели.
+        /// </summary>
+        /// <param name="newSlotForAvatar">Слот, куда происходит перемещение.</param>
+        private void MoveAvatarInModel(CellSlotFill newSlotForAvatar)
         {
             if (this.gameModel.currentPhase == TurnPhase.movingAvatar)
             {
-                this.gameModel.SetPlayerAvatarToField(cellSlot.positionInField.x, cellSlot.positionInField.y);
+                this.gameModel.SetPlayerAvatarToField(newSlotForAvatar.positionInField.x, newSlotForAvatar.positionInField.y);
             }
         }
 

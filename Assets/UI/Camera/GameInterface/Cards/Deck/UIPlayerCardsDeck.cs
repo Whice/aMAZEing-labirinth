@@ -1,26 +1,35 @@
-using Assets.Scripts.GameModel.PlayingField.Treasures;
+﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace UI
 {
+    /// <summary>
+    /// Отображение в UI колоды  текущего игрока.
+    /// </summary>
     public class UIPlayerCardsDeck : GameUIOriginScript
     {
         /// <summary>
-        /// UI ������ ������.
+        /// UI колода игрока.
         /// </summary>
         private List<UICardWithTreasureSlot> cardSlots;
-
-        private Int32 countCards
+        /// <summary>
+        /// Количество карт у игрока.
+        /// </summary>
+        private Int32 countCardsPlayerHas
         {
             get => this.gameModel.currentPlayer.countCardInDeck;
         }
+        /// <summary>
+        /// Создать список для отображения колоды.
+        /// </summary>
         private void CreateDeck()
         {
-            this.cardSlots = new List<UICardWithTreasureSlot>(this.countCards);
+            this.cardSlots = new List<UICardWithTreasureSlot>(this.countCardsPlayerHas);
         }
+        /// <summary>
+        /// Очистить список от карт другого игрока.
+        /// </summary>
         private void ClearDeck()
         {
             for (Int32 i = 0; i < this.cardSlots.Count; i++)
@@ -31,7 +40,7 @@ namespace UI
         }
 
         /// <summary>
-        /// ��������� ui ������ ������.
+        /// Заполнить ui колоду игрока.
         /// </summary>
         private void FillPlayersDeck()
         {
