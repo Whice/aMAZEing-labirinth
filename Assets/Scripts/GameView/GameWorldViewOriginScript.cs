@@ -7,7 +7,7 @@ namespace Assets.Scripts.GameView
     /// <summary>
     /// Класс для объектов находящихся в простанстве сцены, на не UI.
     /// </summary>
-    public abstract class GameWorldViewOriginScript: GameViewOriginScript
+    public abstract class GameWorldViewOriginScript : GameViewOriginScript
     {
         #region Симуляция/считывание клика по объекту.
 
@@ -28,7 +28,7 @@ namespace Assets.Scripts.GameView
         private Vector3 cursorPositionBeforeMouseDown;
         private void OnMouseUp()
         {
-            if (this.cursorPositionBeforeMouseDown==Input.mousePosition)
+            if (this.cursorPositionBeforeMouseDown == Input.mousePosition)
             {
                 if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
                 {
