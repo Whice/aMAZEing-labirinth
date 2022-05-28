@@ -100,5 +100,11 @@ namespace UI
             this.gameObject.SetActive(false);
             this.transform.parent = null;
         }
+
+        public event Action Oncliked;
+        public void OnClick()
+        {
+            this.Oncliked?.Invoke();
+        }
     }
 }

@@ -14,8 +14,14 @@ namespace UI
         /// </summary>
         private List<UICardWithTreasureSlot> cardSlots;
         /// <summary>
-        /// Количество карт у игрока.
+        /// Последняя карта в колоде.
         /// </summary>
+        private UICardWithTreasureSlot lastCard
+        {
+            get => this.cardSlots[this.cardSlots.Count - 1];
+        }        /// <summary>
+                 /// Количество карт у игрока.
+                 /// </summary>
         private Int32 countCardsPlayerHas
         {
             get => this.gameModel.currentPlayer.countCardInDeck;
@@ -35,6 +41,7 @@ namespace UI
             for (Int32 i = 0; i < this.cardSlots.Count; i++)
             {
                 this.cardSlots[i].Hide();
+                this.cardSlots[i].Oncliked -= FlipCard;
             }
             this.cardSlots.Clear();
         }
@@ -53,9 +60,24 @@ namespace UI
                 this.cardSlots.Add(currentSlot);
                 currentSlot.Close();
                 currentSlot.transform.SetParent(this.transform);
+                currentSlot.Oncliked += FlipCard;
             }
-            currentSlot.Open();
         }
+        /// <summary>
+        /// Перевернуть карту.
+        /// </summary>
+        private void FlipCard()
+        {
+            if (this.lastCard.isCardBackUp)
+            {
+                this.lastCard.Open();
+            }
+            else
+            {
+                this.lastCard.Close();
+            }
+        }
+
 
         protected override void Awake()
         {
