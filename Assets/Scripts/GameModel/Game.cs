@@ -3,9 +3,11 @@ using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using Assets.Scripts.GameModel.PlayingField.Treasures;
+using Assets.Scripts.GameModel.Rules;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Assets.Scripts.GameModel
 {
@@ -328,7 +330,7 @@ namespace Assets.Scripts.GameModel
         public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
         {
             Boolean successfulMove = this.currentPhase == TurnPhase.movingAvatar;
-            successfulMove = this.field.IsPossibleMove(this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
+            successfulMove = this.field.IsPossibleMove(this.currentPlayer, this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
 
 
             if (successfulMove)
@@ -359,6 +361,7 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         private void SetNextPlayer()
         {
+            this.field.ClearCellForMove();
             //Выбирается следующий игрок из массива, который не победил.
             do
             {

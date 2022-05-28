@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Extensions;
 using System.Drawing;
 using Assets.Scripts.GameModel.Player;
+using Assets.Scripts.GameModel.Rules;
 
 namespace Assets.Scripts.GameModel.PlayingField
 {
@@ -104,6 +105,27 @@ namespace Assets.Scripts.GameModel.PlayingField
             this.fieldCells = new FieldCell[FIELD_SIZE, FIELD_SIZE];
             CreateField();
         }
+
+        #region Поиск пути.
+
+        private SearchRoadForPlayer searchRoadForPlayer = new SearchRoadForPlayer();
+        private HashSet<Point> pointsForMove = null;
+        private Boolean IsPlayerCanMoveToCell(GamePlayer player, Point cellForMove)
+        {
+            if (this.pointsForMove == null)
+            {
+                this.pointsForMove = this.searchRoadForPlayer.GetCellsForMove(new Point(player.positionX, player.positionY), this.fieldCells);
+            }
+
+            return this.pointsForMove.Contains(cellForMove);
+        }
+        public void ClearCellForMove()
+        {
+            this.pointsForMove= null;
+        }
+
+
+        #endregion Поиск пути.
 
         #region Создание ячеек на поле.
 
@@ -501,7 +523,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <param name="endX"></param>
         /// <param name="endY"></param>
         /// <returns></returns>
-        public Boolean IsPossibleMove(Int32 startX, Int32 startY, Int32 endX, Int32 endY)
+        public Boolean IsPossibleMove(GamePlayer player, Int32 startX, Int32 startY, Int32 endX, Int32 endY)
         {
             //Проверить, что все координаты оказались внутрии поля.
             Boolean isWithinField = startX > -1 && startY > -1 && endX > -1 && endY > -1;
@@ -511,9 +533,12 @@ namespace Assets.Scripts.GameModel.PlayingField
                 return false;
             }
 
-            //ToDo тут должен быть алгоритм рассчета пути.
+            if (IsPlayerCanMoveToCell(player, new Point(endX, endY)))
+            {
+                return true;
+            }
 
-            return true;
+            return false;
         }
     }
 }
