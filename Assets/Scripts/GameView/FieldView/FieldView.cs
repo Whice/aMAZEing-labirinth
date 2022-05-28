@@ -79,7 +79,19 @@ namespace Assets.Scripts.GameView
                     this.slots[i, j].OnCellSlotClicked += MoveAvatarInModel;
                 }
 
-            
+            foreach (GamePlayer player in this.gameModel.players)
+            {
+                this.slots[player.positionX, player.positionY].SetPlayerStartPoint
+                    (
+                    new Color
+                    (
+                        player.color.R,
+                        player.color.G,
+                        player.color.B
+                    )
+                    );
+            }
+
             //Установить игроков на поле.
             Int32 playerPositionX;
             Int32 playerPositionY;

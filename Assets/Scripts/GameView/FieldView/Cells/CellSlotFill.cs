@@ -334,6 +334,20 @@ namespace Assets.Scripts.GameView
 
         #endregion Сокровище ячейки.
 
+        #region Start point.
+
+        [SerializeField]
+        private GameObject objectPoint = null;
+        [SerializeField]
+        private Light objectPointLight = null;
+        public void SetPlayerStartPoint(Color color)
+        {
+            this.objectPoint.SetActive(true);
+            this.objectPointLight.color = color;
+        }
+
+        #endregion Start point.
+
         /// <summary>
         /// Ссылка на слот для слота свободной ячейки.
         /// </summary>
