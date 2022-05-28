@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Assets.Scripts.GameModel;
+using Assets.Scripts.GameModel.Player;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace UI
@@ -7,6 +10,13 @@ namespace UI
 
     public class GameInterfaceRectanglesDetected : MonoSingleton<GameInterfaceRectanglesDetected>
     {
+        /// <summary>
+        /// Модель игры, реализовывает логику взаимодействия всех частей.
+        /// </summary>
+        private Game gameModel
+        {
+            get => GameManager.instance.gameModel;
+        }
         /// <summary>
         /// Инфо о положении всех видимых UI элементов.
         /// </summary>
@@ -65,6 +75,39 @@ namespace UI
 
                 return false;
             }
+        }
+
+        #region Конец игры.
+
+        [Header("End Game")]
+        [SerializeField]
+        private TextMeshProUGUI tmpForWinnerTable = null;
+        [SerializeField]
+        private GameObject endGameObject = null;
+        private void ShowGameEndTable()
+        {
+            String winnerTable = "Позиции игроков:\n";
+            GamePlayer[] winners = this.gameModel.GetWinners();
+            Int32 numberWinner = 0;
+            foreach (GamePlayer winner in winners)
+            {
+                ++numberWinner;
+                winnerTable += numberWinner + ". " + winner.name + "\n";
+            }
+
+            this.tmpForWinnerTable.text = winnerTable;
+            this.endGameObject.SetActive(true);
+        }
+
+        #endregion Конец игры.
+
+        protected virtual void Awake()
+        {
+            this.gameModel.OnGameEnded += ShowGameEndTable;
+        }
+        protected virtual void OnDestroy()
+        {
+            this.gameModel.OnGameEnded -= ShowGameEndTable;
         }
     }
 }

@@ -77,6 +77,10 @@ namespace Assets.Scripts.GameModel
         #region Конец игры.
 
         /// <summary>
+        /// Конец игры настал.
+        /// </summary>
+        public event Action OnGameEnded;
+        /// <summary>
         /// Игра окончилась.
         /// </summary>
         private Boolean isEndPrivate = false;
@@ -101,6 +105,7 @@ namespace Assets.Scripts.GameModel
                     //Если играть остается один игрок или никого, то игра кончается.
                     if (winnersCount + 1 >= this.playersPrivate.Length)
                     {
+                        this.OnGameEnded?.Invoke();
                         this.isEndPrivate = true;
                     }
                 }
