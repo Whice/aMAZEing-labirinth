@@ -335,7 +335,7 @@ namespace Assets.Scripts.GameModel
         public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
         {
             Boolean successfulMove = this.currentPhase == TurnPhase.movingAvatar;
-            successfulMove = this.field.IsPossibleMove(this.currentPlayer, this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
+            successfulMove = successfulMove && this.field.IsPossibleMove(this.currentPlayer, this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
 
 
             if (successfulMove)
@@ -357,6 +357,13 @@ namespace Assets.Scripts.GameModel
             return successfulMove;
         }
         /// <summary>
+        /// Пропустить ход для текущего игрока.
+        /// </summary>
+        public void PlayerMissMove()
+        {
+            SetNextPhase();
+        }
+        /// <summary>
         /// Ход перешел к следующему игроку.
         /// </summary>
         public event Action onPlayerChanged;
@@ -366,7 +373,6 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         private void SetNextPlayer()
         {
-            this.field.ClearCellForMove();
             //Выбирается следующий игрок из массива, который не победил.
             do
             {
@@ -385,6 +391,11 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         private void SetNextPhase()
         {
+            if (this.currentPhase == TurnPhase.movingAvatar)
+            {
+                this.field.ClearCellForMove();
+            }
+
             this.currentPhasePrivate = this.currentPhasePrivate.GetNextPhase();
 
             if(this.currentPhasePrivate==TurnPhase.movingCell)

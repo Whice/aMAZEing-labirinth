@@ -1368,6 +1368,34 @@ PrefabInstance:
       propertyPath: m_enableWordWrapping
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1951848723412171201}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayerMissMove
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UI.GameInterfaceRectanglesDetected, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4585781292256850960, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
       propertyPath: m_Color.b
       value: 0.5122107

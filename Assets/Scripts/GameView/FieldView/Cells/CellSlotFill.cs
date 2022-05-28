@@ -82,6 +82,8 @@ namespace Assets.Scripts.GameView
             (this.avatarSlots[playerNumber].transform.parent, cellSlot.avatarSlots[playerNumber].transform.parent) 
                 = (cellSlot.avatarSlots[playerNumber].transform.parent, this.avatarSlots[playerNumber].transform.parent);
 
+            this.avatarSlots[playerNumber].isShowParticleUnderHead = !this.avatarSlots[playerNumber].isShowParticleUnderHead;
+            cellSlot.avatarSlots[playerNumber].isShowParticleUnderHead = !cellSlot.avatarSlots[playerNumber].isShowParticleUnderHead;
 
             this.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
             cellSlot.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;

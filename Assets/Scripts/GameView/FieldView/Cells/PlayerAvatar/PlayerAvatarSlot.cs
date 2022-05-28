@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Player;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -24,10 +23,42 @@ namespace Assets.Scripts.GameView
             this.avatar.transform.parent = this.transform;
             this.avatar.transform.localPosition = Vector3.zero;
         }
-
         /// <summary>
-        /// Объект игрока из модели для этого слота.
+        /// Частицы над головой.
         /// </summary>
+        [SerializeField]
+        private ParticleSystem particleUnderHead = null;
+        /// <summary>
+        /// Частицы над головой аватара показаны.
+        /// </summary>
+        public Boolean isShowParticleUnderHead
+        {
+            get
+            {
+                return this.particleUnderHead.gameObject.activeSelf;
+            }
+            set
+            {
+                this.particleUnderHead.gameObject.SetActive(value);
+                this.particleUnderHead.startColor = new Color
+                    (
+                    this.gameModel.currentPlayer.color.R,
+                    this.gameModel.currentPlayer.color.G,
+                    this.gameModel.currentPlayer.color.B
+                    );
+            }
+        }  
+        /// <summary>
+        /// Смена игрока.
+        /// </summary>
+        private void PlayerChanged()
+        {
+            if (currentPlayer != null)
+                this.isShowParticleUnderHead = this.gameModel.currentPlayer.playerNumer == this.playerNumber;
+        }
+        /// <summary>
+                 /// Объект игрока из модели для этого слота.
+                 /// </summary>
         private GamePlayer currentPlayerPrivate;
         /// <summary>
         /// Объект игрока из модели для этого слота.
@@ -53,6 +84,16 @@ namespace Assets.Scripts.GameView
             SetAvatar();
         }
 
+        protected override void Awake()
+        {
+            base.Awake();
+            this.gameModel.onPlayerChanged += PlayerChanged;
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            this.gameModel.onPlayerChanged -= PlayerChanged;
+        }
         public override string ToString()
         {
             String ansver = "Avatar: ";
@@ -63,5 +104,7 @@ namespace Assets.Scripts.GameView
             ansver += this.avatar == null ? "null" : this.currentPlayer.position.ToString();
             return ansver;
         }
+
+    
     }
 }

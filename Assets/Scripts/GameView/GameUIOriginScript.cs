@@ -11,7 +11,7 @@ namespace UI
         {
             get => this.gameModel.currentPlayer;
         }
-        protected virtual void Awake()
+        protected override void Awake()
         {
             GameInterfaceRectanglesDetected.instance.AddGameViewOriginScripts(this);
         }

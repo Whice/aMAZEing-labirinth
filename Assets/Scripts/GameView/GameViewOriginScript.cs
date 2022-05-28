@@ -23,5 +23,6 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
         return GameManager.instance.prefabsProvider.GetPrefabClone(name);
     }
 
+    protected virtual void Awake() { }
     protected virtual void OnDestroy() { }
 }

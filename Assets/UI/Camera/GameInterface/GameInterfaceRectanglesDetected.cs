@@ -53,6 +53,13 @@ namespace UI
             return new Rect(correctCurrentPositionX, correctCurrentPositionY, currentRect.width, currentRect.height);
         }
 
+        /// <summary>
+        /// Пропустить ход для текущего игрока.
+        /// </summary>
+        public void PlayerMissMove()
+        {
+            this.gameModel.PlayerMissMove();
+        }
 
         /// <summary>
         /// Указатель мыши(или что там у вас) указывает в элемент UI.

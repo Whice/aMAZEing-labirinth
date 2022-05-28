@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -22,6 +23,11 @@ namespace UI
         /// </summary>
         [SerializeField]
         private Animator animatorPlayerInfo = null;
+        /// <summary>
+        /// Картинка с цветом игрока.
+        /// </summary>
+        [SerializeField]
+        private Image playerColor = null;
 
         /// <summary>
         /// Заполнить текстовое поле имени имененм текущего игрока в модели. 
@@ -29,6 +35,13 @@ namespace UI
         private void FillPlayerName()
         {
             this.playerName.text = this.currentPlayer.name;
+            
+            this.playerColor.color = new Color
+                (
+                this.gameModel.currentPlayer.color.R,
+                this.gameModel.currentPlayer.color.G,
+                this.gameModel.currentPlayer.color.B
+                );
             AnimationEnable(true);
         }
         /// <summary>
