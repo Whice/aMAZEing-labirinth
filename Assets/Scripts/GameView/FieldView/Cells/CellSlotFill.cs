@@ -377,6 +377,24 @@ namespace Assets.Scripts.GameView
         }
 
         /// <summary>
+        /// Напечатать инфо о позиции ячейки.
+        /// </summary>
+        private void PrintLogInfoCell(FieldCell cell)
+        {
+            try
+            {
+                LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
+                        nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";" +
+                        nameof(this.positionInField) + ": " + this.positionInField.x.ToString() + "; "
+                        + this.positionInField.y.ToString() + ";");
+            }
+            catch
+            {
+
+            }
+        }
+
+        /// <summary>
         /// Проверить соответствие ячеки этого слота указанной ячейке модели.
         /// </summary>
         /// <param name="cell"></param>
@@ -389,8 +407,7 @@ namespace Assets.Scripts.GameView
             }
             if (cell.turnsClockwiseCount != this.turnsClockwiseCount)
             {
-                LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
-                    nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";");
+                //PrintLogInfoCell(cell);
                 return false;
             }
 
@@ -406,6 +423,7 @@ namespace Assets.Scripts.GameView
         public event Action<CellSlotFill> OnCellSlotClicked;
         public override void SimulateOnClick()
         {
+            PrintLogInfoCell(this.modelCell);
             base.SimulateOnClick();
             this.OnCellSlotClicked?.Invoke(this);
         }
