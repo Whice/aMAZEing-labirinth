@@ -56,8 +56,8 @@ MonoBehaviour:
   - {fileID: 5325636280042162906}
   - {fileID: 1520677368047016286}
   treasureSlot: {fileID: 834425000555255617}
-  objectPoint: {fileID: 8775511631930336363}
-  objectPointLight: {fileID: 1082511262608527541}
+  objectPointSlot: {fileID: 8775511631930336363}
+  objectPointSlotLight: {fileID: 1082511262608527541}
   arrowForFreeCellSlotFill: {fileID: 0}
 --- !u!54 &215737051379271850
 Rigidbody:
