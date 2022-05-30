@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameModel;
 using Assets.Scripts.GameModel.Player;
+using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
 using TMPro;
 using UI;
@@ -17,7 +18,8 @@ namespace Assets.UI.Camera.GameInterface
         /// </summary>
         public void PlayerMissMove()
         {
-            this.gameModel.PlayerMissMove();
+            if(this.gameModel.currentPhase == TurnPhase.movingAvatar)
+                this.gameModel.PlayerMissMove();
         }
 
         #region Конец игры.
