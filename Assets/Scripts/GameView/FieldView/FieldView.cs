@@ -545,7 +545,8 @@ namespace Assets.Scripts.GameView
                         {
                             this.hiddenArrow.ShowArrow();
                         }
-                        slotWithFreeSlot.arrowOnOpositeSide.HideArrow();
+                        this.hiddenArrow = slotWithFreeSlot.arrowOnOpositeSide;
+                        this.hiddenArrow.HideArrow();
                     }
 
                     this.isShifting = true;
