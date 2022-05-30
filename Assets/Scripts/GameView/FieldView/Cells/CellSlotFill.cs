@@ -334,26 +334,36 @@ namespace Assets.Scripts.GameView
 
         #endregion Сокровище ячейки.
 
-        #region Start point.
+        #region Стартовые точки.
 
+        /// <summary>
+        /// Объект слота-точки старта игрока.
+        /// </summary>
         [SerializeField]
-        private GameObject objectPoint = null;
+        private GameObject objectPointSlot = null;
+        /// <summary>
+        /// Свет на точке старта.
+        /// </summary>
         [SerializeField]
-        private Light objectPointLight = null;
-        public void SetPlayerStartPoint(Color color)
+        private Light objectPointSlotLight = null;
+        /// <summary>
+        /// Установить точку старта игроку.
+        /// </summary>
+        /// <param name="playerColor">Цвет игрока.</param>
+        public void SetPlayerStartPoint(Color playerColor)
         {
-            this.objectPoint.SetActive(true);
-            this.objectPointLight.color = color;
+            this.objectPointSlot.SetActive(true);
+            this.objectPointSlotLight.color = playerColor;
         }
 
-        #endregion Start point.
+        #endregion Стартовые точки.
 
         /// <summary>
         /// Ссылка на слот для слота свободной ячейки.
         /// </summary>
         public CellSlotFill arrowForFreeCellSlotFill = null;
 
-        private void Awake()
+        protected override void Awake()
         {
             this.cellObject = this.gameObject;
         }
@@ -379,8 +389,8 @@ namespace Assets.Scripts.GameView
             }
             if (cell.turnsClockwiseCount != this.turnsClockwiseCount)
             {
-                /*LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
-                    nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";");*/
+                LogInfo(nameof(CellSlotFill) + " " + this.turnsClockwiseCount.ToString() + "; " +
+                    nameof(FieldCell) + " " + cell.turnsClockwiseCount.ToString() + ";");
                 return false;
             }
 

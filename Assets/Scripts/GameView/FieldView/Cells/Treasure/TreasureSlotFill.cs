@@ -41,6 +41,5 @@ namespace Assets.Scripts.GameView
                 this.transform.gameObject.SetActive(true);
             }
         }
-
     }
 }

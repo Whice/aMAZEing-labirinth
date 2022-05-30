@@ -3,9 +3,6 @@ using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.GameModel.Rules
 {
@@ -18,8 +15,17 @@ namespace Assets.Scripts.GameModel.Rules
         /// Координаты ячеек, куда можно ходить.
         /// </summary>
         private HashSet<Point> cellsForMove = new HashSet<Point>();
+        /// <summary>
+        /// Ссылка поле с ячейками.
+        /// </summary>
         private FieldCell[,] field;
 
+        /// <summary>
+        /// Координаты находятся на поле.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
         private Boolean IsCellInField(Int32 i, Int32 j)
         {
             if (i < 0)
@@ -33,6 +39,12 @@ namespace Assets.Scripts.GameModel.Rules
 
             return true;
         }
+        /// <summary>
+        /// Есть пути между ячейками.
+        /// </summary>
+        /// <param name="firstCellPosition"></param>
+        /// <param name="secondCellPosition"></param>
+        /// <returns></returns>
         private Boolean IsConnectionBetweenCells(Point firstCellPosition, Point secondCellPosition)
         {
             //X - направлен вниз
@@ -41,6 +53,7 @@ namespace Assets.Scripts.GameModel.Rules
             //j - направлен вправо
             FieldCell firstCell = this.field[firstCellPosition.X, firstCellPosition.Y];
             FieldCell secondCell = this.field[secondCellPosition.X, secondCellPosition.Y];
+
             if (firstCellPosition.X == secondCellPosition.X)
             {
                 if (firstCellPosition.Y > secondCellPosition.Y)
@@ -55,19 +68,24 @@ namespace Assets.Scripts.GameModel.Rules
             }
             else if (firstCellPosition.Y == secondCellPosition.Y)
             {
-                if (firstCellPosition.X < secondCellPosition.X)
-                {
-                    return firstCell.IsHaveDirectionDown && secondCell.IsHaveDirectionUp;
-                }
-
                 if (firstCellPosition.X > secondCellPosition.X)
                 {
                     return firstCell.IsHaveDirectionUp && secondCell.IsHaveDirectionDown;
+                }
+
+                if (firstCellPosition.X < secondCellPosition.X)
+                {
+                    return firstCell.IsHaveDirectionDown && secondCell.IsHaveDirectionUp;
                 }
             }
 
             return false;
         }
+        /// <summary>
+        /// Найти путь между соседними ячейками.
+        /// </summary>
+        /// <param name="xPositionCell"></param>
+        /// <param name="yPositionCell"></param>
         private void SearchForPassageInNeighboringCells(Int32 xPositionCell, Int32 yPositionCell)
         {
             Point thisCellPosition = new Point(xPositionCell, yPositionCell);
@@ -124,6 +142,12 @@ namespace Assets.Scripts.GameModel.Rules
                 }
             }
         }
+        /// <summary>
+        /// Получить координаты ячеек, на которые можно ходить.
+        /// </summary>
+        /// <param name="playerPosition">Позиция игрока, для которого выполнить подсчет.</param>
+        /// <param name="field">Ссылка на игровое поле.</param>
+        /// <returns></returns>
         public HashSet<Point> GetCellsForMove(Point playerPosition, FieldCell[,] field)
         {
             this.field = field;

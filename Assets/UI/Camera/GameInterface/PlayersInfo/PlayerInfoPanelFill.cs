@@ -1,4 +1,4 @@
-using Assets.Scripts.GameModel.Player;
+п»їusing Assets.Scripts.GameModel.Player;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,28 +9,28 @@ using UnityEngine.UI;
 namespace UI
 {
     /// <summary>
-    /// Скрипт заполнения информации об игроке, чей сейчас ход.
+    /// РЎРєСЂРёРїС‚ Р·Р°РїРѕР»РЅРµРЅРёСЏ РёРЅС„РѕСЂРјР°С†РёРё РѕР± РёРіСЂРѕРєРµ, С‡РµР№ СЃРµР№С‡Р°СЃ С…РѕРґ.
     /// </summary>
     public class PlayerInfoPanelFill : GameUIOriginScript
     {
         /// <summary>
-        /// Текстовое поля для имени текущего игрока.
+        /// РўРµРєСЃС‚РѕРІРѕРµ РїРѕР»СЏ РґР»СЏ РёРјРµРЅРё С‚РµРєСѓС‰РµРіРѕ РёРіСЂРѕРєР°.
         /// </summary>
         [SerializeField]
         private TextMeshProUGUI playerName = null;
         /// <summary>
-        /// Аниматор для таблички.
+        /// РђРЅРёРјР°С‚РѕСЂ РґР»СЏ С‚Р°Р±Р»РёС‡РєРё.
         /// </summary>
         [SerializeField]
         private Animator animatorPlayerInfo = null;
         /// <summary>
-        /// Картинка с цветом игрока.
+        /// РљР°СЂС‚РёРЅРєР° СЃ С†РІРµС‚РѕРј РёРіСЂРѕРєР°.
         /// </summary>
         [SerializeField]
         private Image playerColor = null;
 
         /// <summary>
-        /// Заполнить текстовое поле имени имененм текущего игрока в модели. 
+        /// Р—Р°РїРѕР»РЅРёС‚СЊ С‚РµРєСЃС‚РѕРІРѕРµ РїРѕР»Рµ РёРјРµРЅРё РёРјРµРЅРµРЅРј С‚РµРєСѓС‰РµРіРѕ РёРіСЂРѕРєР° РІ РјРѕРґРµР»Рё. 
         /// </summary>
         private void FillPlayerName()
         {
@@ -45,16 +45,16 @@ namespace UI
             AnimationEnable(true);
         }
         /// <summary>
-        /// Отключить анимацию.
+        /// РћС‚РєР»СЋС‡РёС‚СЊ Р°РЅРёРјР°С†РёСЋ.
         /// </summary>
         public void DisableAnimation()
         {
             AnimationEnable(false);
         }
         /// <summary>
-        /// Включить анимацию.
+        /// Р’РєР»СЋС‡РёС‚СЊ Р°РЅРёРјР°С†РёСЋ.
         /// </summary>
-        /// <param name="isEnable">Надо ли включить анимаюцию.</param>
+        /// <param name="isEnable">РќР°РґРѕ Р»Рё РІРєР»СЋС‡РёС‚СЊ Р°РЅРёРјР°СЋС†РёСЋ.</param>
         private void AnimationEnable(Boolean isEnable)
         {
             this.animatorPlayerInfo.SetBool("PlayerChange", isEnable);

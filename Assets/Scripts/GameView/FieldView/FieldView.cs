@@ -79,6 +79,7 @@ namespace Assets.Scripts.GameView
                     this.slots[i, j].OnCellSlotClicked += MoveAvatarInModel;
                 }
 
+            //Установить стартовые точки для игроков.
             foreach (GamePlayer player in this.gameModel.players)
             {
                 this.slots[player.positionX, player.positionY].SetPlayerStartPoint
@@ -645,7 +646,7 @@ namespace Assets.Scripts.GameView
         #endregion Свободная ячейка.
 
 
-        private void Awake()
+        protected override void Awake()
         {
             FillFreeCellSlot();
             FillFieldWithCell();
@@ -672,7 +673,6 @@ namespace Assets.Scripts.GameView
                 }
             }
         }
-
 
         protected override void OnDestroy()
         {

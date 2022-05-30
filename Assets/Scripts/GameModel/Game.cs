@@ -3,11 +3,9 @@ using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using Assets.Scripts.GameModel.PlayingField.Treasures;
-using Assets.Scripts.GameModel.Rules;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace Assets.Scripts.GameModel
 {

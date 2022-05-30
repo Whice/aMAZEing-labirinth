@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.GameModel.Player;
 using System;
 using UnityEngine;
-
+using static UnityEngine.ParticleSystem;
 
 namespace Assets.Scripts.GameView
 {
@@ -40,14 +40,20 @@ namespace Assets.Scripts.GameView
             set
             {
                 this.particleUnderHead.gameObject.SetActive(value);
-                this.particleUnderHead.startColor = new Color
-                    (
-                    this.gameModel.currentPlayer.color.R,
-                    this.gameModel.currentPlayer.color.G,
-                    this.gameModel.currentPlayer.color.B
-                    );
+
+                //Установить цвет частицам соответсвенно цвету игрока.
+                if (value)
+                {
+                    MainModule particleUnderHeadMain = this.particleUnderHead.main;
+                    particleUnderHeadMain.startColor = new MinMaxGradient(new Color
+                        (
+                        this.gameModel.currentPlayer.color.R,
+                        this.gameModel.currentPlayer.color.G,
+                        this.gameModel.currentPlayer.color.B
+                        ));
+                }
             }
-        }  
+        }
         /// <summary>
         /// Смена игрока.
         /// </summary>
@@ -57,8 +63,8 @@ namespace Assets.Scripts.GameView
                 this.isShowParticleUnderHead = this.gameModel.currentPlayer.playerNumer == this.playerNumber;
         }
         /// <summary>
-                 /// Объект игрока из модели для этого слота.
-                 /// </summary>
+        /// Объект игрока из модели для этого слота.
+        /// </summary>
         private GamePlayer currentPlayerPrivate;
         /// <summary>
         /// Объект игрока из модели для этого слота.
@@ -104,7 +110,5 @@ namespace Assets.Scripts.GameView
             ansver += this.avatar == null ? "null" : this.currentPlayer.position.ToString();
             return ansver;
         }
-
-    
     }
 }

@@ -41,7 +41,7 @@ namespace UI
             for (Int32 i = 0; i < this.cardSlots.Count; i++)
             {
                 this.cardSlots[i].Hide();
-                this.cardSlots[i].Oncliked -= FlipCard;
+                this.cardSlots[i].OnCliked -= FlipCard;
             }
             this.cardSlots.Clear();
         }
@@ -60,7 +60,7 @@ namespace UI
                 this.cardSlots.Add(currentSlot);
                 currentSlot.Close();
                 currentSlot.transform.SetParent(this.transform);
-                currentSlot.Oncliked += FlipCard;
+                currentSlot.OnCliked += FlipCard;
             }
         }
         /// <summary>

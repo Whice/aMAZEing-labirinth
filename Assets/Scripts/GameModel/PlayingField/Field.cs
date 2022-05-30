@@ -108,6 +108,9 @@ namespace Assets.Scripts.GameModel.PlayingField
 
         #region Поиск пути.
 
+        /// <summary>
+        /// Класс для поиска пути.
+        /// </summary>
         private SearchRoadForPlayer searchRoadForPlayer = new SearchRoadForPlayer();
         private HashSet<Point> pointsForMove = null;
         private Boolean IsPlayerCanMoveToCell(GamePlayer player, Point cellForMove)

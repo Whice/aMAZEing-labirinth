@@ -100,11 +100,16 @@ namespace UI
             this.gameObject.SetActive(false);
             this.transform.parent = null;
         }
-
-        public event Action Oncliked;
+        /// <summary>
+        /// Событие щелчка.
+        /// </summary>
+        public event Action OnCliked;
+        /// <summary>
+        /// Осуществить клик пл слоту.
+        /// </summary>
         public void OnClick()
         {
-            this.Oncliked?.Invoke();
+            this.OnCliked?.Invoke();
         }
     }
 }
