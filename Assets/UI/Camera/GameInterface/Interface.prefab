@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3095445139786493369}
   - component: {fileID: 1951848723412171201}
+  - component: {fileID: 4566442171244346967}
   m_Layer: 5
   m_Name: MainScreen
   m_TagString: Untagged
@@ -53,6 +54,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d53122dfdde7e714e867a7cd7fa860de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4566442171244346967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7129522837146794980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 470048ee49a92984a98aecc0666af307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tmpForWinnerTable: {fileID: 5397460766971934329}
@@ -1379,7 +1392,7 @@ PrefabInstance:
     - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1951848723412171201}
+      objectReference: {fileID: 4566442171244346967}
     - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1390,7 +1403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UI.GameInterfaceRectanglesDetected, Assembly-CSharp
+      value: Assets.UI.Camera.GameInterface.GameUIController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4385904849226744512, guid: 9a92322daf4e9514c822d7b71d5d4dbf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

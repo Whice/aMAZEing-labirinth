@@ -162,6 +162,10 @@ namespace Assets.Scripts.GameView
         #region Стрелочки игрового поля.
 
         /// <summary>
+        /// Скрытая стрелочка, которая может "отменить" ход.
+        /// </summary>
+        private ArrowForFreeCellSlotFill hiddenArrow;
+        /// <summary>
         /// 4 линии для стрелочек-мест для свободных ячеек.
         /// <br/>1е несколько - верхняя сторона.
         /// <br/>2е несколько - правая сторона.
@@ -534,6 +538,15 @@ namespace Assets.Scripts.GameView
                 FieldSide side = slotWithFreeSlot.side;
                 if (side != FieldSide.unknow)
                 {
+                    //Скрыть стрелочку, которая может "отменить" ход и показать предыдущую скрытую.
+                    if (this.hiddenArrow != slotWithFreeSlot.arrowOnOpositeSide)
+                    {
+                        if (this.hiddenArrow != null)
+                        {
+                            this.hiddenArrow.ShowArrow();
+                        }
+                        slotWithFreeSlot.arrowOnOpositeSide.HideArrow();
+                    }
 
                     this.isShifting = true;
                     this.timeShift = 0;

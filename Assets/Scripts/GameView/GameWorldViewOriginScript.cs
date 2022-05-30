@@ -28,6 +28,12 @@ namespace Assets.Scripts.GameView
         private Vector3 cursorPositionBeforeMouseDown;
         private void OnMouseUp()
         {
+#if PLATFORM_STANDALONE_WIN
+            if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
+            {
+                SimulateOnClick();
+            }
+#else
             if (this.cursorPositionBeforeMouseDown == Input.mousePosition)
             {
                 if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
@@ -35,12 +41,13 @@ namespace Assets.Scripts.GameView
                     SimulateOnClick();
                 }
             }
+#endif
         }
         private void OnMouseDown()
         {
             this.cursorPositionBeforeMouseDown = Input.mousePosition;
         }
 
-        #endregion Симуляция/считывание клика по объекту.
+#endregion Симуляция/считывание клика по объекту.
     }
 }

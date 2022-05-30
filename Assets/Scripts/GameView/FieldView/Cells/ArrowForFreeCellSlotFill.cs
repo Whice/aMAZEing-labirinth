@@ -130,6 +130,21 @@ namespace Assets.Scripts.GameView
             }
         }
 
+        /// <summary>
+        /// Скрыть стрелочку, которая может "отменить" ход.
+        /// </summary>
+        public void HideArrow()
+        {
+            this.gameObject.SetActive(false);
+        }
+        /// <summary>
+        /// Показать стрелочку
+        /// </summary>
+        public void ShowArrow()
+        {
+            this.gameObject.SetActive(true);
+        }
+
 
         private void Awake()
         {
