@@ -58,12 +58,17 @@ namespace UI
                 Rect currentRect;
                 for(Int32 i=0; i<this.gameUIOriginScriptTransforms.Count;i++)
                 {
-                    currentRect = GetElementRect(this.gameUIOriginScriptTransforms[i]);
-                    if (currentRect.Contains(new Vector2(cursorPosition.x, cursorPosition.y)))
+                    if (this.gameUIOriginScriptTransforms[i].gameObject.activeSelf)
                     {
-                        return true;
+                        if (this.gameUIOriginScriptTransforms[i].GetComponent<GameUIOriginScript>().isShouldInterruptPressesInWorld)
+                        {
+                            currentRect = GetElementRect(this.gameUIOriginScriptTransforms[i]);
+                            if (currentRect.Contains(new Vector2(cursorPosition.x, cursorPosition.y)))
+                            {
+                                return true;
+                            }
+                        }
                     }
-
                 }
 
                 return false;

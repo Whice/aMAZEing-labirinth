@@ -49,6 +49,7 @@ namespace Assets.UI.Camera.GameInterface
         protected override void Awake()
         {
             base.Awake();
+            this.isShouldInterruptPressesInWorld = false;
             this.gameModel.OnGameEnded += ShowGameEndTable;
         }
         protected override void OnDestroy()
