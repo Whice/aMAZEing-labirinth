@@ -60,7 +60,9 @@ namespace Assets.Scripts.GameView
         private void PlayerChanged()
         {
             if (currentPlayer != null)
+            {
                 this.isShowParticleUnderHead = this.gameModel.currentPlayer.playerNumer == this.playerNumber;
+            }
         }
         /// <summary>
         /// Объект игрока из модели для этого слота.
@@ -88,6 +90,7 @@ namespace Assets.Scripts.GameView
         {
             this.currentPlayerPrivate = this.gameModel.players[playerNumber];
             SetAvatar();
+            PlayerChanged();
         }
 
         protected override void Awake()

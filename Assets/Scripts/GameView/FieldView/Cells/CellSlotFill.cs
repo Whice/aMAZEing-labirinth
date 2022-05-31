@@ -82,8 +82,6 @@ namespace Assets.Scripts.GameView
             (this.avatarSlots[playerNumber].transform.parent, cellSlot.avatarSlots[playerNumber].transform.parent) 
                 = (cellSlot.avatarSlots[playerNumber].transform.parent, this.avatarSlots[playerNumber].transform.parent);
 
-            this.avatarSlots[playerNumber].isShowParticleUnderHead = !this.avatarSlots[playerNumber].isShowParticleUnderHead;
-            cellSlot.avatarSlots[playerNumber].isShowParticleUnderHead = !cellSlot.avatarSlots[playerNumber].isShowParticleUnderHead;
 
             this.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
             cellSlot.avatarSlots[playerNumber].transform.localPosition = Vector3.zero;
@@ -423,7 +421,7 @@ namespace Assets.Scripts.GameView
         public event Action<CellSlotFill> OnCellSlotClicked;
         public override void SimulateOnClick()
         {
-            PrintLogInfoCell(this.modelCell);
+            //PrintLogInfoCell(this.modelCell);
             base.SimulateOnClick();
             this.OnCellSlotClicked?.Invoke(this);
         }
