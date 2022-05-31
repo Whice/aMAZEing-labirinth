@@ -66,6 +66,7 @@ namespace UI
 
             AnimationEnable(false);
             this.playerName.text = this.currentPlayer.name;
+            FillPlayerName();
             this.gameModel.onNextTurnMoved += FillPlayerName;
         }
         protected override void OnDestroy()
