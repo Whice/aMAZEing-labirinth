@@ -8,16 +8,23 @@ namespace Assets.Scripts.GameModel.Cards
 {
     /// <summary>
     /// Колода карт.
+    /// <br/>Есть возможность перечисления карт через foreach.
     /// </summary>
     public class CardDeck: IEnumerable<Card>
     {
         #region Конструкторы.
 
         /// <summary>
-        /// Создать колоду из всех карт.
-        /// <br/>Есть возможность перечисления карт через foreach.
+        /// Создать пустую колоду с вместимостью для всех карт.
         /// </summary>
-        public CardDeck()
+        public CardDeck() 
+        { 
+            this.cards = new List<Card>();
+        }
+        /// <summary>
+        /// Создать колоду из всех карт.
+        /// </summary>
+        private void FillInDeckWithAllCards()
         {
             Int32 maxNumber = TreasureAndStartPointsType.empty.GetMaximalNumberTreasure();
             Int32 minNumber = TreasureAndStartPointsType.empty.GetMinimalNumberTreasure();
@@ -29,9 +36,8 @@ namespace Assets.Scripts.GameModel.Cards
             }
             this.lastCardNumber = this.cards.Count - 1;
         }
-        private CardDeck(Boolean empty)
+        private CardDeck(Int32 maxCardInDeck)
         {
-            const Int32 maxCardInDeck = 24;
             this.cards = new List<Card>(maxCardInDeck);
         }
         /// <summary>
@@ -48,7 +54,26 @@ namespace Assets.Scripts.GameModel.Cards
         /// </summary>
         public static CardDeck empty
         {
-            get => new CardDeck(true);
+            get
+            {
+                Int32 maxNumber = TreasureAndStartPointsType.empty.GetMaximalNumberTreasure();
+                Int32 minNumber = TreasureAndStartPointsType.empty.GetMinimalNumberTreasure();
+                return new CardDeck(maxNumber - minNumber);
+
+            }
+        }
+        /// <summary>
+        /// Дать полностью заполненую колоду.
+        /// </summary>
+        public static CardDeck full
+        {
+            get
+            {
+                CardDeck deck = new CardDeck();
+                deck.FillInDeckWithAllCards();
+                return deck;
+
+            }
         }
 
         #endregion Конструкторы.
@@ -171,6 +196,18 @@ namespace Assets.Scripts.GameModel.Cards
         {
             this.cards.Add(card);
             ++this.lastCardNumber;
+        }
+        /// <summary>
+        /// Добавить список карт.
+        /// </summary>
+        /// <param name="cards">Карты для добавления.</param>
+        public void Add(List<Card> cards)
+        {
+            for (int i = 0; i < cards.Count; i++)
+            {
+                this.cards.Add(cards[i]);
+            }
+            this.lastCardNumber += cards.Count;
         }
 
         #endregion Действия.

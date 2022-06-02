@@ -359,7 +359,8 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         public void PlayerMissMove()
         {
-            SetNextPhase();
+            if(this.currentPhase == TurnPhase.movingAvatar)
+                SetNextPhase(); 
         }
         /// <summary>
         /// Ход перешел к следующему игроку.
@@ -459,26 +460,22 @@ namespace Assets.Scripts.GameModel
             if (this.playersPrivate != null && this.countOfPlayersPlaying > 0)
             {
                 //пол умолчанию колода создается со всеми сокровищами.
-                CardDeck deck = new CardDeck();
+                CardDeck deck =  CardDeck.full;
                 deck.Shuffle();
 
                 //выяснить, сколько карт каждому игроку
                 Int32 countCardsForOnePlayer = deck.count/this.countOfPlayersPlaying;
 
-                List<Card> startPointAndDeckForPlayer;
                 CardDeck deckForPlayer;
 
                 for (Int32 i = 0; i < this.countOfPlayersPlaying; i++)
                 {
-                    //задать вместимость карты для игрока+точка старта
-                    startPointAndDeckForPlayer = new List<Card>(countCardsForOnePlayer + 1);
+                    //создать колоду для игрока
+                    deckForPlayer = new CardDeck();
 
                     //выдать сперва точку старта, потом все карты для игрока.
-                    startPointAndDeckForPlayer.Add(new Card((TreasureAndStartPointsType)(i + 2)));
-                    startPointAndDeckForPlayer = deck.Pop(countCardsForOnePlayer);
-
-                    //создать колоду для игрока
-                    deckForPlayer = new CardDeck(startPointAndDeckForPlayer);
+                    deckForPlayer.Add(new Card((TreasureAndStartPointsType)(i + 2)));
+                    deckForPlayer.Add(deck.Pop(countCardsForOnePlayer));
 
                     //Выдать координаты
                     Int32 startPointX = this.field.startPointsCoordinate[i].X;
