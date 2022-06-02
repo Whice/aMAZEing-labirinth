@@ -98,7 +98,7 @@ namespace UI
         public void Hide()
         {
             this.gameObject.SetActive(false);
-            this.transform.parent = null;
+            this.transform.SetParent(null, true);
         }
         /// <summary>
         /// Событие щелчка.
