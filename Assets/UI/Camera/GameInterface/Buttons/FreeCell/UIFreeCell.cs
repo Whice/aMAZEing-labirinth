@@ -3,11 +3,12 @@ using Assets.Scripts.GameModel.PlayingField.FieldCells;
 using System;
 using UnityEngine.UI;
 using Assets.Scripts.GameModel.PlayingField;
+using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 
 namespace UI
 {
     /// <summary>
-    /// Скрипт для 
+    /// Скрипт для управления свободной ячейкой из UI.
     /// </summary>
     public class UIFreeCell : GameUIOriginScript
     {
@@ -26,6 +27,42 @@ namespace UI
         {
             get => this.gameModel.field;
         }
+
+        #region Видимость ячейки.
+
+        /// <summary>
+        /// Аниматор этого префаба.
+        /// </summary>
+        [SerializeField]
+        private Animator animator = null;
+        /// <summary>
+        /// Считать ячейку скрытой.
+        /// </summary>
+        private Boolean isConsiderCellHidden = false;
+        /// <summary>
+        /// Включить объект этого скрипта.
+        /// </summary>
+        public void EnableObject()
+        {
+            SetEnableObject(true);
+        }
+        /// <summary>
+        /// Изменить видимость ячейки.
+        /// </summary>
+        private void ChangeVisibility()
+        {
+            SetEnableObjectAnimationBegin();
+        }
+        /// <summary>
+        /// Начать анимацию включения или отключения объекта этого скрипта.
+        /// </summary>
+        public void SetEnableObjectAnimationBegin()
+        {
+            this.animator.SetInteger("ShowFreeCellCode", !this.isConsiderCellHidden ? -1 : 1);
+            this.isConsiderCellHidden = !this.isConsiderCellHidden;
+        }
+
+        #endregion Видимость ячейки.
 
         /// <summary>
         /// Спрайт с нарисованной линией.
@@ -92,11 +129,18 @@ namespace UI
             ChageSprite();
 
             this.fieldCells.OnFreeCellChange += ChageSprite;
+            this.gameModel.onPhaseChange += ChangeVisibility;
+        }
+
+        private void Update()
+        {
+            LogInfo(this.animator.GetInteger("ShowFreeCellCode").ToString());
         }
 
         protected override void OnDestroy()
         {
             this.fieldCells.OnFreeCellChange -= ChageSprite;
+            this.gameModel.onPhaseChange -= ChangeVisibility;
             base.OnDestroy();
         }
 

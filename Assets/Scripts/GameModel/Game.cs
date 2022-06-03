@@ -386,6 +386,10 @@ namespace Assets.Scripts.GameModel
             this.onPlayerChanged?.Invoke();
         }
         /// <summary>
+        /// Событие смены фазы игры.
+        /// </summary>
+        public event Action onPhaseChange;
+        /// <summary>
         /// Установить следующую фазу, с переходом хода к следующиму игроку.
         /// </summary>
         private void SetNextPhase()
@@ -402,6 +406,7 @@ namespace Assets.Scripts.GameModel
                 SetNextPlayer();
                 this.onNextTurnMoved?.Invoke();
             }
+            this.onPhaseChange?.Invoke();
         }
 
         #endregion Во время игры.

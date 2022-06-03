@@ -84,7 +84,10 @@ namespace UI
             base.Awake();
 
             this.gameModel.onPlayerChanged += FillPlayersDeck;
+        }
 
+        private void Start()
+        {
             CreateDeck();
             FillPlayersDeck();
         }

@@ -145,9 +145,9 @@ namespace Assets.Scripts.GameView
             this.gameObject.SetActive(true);
         }
 
-
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             this.arrowObject = this.cellObject = this.gameObject;
         }
 

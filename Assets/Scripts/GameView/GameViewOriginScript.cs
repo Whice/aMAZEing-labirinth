@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class GameViewOriginScript : MonoBehaviourLogger
 {
     /// <summary>
-    /// Модель игры, реализовывает логику взаимодействия всех частей.
+    /// РњРѕРґРµР»СЊ РёРіСЂС‹, СЂРµР°Р»РёР·РѕРІС‹РІР°РµС‚ Р»РѕРіРёРєСѓ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ РІСЃРµС… С‡Р°СЃС‚РµР№.
     /// </summary>
     public Game gameModel
     {
@@ -14,7 +14,7 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
 
 
     /// <summary>
-    /// Получить клон указанного по имени префаба из провайдер.
+    /// РџРѕР»СѓС‡РёС‚СЊ РєР»РѕРЅ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РїРѕ РёРјРµРЅРё РїСЂРµС„Р°Р±Р° РёР· РїСЂРѕРІР°Р№РґРµСЂ.
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -23,6 +23,21 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
         return GameManager.instance.prefabsProvider.GetPrefabClone(name);
     }
 
+    /// <summary>
+    /// Р’РєР»СЋС‡РёС‚СЊ РёР»Рё РѕС‚РєР»СЋС‡РёС‚СЊ РѕР±СЉРµРєС‚ СЌС‚РѕРіРѕ СЃРєСЂРёРїС‚Р°.
+    /// </summary>
+    /// <param name="isEnable"></param>
+    public void SetEnableObject(Boolean isEnable)
+    {
+        this.gameObject.SetActive(isEnable);
+    }
+    /// <summary>
+    /// Р’РєР»СЋС‡РµРЅ РёР»Рё РѕС‚РєР»СЋС‡РµРЅ РѕР±СЉРµРєС‚ СЌС‚РѕРіРѕ СЃРєСЂРёРїС‚Р°.
+    /// </summary>
+    public Boolean activeSelf
+    {
+        get => this.gameObject.activeSelf;
+    }
     protected virtual void Awake() { }
     protected virtual void OnDestroy() { }
 }

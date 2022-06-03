@@ -61,10 +61,12 @@ namespace UI
         /// Множитель при нажатии правой кнопки мыши.
         /// </summary>
         private const Int32 RIGHT_CLICK_MULTIPLIER = 5;
+#pragma warning disable CS0414
         /// <summary>
         /// Правая кнопка мыши зажата.
         /// </summary>
         private Boolean isRightButtonPressed = false;
+#pragma warning restore CS0414
         /// <summary>
         /// Удаленность курсора от центра в процентном соотношении, 
         /// где центр экрана (0, 0), а левый край по центру, к примеру, (-1,0).
