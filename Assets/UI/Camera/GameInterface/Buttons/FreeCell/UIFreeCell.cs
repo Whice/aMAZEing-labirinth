@@ -38,7 +38,10 @@ namespace UI
         /// <summary>
         /// Считать ячейку скрытой.
         /// </summary>
-        private Boolean isConsiderCellHidden = false;
+        private Boolean isNeedShowHidden
+        {
+            get => this.gameModel.currentPhase == TurnPhase.movingCell;
+        }    
         /// <summary>
         /// Включить объект этого скрипта.
         /// </summary>
@@ -58,8 +61,7 @@ namespace UI
         /// </summary>
         public void SetEnableObjectAnimationBegin()
         {
-            this.animator.SetInteger("ShowFreeCellCode", !this.isConsiderCellHidden ? -1 : 1);
-            this.isConsiderCellHidden = !this.isConsiderCellHidden;
+            this.animator.SetInteger("ShowFreeCellCode", !this.isNeedShowHidden ? -1 : 1);
         }
 
         #endregion Видимость ячейки.
@@ -130,11 +132,6 @@ namespace UI
 
             this.fieldCells.OnFreeCellChange += ChageSprite;
             this.gameModel.onPhaseChange += ChangeVisibility;
-        }
-
-        private void Update()
-        {
-            LogInfo(this.animator.GetInteger("ShowFreeCellCode").ToString());
         }
 
         protected override void OnDestroy()
