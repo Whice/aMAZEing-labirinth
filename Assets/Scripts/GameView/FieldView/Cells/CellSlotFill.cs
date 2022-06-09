@@ -91,6 +91,31 @@ namespace Assets.Scripts.GameView
 
         #region Положение слота в пространстве.
 
+        #region Положение по высоте.
+
+        /// <summary>
+        /// Изначальная высота слота ячейки.
+        /// </summary>
+        private Single originalHeight;
+        /// <summary>
+        /// Высота слота.
+        /// </summary>
+        public Single height
+        {
+            get => this.transform.localPosition.y;
+            set => this.transform.localPosition = new Vector3(this.transform.localPosition.x, value, this.transform.localPosition.z);
+        }
+        /// <summary>
+        /// Сбросить значение высоты на изначальное.
+        /// </summary>
+        public void ResetHeight()
+        {
+            this.height = this.originalHeight;
+        }
+        #endregion Положение по высоте.
+
+        #region Положение по горизонтали.
+
         /// <summary>
         /// Множитель расположения, чтобы было небольшое расстояние между слотами.
         /// </summary>
@@ -139,6 +164,8 @@ namespace Assets.Scripts.GameView
                         y * positionMultiplier
                         );
         }
+
+        #endregion Положение по горизонтали.
 
         #endregion Положение слота в пространстве.
 
@@ -364,6 +391,7 @@ namespace Assets.Scripts.GameView
         protected override void Awake()
         {
             this.cellObject = this.gameObject;
+            this.originalHeight = this.transform.localPosition.y;
         }
 
         public override string ToString()

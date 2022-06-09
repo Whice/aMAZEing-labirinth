@@ -150,6 +150,8 @@ namespace Assets.Scripts.GameModel.Rules
         /// <returns></returns>
         public HashSet<Point> GetCellsForMove(Point playerPosition, FieldCell[,] field)
         {
+            this.cellsForMove.Clear();
+
             this.field = field;
 
             SearchForPassageInNeighboringCells(playerPosition.X, playerPosition.Y);

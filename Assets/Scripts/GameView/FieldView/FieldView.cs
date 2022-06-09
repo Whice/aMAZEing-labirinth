@@ -2,6 +2,7 @@
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.GameView
@@ -495,6 +496,7 @@ namespace Assets.Scripts.GameView
             }
 
             this.isShifting = false;
+            ShowCellsWhereCanMoveIfNeed(this.gameModel.currentPlayer);
         }
 
         /// <summary>
@@ -659,9 +661,46 @@ namespace Assets.Scripts.GameView
 
         #endregion Свободная ячейка.
 
+        #region Показать ячейки, куда можно ходить.
+
+        /// <summary>
+        /// Надо показать ячейки, куда можно ходить.
+        /// </summary>
+        [SerializeField]
+        private Boolean isNeedShowCellsWhereCanMove = true;
+        /// <summary>
+        /// Сбросить высоту всем ячейкам в игре на изначальную.
+        /// </summary>
+        private void ResetHeightAllCells()
+        {
+            foreach (CellSlotFill cellSlot in this.slots)
+            {
+                cellSlot.ResetHeight();
+            }
+            this.freeCellSlot.ResetHeight();
+        }
+        /// <summary>
+        /// Показать ячейки, куда можно ходить, если надо.
+        /// </summary>
+        private void ShowCellsWhereCanMoveIfNeed(GamePlayer player)
+        {
+            if (this.isNeedShowCellsWhereCanMove)
+            {
+                ResetHeightAllCells();
+
+                HashSet<System.Drawing.Point> pointsCellsForMove = this.gameModel.field.GetPointsForMove(player);
+                foreach (System.Drawing.Point point in pointsCellsForMove)
+                {
+                    this.slots[point.X, point.Y].height = 0.5f;
+                }
+            }
+        }
+
+        #endregion Показать ячейки, куда можно ходить.
 
         protected override void Awake()
         {
+            base.Awake();
             FillFreeCellSlot();
             FillFieldWithCell();
             ToCheckIfViewOfFieldCorrespondsToItModel();
@@ -672,6 +711,8 @@ namespace Assets.Scripts.GameView
             {
                 player.onAvatarMoved += MoveAvatarView;
             }
+
+            this.gameModel.onPhaseChange += ResetHeightAllCells;
         }
         private void Update()
         {
@@ -700,6 +741,7 @@ namespace Assets.Scripts.GameView
                 player.onAvatarMoved -= MoveAvatarView;
             }
 
+            this.gameModel.onPhaseChange -= ResetHeightAllCells;
             base.OnDestroy();
         }
     }

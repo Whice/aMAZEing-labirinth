@@ -112,7 +112,16 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// Класс для поиска пути.
         /// </summary>
         private SearchRoadForPlayer searchRoadForPlayer = new SearchRoadForPlayer();
+        /// <summary>
+        /// Координаты ячеек игрового поля, куда игрок может совершить ход.
+        /// </summary>
         private HashSet<Point> pointsForMove = null;
+        /// <summary>
+        /// Игрок может совершить ход в указанную ячейку.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="cellForMove"></param>
+        /// <returns></returns>
         private Boolean IsPlayerCanMoveToCell(GamePlayer player, Point cellForMove)
         {
             if (this.pointsForMove == null)
@@ -122,11 +131,22 @@ namespace Assets.Scripts.GameModel.PlayingField
 
             return this.pointsForMove.Contains(cellForMove);
         }
+        /// <summary>
+        /// Получить все координаты ячеек игрового поля, куда игрок может совершить ход.
+        /// </summary>
+        /// <param name="player">Игрок, для которого надо показать ячейки, куда можно ходить.</param>
+        /// <returns></returns>
+        public HashSet<Point> GetPointsForMove(GamePlayer player)
+        {
+            return this.searchRoadForPlayer.GetCellsForMove(new Point(player.positionX, player.positionY), this.fieldCells);
+        }
+        /// <summary>
+        /// Занулить объект с координатами ячеек игрового поля, куда игрок может совершить ход.
+        /// </summary>
         public void ClearCellForMove()
         {
             this.pointsForMove= null;
         }
-
 
         #endregion Поиск пути.
 
