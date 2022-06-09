@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -9,6 +11,7 @@ namespace UI
     /// </summary>
     public class UIPlayerCardsDeck : GameUIOriginScript
     {
+        private VerticalLayoutGroup verticalLayoutGroup;
         /// <summary>
         /// UI колода игрока.
         /// </summary>
@@ -19,7 +22,8 @@ namespace UI
         private UICardWithTreasureSlot lastCard
         {
             get => this.cardSlots[this.cardSlots.Count - 1];
-        }        /// <summary>
+        } 
+        /// <summary>
                  /// Количество карт у игрока.
                  /// </summary>
         private Int32 countCardsPlayerHas
@@ -82,14 +86,10 @@ namespace UI
         protected override void Awake()
         {
             base.Awake();
-
-            this.gameModel.onPlayerChanged += FillPlayersDeck;
-        }
-
-        private void Start()
-        {
             CreateDeck();
             FillPlayersDeck();
+
+            this.gameModel.onPlayerChanged += FillPlayersDeck;
         }
 
         protected override void OnDestroy()
