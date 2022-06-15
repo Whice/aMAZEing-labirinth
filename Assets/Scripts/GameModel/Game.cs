@@ -144,25 +144,26 @@ namespace Assets.Scripts.GameModel
             /// <returns></returns>
             public int Compare(GamePlayer x, GamePlayer y)
             {
+                //Для игроков честно считаем, кто первый вышел, кто второй и т.д.
                 if (x.winnerNumber > y.winnerNumber)
-                {
-                    return 1;
-                }
-                else if (x.winnerNumber < y.winnerNumber)
                 {
                     return -1;
                 }
-                else
+                else if (x.winnerNumber < y.winnerNumber)
                 {
+                    return 1;
+                }
+                else//Если остались только боты, то они равняются по количетсву карт.
+                {//Типа побеждает тот, у кого их меньше
                     if (x.countCardInDeck > y.countCardInDeck)
-                    {
-                        return -1;
-                    }
-                    else if (x.countCardInDeck < y.countCardInDeck)
                     {
                         return 1;
                     }
-                    else
+                    else if (x.countCardInDeck < y.countCardInDeck)
+                    {
+                        return -1;
+                    }
+                    else//если количество карт одинакого, то просто воспользуемся именами. Они то точно разные.
                     {
                         if (x.name.GetHashCode() > y.name.GetHashCode())
                         {
