@@ -39,7 +39,9 @@ namespace UI
         private Rect GetElementRect(Transform element)
         {
             Vector3 currentPosition = element.position;
+            Vector3 lossyScale = element.transform.lossyScale;
             Rect currentRect = element.GetComponent<RectTransform>().rect;
+            currentRect = new Rect(0, 0, currentRect.width * lossyScale.x, currentRect.height * lossyScale.y);
             //Смещение позиции для правильного расчета прямоугольника
             Single correctCurrentPositionX = currentPosition.x - currentRect.width * 0.5f;
             Single correctCurrentPositionY = currentPosition.y - currentRect.height * 0.5f;
@@ -56,7 +58,7 @@ namespace UI
             {
                 Vector3 cursorPosition = Input.mousePosition;
                 Rect currentRect;
-                for(Int32 i=0; i<this.gameUIOriginScriptTransforms.Count;i++)
+                for (Int32 i = 0; i < this.gameUIOriginScriptTransforms.Count; i++)
                 {
                     if (this.gameUIOriginScriptTransforms[i].gameObject.activeSelf)
                     {
