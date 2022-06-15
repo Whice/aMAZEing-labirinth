@@ -63,7 +63,7 @@ namespace UI
                 currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
                 this.cardSlots.Add(currentSlot);
                 currentSlot.Close();
-                currentSlot.transform.SetParent(this.transform);
+                currentSlot.transform.SetParent(this.transform, false);
                 currentSlot.OnCliked += FlipCard;
             }
         }
