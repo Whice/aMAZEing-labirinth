@@ -1,8 +1,6 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI
 {
@@ -11,7 +9,6 @@ namespace UI
     /// </summary>
     public class UIPlayerCardsDeck : GameUIOriginScript
     {
-        private VerticalLayoutGroup verticalLayoutGroup;
         /// <summary>
         /// UI колода игрока.
         /// </summary>

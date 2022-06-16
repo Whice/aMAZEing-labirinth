@@ -1355,6 +1355,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6313230610935088866, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: movementFromCenterOfScreenTime
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6391409845695625507, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -1490,6 +1494,18 @@ PrefabInstance:
     - target: {fileID: 7247853583284664745, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7260563808522971858, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7260563808522971858, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7260563808522971858, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 7286632087207443009, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: m_Layer

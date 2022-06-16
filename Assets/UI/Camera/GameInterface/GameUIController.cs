@@ -1,12 +1,10 @@
-﻿using Assets.Scripts.GameModel;
-using Assets.Scripts.GameModel.Player;
+﻿using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using System;
 using TMPro;
-using UI;
 using UnityEngine;
 
-namespace Assets.UI.Camera.GameInterface
+namespace UI
 {
     /// <summary>
     /// Класс для контролирования всех элементов UI во время игры.

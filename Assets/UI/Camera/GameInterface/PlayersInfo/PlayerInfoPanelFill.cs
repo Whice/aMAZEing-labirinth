@@ -10,6 +10,8 @@ namespace UI
     /// </summary>
     public class PlayerInfoPanelFill : GameUIOriginScript
     {
+        #region Заполнение общей информации об игроке.
+
         /// <summary>
         /// Текстовое поля для имени текущего игрока.
         /// </summary>
@@ -27,7 +29,7 @@ namespace UI
         private Image playerColor = null;
 
         /// <summary>
-        /// Заполнить текстовое поле имени имененм текущего игрока в модели. 
+        /// Заполнить текстовое поле имени именем текущего игрока в модели. 
         /// </summary>
         private void FillPlayerName()
         {
@@ -55,7 +57,25 @@ namespace UI
         private void AnimationEnable(Boolean isEnable)
         {
             this.animatorPlayerInfo.SetBool("PlayerChange", isEnable);
+            // Добавить иконку возвращения на стартовую точку на панель инфо.
+            this.GoHome.Activate(this.currentPlayer);
         }
+
+        #endregion Заполнение общей информации об игроке.
+
+        #region Дополнительная информация об игроке.
+
+        #region Иконка "домой"
+
+        /// <summary>
+        /// Иконка возвращения на стартовую точку.
+        /// </summary>
+        [SerializeField]
+        private GoHomeImageAnimation GoHome = null;
+
+        #endregion Иконка "домой"
+
+        #endregion Дополнительная информация об игроке.
 
         protected override void Awake()
         {

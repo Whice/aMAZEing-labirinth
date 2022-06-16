@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ed4a8d2f6b5aec49949cbc34943bab9, type: 3}
   m_Name: SpriteUI Provider
   m_EditorClassIdentifier: 
-  resourcesList: []
+  resourcesList:
+  - sprite: {fileID: 21300000, guid: 2875ce318e6f2e84fa0f04cda385200d, type: 3}
+    ID: 1
+  - sprite: {fileID: 21300000, guid: 81ef75a7b15b69b4ea6b0ef655df406e, type: 3}
+    ID: 2
