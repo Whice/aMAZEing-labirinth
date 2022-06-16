@@ -60,11 +60,14 @@ namespace UI
             TreasureAndStartPointsType[] treasures = this.gameModel.currentPlayer.treasuresOfThisDeck;
             foreach (TreasureAndStartPointsType treasure in treasures)
             {
-                currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
-                this.cardSlots.Add(currentSlot);
-                currentSlot.Close();
-                currentSlot.transform.SetParent(this.transform, false);
-                currentSlot.OnCliked += FlipCard;
+                if ((Int32)treasure > treasure.GetMaximalNumberStartPoint())
+                {
+                    currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
+                    this.cardSlots.Add(currentSlot);
+                    currentSlot.Close();
+                    currentSlot.transform.SetParent(this.transform, false);
+                    currentSlot.OnCliked += FlipCard;
+                }
             }
         }
         /// <summary>
