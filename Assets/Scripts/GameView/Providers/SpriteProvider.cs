@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,21 +6,21 @@ using UnityEngine;
 namespace Assets.Scripts.GameView
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "Treasure Sprite Provider", menuName = "Game view/Treasure Sprite Provider")]
-    public class TreasureSpriteProvider : ScriptableObject
+    [CreateAssetMenu(fileName = "Sprite Provider", menuName = "Game view/Sprite Provider")]
+    public class SpriteProvider : ScriptableObject
     {
         [Serializable]
         private class ObjectWithID
         {
 #pragma warning disable CS0649
 
-            public Sprite treasure;
+            public Sprite sprite;
             public Int32 ID;
 
 #pragma warning restore CS0649
         }
 
-        #region Объекты в провайдере.
+        #region РћР±СЉРµРєС‚С‹ РІ РїСЂРѕРІР°Р№РґРµСЂРµ.
 
         [SerializeField]
         private ObjectWithID[] resourcesList = new ObjectWithID[0];
@@ -34,20 +34,20 @@ namespace Assets.Scripts.GameView
                     this.resourcesDictionaryField = new Dictionary<Int32, Sprite>(this.resourcesList.Length);
                     foreach (ObjectWithID obj in this.resourcesList)
                     {
-                        this.resourcesDictionaryField.Add(obj.ID, obj.treasure);
+                        this.resourcesDictionaryField.Add(obj.ID, obj.sprite);
                     }
                 }
                 return this.resourcesDictionaryField;
             }
         }
 
-        #endregion Объекты в провайдере.
+        #endregion РћР±СЉРµРєС‚С‹ РІ РїСЂРѕРІР°Р№РґРµСЂРµ.
 
-        #region Действия.
+        #region Р”РµР№СЃС‚РІРёСЏ.
 
 
         /// <summary>
-        /// Получить клон картинки сокровища с указанным id.
+        /// РџРѕР»СѓС‡РёС‚СЊ РєР»РѕРЅ РєР°СЂС‚РёРЅРєРё СЃРѕРєСЂРѕРІРёС‰Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј id.
         /// </summary>
         /// <param name="treasureID"></param>
         /// <returns></returns>
@@ -64,6 +64,6 @@ namespace Assets.Scripts.GameView
             }
         }
 
-        #endregion Действия.
+        #endregion Р”РµР№СЃС‚РІРёСЏ.
     }
 }

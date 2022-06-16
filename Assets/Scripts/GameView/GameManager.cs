@@ -27,8 +27,8 @@ public class GameManager : MonoSingleton<GameManager>
         get=>this.treasureProviderPrivate;
     }
     [SerializeField]
-    private TreasureSpriteProvider treasureSpriteProviderPrivate = null;
-    public TreasureSpriteProvider treasureSpriteProvider
+    private SpriteProvider treasureSpriteProviderPrivate = null;
+    public SpriteProvider treasureSpriteProvider
     {
         get=>this.treasureSpriteProviderPrivate;
     }

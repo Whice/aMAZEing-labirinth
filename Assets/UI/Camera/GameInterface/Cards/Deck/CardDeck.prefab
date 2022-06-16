@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 263a5e439e8982146bb1e4db34a9abaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isShouldInterruptPressesInWorld: 1
 --- !u!114 &6819800383049705494
 MonoBehaviour:
   m_ObjectHideFlags: 0

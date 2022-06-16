@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.GameModel.Player;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

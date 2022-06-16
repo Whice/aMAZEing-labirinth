@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f53fd70cee981974283ad64b5d057a7c, type: 3}
-  m_Name: UIProvider Provider
+  m_Name: GameObjectUI Provider
   m_EditorClassIdentifier: 
   resourcesList:
   - {fileID: 301111693757777043, guid: 10b06ecac30458a458766a83608572ba, type: 3}

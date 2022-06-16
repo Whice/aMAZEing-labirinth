@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,7 +20,7 @@ namespace Assets.Scripts.GameView
 #pragma warning restore CS0649
         }
 
-        #region Объекты в провайдере.
+        #region РћР±СЉРµРєС‚С‹ РІ РїСЂРѕРІР°Р№РґРµСЂРµ.
 
         [SerializeField]
         private ObjectWithID[] resourcesList = new ObjectWithID[0];
@@ -41,13 +41,13 @@ namespace Assets.Scripts.GameView
             }
         }
 
-        #endregion Объекты в провайдере.
+        #endregion РћР±СЉРµРєС‚С‹ РІ РїСЂРѕРІР°Р№РґРµСЂРµ.
 
-        #region Действия.
+        #region Р”РµР№СЃС‚РІРёСЏ.
 
 
         /// <summary>
-        /// Получить клон сокровища с указанным id.
+        /// РџРѕР»СѓС‡РёС‚СЊ РєР»РѕРЅ СЃРѕРєСЂРѕРІРёС‰Р° СЃ СѓРєР°Р·Р°РЅРЅС‹Рј id.
         /// </summary>
         /// <param name="treasureID"></param>
         /// <returns></returns>
@@ -64,6 +64,6 @@ namespace Assets.Scripts.GameView
             }
         }
 
-        #endregion Действия.
+        #endregion Р”РµР№СЃС‚РІРёСЏ.
     }
 }
