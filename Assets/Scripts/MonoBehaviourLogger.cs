@@ -17,6 +17,14 @@ namespace UnityEngine
             Debug.LogError(message);
         }
         /// <summary>
+        /// Вывести сообщение об ошибке в консоль.
+        /// </summary>
+        /// <param name="message"></param>
+        protected void LogError(object message)
+        {
+            Debug.LogError(message);
+        }
+        /// <summary>
         /// Вывести предупреждене в консоль.
         /// </summary>
         /// <param name="message"></param>
@@ -25,10 +33,26 @@ namespace UnityEngine
             Debug.LogWarning(message);
         }
         /// <summary>
+        /// Вывести предупреждене в консоль.
+        /// </summary>
+        /// <param name="message"></param>
+        protected void LogWarning(object message)
+        {
+            Debug.LogWarning(message);
+        }
+        /// <summary>
         /// Вывести сообщение в консоль.
         /// </summary>
         /// <param name="message"></param>
         protected void LogInfo(String message)
+        {
+            Debug.Log(message);
+        }
+        /// <summary>
+        /// Вывести сообщение в консоль.
+        /// </summary>
+        /// <param name="message"></param>
+        protected void LogInfo(object message)
         {
             Debug.Log(message);
         }
