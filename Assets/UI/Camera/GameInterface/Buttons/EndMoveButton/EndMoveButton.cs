@@ -20,6 +20,11 @@ namespace UI
         /// </summary>
         private void ChangeVisibility()
         {
+            if (!this.gameObject.activeSelf)
+            {
+                this.gameObject.SetActive(true);
+            }
+
             SetEnableObjectAnimationBegin();
         }
         /// <summary>
@@ -27,7 +32,16 @@ namespace UI
         /// </summary>
         public void SetEnableObjectAnimationBegin()
         {
-            this.hideShowAnimator.SetBool("IsNeedHide", !this.isNeedShowHidden);
+            int isNeedShowHiddenInt = this.isNeedShowHidden ? 1 : -1;
+            this.hideShowAnimator.SetInteger("IsNeedHide", isNeedShowHiddenInt);
+            this.hideShowAnimator.speed = 1;
+        }
+        /// <summary>
+        /// Отключить анимацию.
+        /// </summary>
+        public void DisableAnimation()
+        {
+            this.hideShowAnimator.speed = 0;
         }
 
         protected override void Awake()
@@ -35,6 +49,7 @@ namespace UI
             base.Awake();
             SetEnableObjectAnimationBegin();
             this.gameModel.onPhaseChange += ChangeVisibility;
+            this.gameObject.SetActive(false);
         }
         protected override void OnDestroy()
         {
