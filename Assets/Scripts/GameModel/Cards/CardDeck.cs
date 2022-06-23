@@ -134,9 +134,9 @@ namespace Assets.Scripts.GameModel.Cards
         /// <summary>
         /// Перемешать колоду.
         /// </summary>
-        public void Shuffle()
+        public void Shuffle(Int32 seed)
         {
-            this.cards.Shuffle();
+            this.cards.Shuffle(seed);
         }
         /// <summary>
         /// Вытащить из колоды одну карту.

@@ -37,6 +37,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         {
             get => this.fieldCells[hIndex, vIndex];
         }
+        private Int32 seedForShuffle;
 
         #region Свободная ячейка.
 
@@ -100,10 +101,11 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// 
         /// </summary>
-        public Field()
+        public Field(Int32 seedForShuffle)
         {
             this.fieldCells = new FieldCell[FIELD_SIZE, FIELD_SIZE];
             CreateField();
+            this.seedForShuffle = seedForShuffle;
         }
 
         #region Поиск пути.
@@ -271,10 +273,10 @@ namespace Assets.Scripts.GameModel.PlayingField
             fieldCellsList.AddRange(CreateFieldCells(CellType.line, 12));
             fieldCellsList.AddRange(CreateFieldCellsWithTreasureAndStartPointsType(CellType.threeDirection, 24, 29));
             //Перемешывание списка и запись его в стэк
-            fieldCellsList.Shuffle();
+            fieldCellsList.Shuffle(this.seedForShuffle);
             Stack<FieldCell> fieldCellsStack = new Stack<FieldCell>(fieldCellsList);
 
-            Random random = new Random();
+            Random random = new Random(this.seedForShuffle);
             for (Int32 i = 0; i < FIELD_SIZE; i++)
             {
                 for (Int32 j = 0; j < FIELD_SIZE; j++)
@@ -495,7 +497,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         public Field Clone()
         {
 
-            Field fieldClone = new Field();
+            Field fieldClone = new Field(this.seedForShuffle);
 
             if (this.players != null)
             {

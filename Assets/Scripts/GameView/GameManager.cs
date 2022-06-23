@@ -60,15 +60,26 @@ public class GameManager : MonoSingleton<GameManager>
         {
             if (this.gameModelPrivate == null)
             {
-                this.gameModelPrivate = new Game();
-                bool isStartedGame = this.gameModelPrivate.Start
-                    (
-                    new PlayerInfo[]
+                PlayerInfo[] playerInfos = new PlayerInfo[]
                         {
-                new PlayerInfo("test1", System.Drawing.Color.Orange),
-                new PlayerInfo("test2", System.Drawing.Color.Red)
-                        },
-                    out var message);
+                        new PlayerInfo("test1", System.Drawing.Color.Orange),
+                        new PlayerInfo("test2", System.Drawing.Color.Red)
+                        };
+                GameInfo gameInfo = new GameInfo(playerInfos);
+
+#if UNITY_EDITOR
+                gameInfo.cardsShuffleSeed = 1;
+                gameInfo.fisrtPlayerNumberSeed = 1;
+                gameInfo.cellsShuffleSeed = 1;
+
+#else
+                gameInfo.cardsShuffleSeed = Random.Range(-999, 999);
+                gameInfo.fisrtPlayerNumberSeed = Random.Range(-999, 999);
+                gameInfo.cellsShuffleSeed = Random.Range(-999, 999);
+#endif
+
+                this.gameModelPrivate = new Game();
+                bool isStartedGame = this.gameModelPrivate.Start(gameInfo, out var message);
 
                 if (!isStartedGame)
                 {
@@ -79,11 +90,11 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    #region Pulls
+#region Pulls
 
 
 
-    #endregion Pulls
+#endregion Pulls
 
 
     private void Awake()

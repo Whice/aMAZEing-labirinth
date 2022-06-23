@@ -26,6 +26,11 @@ namespace Assets.Scripts.GameModel
         #region Данные игры.
 
         /// <summary>
+        /// Информация об игре, должна быть заполнена при создании игры.
+        /// </summary>
+        private GameInfo gameInfo;
+
+        /// <summary>
         /// Колода карт, сокровища которых были найдены. Тут не может быть стартовых точек.
         /// </summary>
         private CardDeck deckPrivate = null;
@@ -465,9 +470,9 @@ namespace Assets.Scripts.GameModel
             this.playersPrivate = new GamePlayer[playerInfos.Length];
             if (this.playersPrivate != null && this.countOfPlayersPlaying > 0)
             {
-                //пол умолчанию колода создается со всеми сокровищами.
+                //по умолчанию колода создается со всеми сокровищами.
                 CardDeck deck =  CardDeck.full;
-                deck.Shuffle();
+                deck.Shuffle(this.gameInfo.cardsShuffleSeed);
 
                 //выяснить, сколько карт каждому игроку
                 Int32 countCardsForOnePlayer = deck.count/this.countOfPlayersPlaying;
@@ -505,7 +510,7 @@ namespace Assets.Scripts.GameModel
         private void FillInfoPlayers(PlayerInfo[] playerInfos)
         {
             //Выбрать начального игрока случайным образом.
-            Random random = new Random();
+            Random random = new Random(this.gameInfo.fisrtPlayerNumberSeed);
             this.currentPlayerNumberPrivate = random.Next(playerInfos.Length);
 
             DealCardsToPlayers(playerInfos);
@@ -514,8 +519,11 @@ namespace Assets.Scripts.GameModel
         /// Начать игру.
         /// </summary>
         /// <param name="playerInfos">Информация об игроках.</param>
-        public Boolean Start(PlayerInfo[] playerInfos, out String errorMessage)
+        public Boolean Start(GameInfo gameInfo, out String errorMessage)
         {
+            this.gameInfo = gameInfo;
+            PlayerInfo[] playerInfos = gameInfo.playersInfo;
+
             if (playerInfos == null)
             {
                 errorMessage = "Инфо об игроках не может содержать нулевую ссылку!";
@@ -549,8 +557,8 @@ namespace Assets.Scripts.GameModel
                 }
             }
 
+            this.fieldPrivate = new Field(this.gameInfo.cellsShuffleSeed);
             this.currentPhasePrivate = TurnPhase.movingCell;
-            this.fieldPrivate = new Field();
             this.countOfPlayersPlayingPrivate = playerInfos.Length;
             this.deckPrivate = CardDeck.empty;
 
@@ -566,11 +574,11 @@ namespace Assets.Scripts.GameModel
         /// <param name="playerInfos">Информация об игроках.</param>
         /// <returns>isLuckyStart - Началась ли игра.<br/>game - Объект игры.
         /// <br/>errorMessage - Инфо ошибки в случае, если не удалось запустить игру.</returns>
-        public static (Boolean isLuckyStart, Game game, String errorMessage) CreateGameWithStart(PlayerInfo[] playerInfos)
+        public static (Boolean isLuckyStart, Game game, String errorMessage) CreateGameWithStart(GameInfo gameInfo)
         {
             Game game = new Game();
             String errorMessage;
-            return (game.Start(playerInfos, out errorMessage), game, errorMessage);
+            return (game.Start(gameInfo, out errorMessage), game, errorMessage);
         }
 
         #endregion Создание игроков и начало игры.
