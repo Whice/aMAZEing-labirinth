@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GameModel;
+using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameView;
 using UnityEngine;
@@ -15,34 +16,34 @@ public class GameManager : MonoSingleton<GameManager>
     #region Провайдеры.
 
     [SerializeField]
-    private GraphicPrefabsProvider prefabsProviderPrivate=null;
+    private GraphicPrefabsProvider prefabsProviderPrivate = null;
     public GraphicPrefabsProvider prefabsProvider
     {
-        get=>this.prefabsProviderPrivate;
+        get => this.prefabsProviderPrivate;
     }
     [SerializeField]
     private TreasureProvider treasureProviderPrivate = null;
     public TreasureProvider treasureProvider
     {
-        get=>this.treasureProviderPrivate;
+        get => this.treasureProviderPrivate;
     }
     [SerializeField]
     private SpriteProvider treasureSpriteProviderPrivate = null;
     public SpriteProvider treasureSpriteProvider
     {
-        get=>this.treasureSpriteProviderPrivate;
+        get => this.treasureSpriteProviderPrivate;
     }
     [SerializeField]
     private UICardWithTreasureSlotProvider uiCardWithTreasureSlotProviderPrivate = null;
     public UICardWithTreasureSlotProvider uiCardWithTreasureSlotProvider
     {
-        get=>this.uiCardWithTreasureSlotProviderPrivate;
+        get => this.uiCardWithTreasureSlotProviderPrivate;
     }
     [SerializeField]
     private PlayerAvatarsProvider playerAvatarsProviderPrivate = null;
     public PlayerAvatarsProvider playerAvatarsProvider
     {
-        get=>this.playerAvatarsProviderPrivate;
+        get => this.playerAvatarsProviderPrivate;
     }
 
     #endregion Провайдеры.
@@ -90,15 +91,28 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-#region Pulls
+    #region Pulls
 
 
 
-#endregion Pulls
+    #endregion Pulls
 
 
     private void Awake()
     {
-       Application.targetFrameRate = 30;
+        Application.targetFrameRate = 30;
+
+        //Подключение логирования.
+        GameModelLogger.onLogError += LogError;
+        GameModelLogger.onLogWarning += LogWarning;
+        GameModelLogger.onLogInfo += LogInfo;
+    }
+
+    private void OnDestroy()
+    {
+        //Отключение логирования.
+        GameModelLogger.onLogError -= LogError;
+        GameModelLogger.onLogWarning -= LogWarning;
+        GameModelLogger.onLogInfo -= LogInfo;
     }
 }
