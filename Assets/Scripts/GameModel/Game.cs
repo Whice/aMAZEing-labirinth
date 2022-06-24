@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Cards;
+using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.PlayingField.FieldCells;
@@ -302,6 +303,59 @@ namespace Assets.Scripts.GameModel
             return successfulMove;
         }
         /// <summary>
+        /// Поставить свободную ячейку на поле сдвинув линию. 
+        /// <br/>Отмеха хода разрешена, т.к. именно для этого и предназначен этот метод.
+        /// </summary>
+        /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
+        /// <param name="side">Сторона поля, куда вставить ячейку.</param>
+        /// <returns></returns>
+        public Boolean SetFreeCellToFieldWithAllowedMovesCancellation(Int32 numberLine, FieldSide side)
+        {
+            Boolean successfulMove = false;
+
+            switch (side)
+            {
+                case FieldSide.bottom:
+                    {
+                        successfulMove = this.field.MoveLineUp(numberLine);
+                        break;
+                    }
+                case FieldSide.right:
+                    {
+                        successfulMove = this.field.MoveLineRight(numberLine);
+                        break;
+                    }
+                case FieldSide.top:
+                    {
+                        successfulMove = this.field.MoveLineDown(numberLine);
+                        break;
+                    }
+                case FieldSide.left:
+                    {
+                        successfulMove = this.field.MoveLineLeft(numberLine);
+                        break;
+                    }
+            }
+
+            if (successfulMove)
+            {
+                //Еслли игра закончилась, то ход уже невозможен.
+                if (this.isEnd)
+                {
+                    return false;
+                }
+                else
+                {
+                    SetNextPhase();
+                }
+
+                this.lastNumberLine = numberLine;
+                this.lastFieldSide = side;
+            }
+
+            return successfulMove;
+        }
+        /// <summary>
         /// Попытаться получить сокровище искомое нынешним игроком после его хода.
         /// </summary>
         private void TryGetTreasureFromFieldForCurrentPlayer()
@@ -357,7 +411,10 @@ namespace Assets.Scripts.GameModel
                     SetNextPhase();
                 }
             }
-
+            else
+            {
+                GameModelLogger.LogWarning("The player was unable to complete the move.");
+            }
             return successfulMove;
         }
         /// <summary>
