@@ -7,7 +7,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
     /// <summary>
     /// Комманда сдвига линии ячеек свободной ячейкой.
     /// </summary>
-    internal class CellMoveCommand : GameCommand
+    public class CellMoveCommand : GameCommand
     {
         /// <summary>
         /// Откуда игрок должен пойти. Содержит обе координаты, т.к. они занимают меньше 4х битов.

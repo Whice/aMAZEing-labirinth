@@ -68,8 +68,10 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// <summary>
         /// Инициализировать команду.
         /// </summary>
-        /// <param name="playerTargetForMoveX">Куда игрок должен пойти по горизонтали.</param>
-        /// <param name="playerTargetForMoveY">Куда игрок должен пойти по вертикали.</param>
+        /// <param name="playerMoveToX">Куда игрок должен пойти по горизонтали.</param>
+        /// <param name="playerMoveToY">Куда игрок должен пойти по вертикали.</param>
+        /// <param name="playerMoveFromX">Откуда игрок должен пойти по горизонтали.</param>
+        /// <param name="playerMoveFromY">Откуда игрок должен пойти по вертикали.</param>
         /// <param name="playerNumber">Номер игрока, нужен для проверки правильности игрока.</param>
         public void Init(Int32 playerMoveToX, Int32 playerMoveToY,
             Int32 playerMoveFromX, Int32 playerMoveFromY, Int32 playerNumber)

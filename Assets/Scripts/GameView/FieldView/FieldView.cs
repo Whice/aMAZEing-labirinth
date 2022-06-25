@@ -9,6 +9,8 @@ namespace Assets.Scripts.GameView
 {
     /// <summary>
     /// Представление игрового поля.
+    /// Немного не соответствует повороту модели. Координаты, которые идут
+    /// в модели сверху вниз, в представлении слева на право.
     /// </summary>
     public class FieldView : GameWorldViewOriginScript
     {
