@@ -11,15 +11,15 @@ namespace Assets.Scripts.GameModel.Logging
         /// <summary>
         /// Было передано сообщение об ошибке.
         /// </summary>
-        public static Action<String> onLogError;
+        public static event Action<String> onLogError;
         /// <summary>
         /// Было передано предупреждение.
         /// </summary>
-        public static Action<String> onLogWarning;
+        public static event Action<String> onLogWarning;
         /// <summary>
         /// Было передано сообщение с информацией.
         /// </summary>
-        public static Action<String> onLogInfo;
+        public static event Action<String> onLogInfo;
 
 
         /// <summary>
