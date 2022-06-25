@@ -6,6 +6,7 @@ namespace Assets.Scripts.GameModel.Player
     /// <summary>
     /// Класс, содержащий информацию о игроке, которая не относиться к игровой логике.
     /// </summary>
+    [Serializable]
     public class PlayerInfo
     {
         /// <summary>

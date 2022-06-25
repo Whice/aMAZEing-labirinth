@@ -77,7 +77,6 @@ namespace Assets.Scripts.GameModel
 
         #region Действия.
 
-
         #region Конец игры.
 
         /// <summary>

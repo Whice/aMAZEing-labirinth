@@ -10,6 +10,7 @@ namespace Assets.Scripts.GameModel
     /// <br/>- Перемешивания колоды карт перед игрой.
     /// <br/>- Перемешивания ячеек на поле перед игрой.
     /// </summary>
+    [Serializable]
     public class GameInfo
     {
         /// <summary>
@@ -23,7 +24,7 @@ namespace Assets.Scripts.GameModel
         /// <summary>
         /// Информация об игроках.
         /// </summary>
-        public readonly PlayerInfo[] playersInfo = null;
+        public readonly PlayerInfo[] playersInfo;
 
         /// <summary>
         /// Сид для выбора игрока, который будет ходить первым.

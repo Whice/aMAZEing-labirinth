@@ -71,6 +71,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
             else
             {
                 command = this.playerCommands[lastListIndex];
+                this.playerCommands.RemoveAt(lastListIndex);
             }
 
             command.Init(playerMoveToX, playerMoveToY, playerMoveFromX, playerMoveFromY, playerNumber);
@@ -94,6 +95,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
             else
             {
                 command = this.cellCommands[lastListIndex];
+                this.cellCommands.RemoveAt(lastListIndex);
             }
 
             command.Init(numberLine, side);
