@@ -50,19 +50,23 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
             this.side = side;
         }
 
-        public override void Execute(Game modelGame)
+        public override bool Execute(Game modelGame)
         {
-            base.Execute(modelGame);
+            Boolean result = base.Execute(modelGame);
 
-            modelGame.SetFreeCellToField(this.numberLine, this.side);
+            result &= modelGame.SetFreeCellToField(this.numberLine, this.side);
+
+            return result;
         }
-        public override void Undo(Game modelGame)
+        public override bool Undo(Game modelGame)
         {
-            base.Undo(modelGame);
+            Boolean result = base.Undo(modelGame);
 
             //Умножение на -1, т.к. противположные стороны имеют противоположный знак.
             FieldSide opositeSide = (FieldSide)((Int32)this.side * -1);
-            modelGame.SetFreeCellToFieldWithAllowedMovesCancellation(this.numberLine, opositeSide);
+            result &= modelGame.SetFreeCellToFieldWithAllowedMovesCancellation(this.numberLine, opositeSide);
+
+            return result;
         }
     }
 }

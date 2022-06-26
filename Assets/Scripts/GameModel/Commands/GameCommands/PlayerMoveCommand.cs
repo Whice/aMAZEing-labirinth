@@ -83,30 +83,35 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
             this.playerNumber = (byte)playerNumber;
         }
 
-        public override void Execute(Game modelGame)
+        public override bool Execute(Game modelGame)
         {
-            base.Execute(modelGame);
+            Boolean result = base.Execute(modelGame);
 
             if (modelGame.currentPhase != TurnPhase.movingAvatar)
             {
                 GameModelLogger.LogError("The expected phase is " + nameof(TurnPhase.movingAvatar)
                     + ", but phase in model is " + modelGame.currentPhase.ToString());
+                return false;
             }
 
             if (modelGame.currentPlayer.playerNumer != this.playerNumber)
             {
                 GameModelLogger.LogError("When you execute a command, the number of the player " +
                     "in the model does not equal the number of the player in the command!");
-                return;
+                return false;
             }
 
-            modelGame.SetPlayerAvatarToField(this.playerMoveToX, this.playerMoveToY);
-        }
-        public override void Undo(Game modelGame)
-        {
-            base.Undo(modelGame);
+            result &= modelGame.SetPlayerAvatarToField(this.playerMoveToX, this.playerMoveToY);
 
-            modelGame.SetPlayerAvatarToField(this.playerMoveToX, this.playerMoveToY);
+            return result;
+        }
+        public override bool Undo(Game modelGame)
+        {
+            Boolean result = base.Undo(modelGame);
+
+            result &= modelGame.SetPlayerAvatarToField(this.playerMoveToX, this.playerMoveToY);
+
+            return result;
         }
     }
 }

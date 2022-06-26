@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Cards;
+using Assets.Scripts.GameModel.Commands.GameCommands;
 using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
@@ -27,6 +28,21 @@ namespace Assets.Scripts.GameModel
         #region Данные игры.
 
         /// <summary>
+        /// Пул игровых команд.
+        /// </summary>
+        private GameCommandPool commandPool = new GameCommandPool();
+        /// <summary>
+        /// Хранитель игровых команд.
+        /// </summary>
+        private GameCommandKeeper commandKeeperPrivate;
+        /// <summary>
+        /// Хранитель игровых команд.
+        /// </summary>
+        public GameCommandKeeper commandKeeper
+        {
+            get => this.commandKeeperPrivate;
+        }
+        /// <summary>
         /// Информация об игре, должна быть заполнена при создании игры.
         /// </summary>
         private GameInfo gameInfo;
@@ -42,7 +58,7 @@ namespace Assets.Scripts.GameModel
         {
             get => this.deckPrivate;
         }
-       
+
         /// <summary>
         /// Текущая фаза хода игрока.
         /// </summary>
@@ -123,7 +139,7 @@ namespace Assets.Scripts.GameModel
         private GamePlayer[] GetPlayersListClone()
         {
             GamePlayer[] gamePlayers = new GamePlayer[this.playersPrivate.Length];
-            for(Int32 i = 0; i < gamePlayers.Length; i++)
+            for (Int32 i = 0; i < gamePlayers.Length; i++)
             {
                 gamePlayers[i] = this.playersPrivate[i].Clone();
             }
@@ -200,7 +216,7 @@ namespace Assets.Scripts.GameModel
         {
             return CalculateWinnerPlace();
         }
-            
+
 
         #endregion Конец игры.
 
@@ -224,9 +240,9 @@ namespace Assets.Scripts.GameModel
         /// <returns></returns>
         private Boolean IsNotUndoPreviousMove(Int32 numberLine, FieldSide side)
         {
-            if(numberLine == this.lastNumberLine)
+            if (numberLine == this.lastNumberLine)
             {
-                if((Int32)side + (Int32)this.lastFieldSide == 0)
+                if ((Int32)side + (Int32)this.lastFieldSide == 0)
                 {
                     return false;
                 }
@@ -246,6 +262,27 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         public event Action onNextTurnMoved;
 
+        /// <summary>
+        /// Отменить сдвиг ячеек укзанный в этой команде.
+        /// </summary>
+        public Boolean UndoInsertFreeCellToField(CellMoveCommand cellMoveCommand)
+        {
+            Boolean result = cellMoveCommand.Undo(this);
+            this.commandPool.PutInPool(cellMoveCommand);
+            return result;
+        }
+        /// <summary>
+        /// Поставить свободную ячейку на поле сдвинув линию. 
+        /// </summary>
+        /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
+        /// <param name="side">Сторона поля, куда вставить ячейку.</param>
+        /// <returns></returns>
+        public Boolean SetFreeCellToField(CellMoveCommand cellMoveCommand)
+        {
+            Boolean result = cellMoveCommand.Execute(this);
+            this.commandPool.PutInPool(cellMoveCommand);
+            return result;
+        }
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
         /// </summary>
@@ -284,7 +321,7 @@ namespace Assets.Scripts.GameModel
 
                 if (successfulMove)
                 {
-                    //Еслли игра закончилась, то ход уже невозможен.
+                    //Если игра закончилась, то ход уже невозможен.
                     if (this.isEnd)
                     {
                         return false;
@@ -298,6 +335,7 @@ namespace Assets.Scripts.GameModel
                     this.lastFieldSide = side;
                 }
             }
+            this.commandKeeperPrivate.Add(this.commandPool.GetCellMoveCommand(numberLine, side));
 
             return successfulMove;
         }
@@ -384,6 +422,26 @@ namespace Assets.Scripts.GameModel
             }
         }
         /// <summary>
+        /// Переместить аватар игрока в указанную позицию в команде, если это возможно.
+        /// </summary>
+        /// <returns>true, если аватар игрока был перемещен.</returns>
+        public Boolean SetPlayerAvatarToField(PlayerMoveCommand playerMoveCommand)
+        {
+            Boolean result = playerMoveCommand.Execute(this);
+            this.commandPool.PutInPool(playerMoveCommand);
+            return result;
+        }
+        /// <summary>
+        /// Отменить перемещение аватара игрока в указанную начальную позицию в команде.
+        /// </summary>
+        /// <returns>true, если аватар игрока был перемещен.</returns>
+        public Boolean UndoPlayerAvatarMove(PlayerMoveCommand playerMoveCommand)
+        {
+            Boolean result = playerMoveCommand.Undo(this);
+            this.commandPool.PutInPool(playerMoveCommand);
+            return result;
+        }
+        /// <summary>
         /// Переместить аватар игрока в указанную позицию, если это возможно.
         /// </summary>
         /// <param name="x"></param>
@@ -393,7 +451,6 @@ namespace Assets.Scripts.GameModel
         {
             Boolean successfulMove = this.currentPhase == TurnPhase.movingAvatar;
             successfulMove = successfulMove && this.field.IsPossibleMove(this.currentPlayer, this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
-
 
             if (successfulMove)
             {
@@ -414,6 +471,14 @@ namespace Assets.Scripts.GameModel
             {
                 GameModelLogger.LogWarning("The player was unable to complete the move.");
             }
+
+            GameCommand command = this.commandPool.GetPlayerMoveCommand
+                (
+                x, y,
+                this.currentPlayer.positionX, this.currentPlayer.positionY,
+                this.currentPlayerNumber);
+            this.commandKeeperPrivate.Add(command);
+
             return successfulMove;
         }
         /// <summary>
@@ -421,8 +486,8 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         public void PlayerMissMove()
         {
-            if(this.currentPhase == TurnPhase.movingAvatar)
-                SetNextPhase(); 
+            if (this.currentPhase == TurnPhase.movingAvatar)
+                SetNextPhase();
         }
         /// <summary>
         /// Ход перешел к следующему игроку.
@@ -463,7 +528,7 @@ namespace Assets.Scripts.GameModel
 
             this.currentPhasePrivate = this.currentPhasePrivate.GetNextPhase();
 
-            if(this.currentPhasePrivate==TurnPhase.movingCell)
+            if (this.currentPhasePrivate == TurnPhase.movingCell)
             {
                 SetNextPlayer();
                 this.onNextTurnMoved?.Invoke();
@@ -527,11 +592,11 @@ namespace Assets.Scripts.GameModel
             if (this.playersPrivate != null && this.countOfPlayersPlaying > 0)
             {
                 //по умолчанию колода создается со всеми сокровищами.
-                CardDeck deck =  CardDeck.full;
+                CardDeck deck = CardDeck.full;
                 deck.Shuffle(this.gameInfo.cardsShuffleSeed);
 
                 //выяснить, сколько карт каждому игроку
-                Int32 countCardsForOnePlayer = deck.count/this.countOfPlayersPlaying;
+                Int32 countCardsForOnePlayer = deck.count / this.countOfPlayersPlaying;
 
                 CardDeck deckForPlayer;
 
@@ -574,40 +639,41 @@ namespace Assets.Scripts.GameModel
         /// <summary>
         /// Начать игру.
         /// </summary>
-        /// <param name="playerInfos">Информация об игроках.</param>
-        public Boolean Start(GameInfo gameInfo, out String errorMessage)
+        /// <param name="gameInfo">Начальные данные игры.</param>
+        public Boolean Start(GameInfo gameInfo)
         {
             this.gameInfo = gameInfo;
+            this.commandKeeperPrivate = new GameCommandKeeper(gameInfo);
             PlayerInfo[] playerInfos = gameInfo.playersInfo;
 
             if (playerInfos == null)
             {
-                errorMessage = "Инфо об игроках не может содержать нулевую ссылку!";
+                GameModelLogger.LogError("Инфо об игроках не может содержать нулевую ссылку!");
                 return false;
             }
             else if (playerInfos.Length > 4)
             {
-                errorMessage = "В игре не может быть больше 4х игроков!";
+                GameModelLogger.LogError("В игре не может быть больше 4х игроков!");
                 return false;
             }
             else if (playerInfos.Length < 2)
             {
-                errorMessage = "В игре не может быть меьше 2х игроков!";
+                GameModelLogger.LogError("В игре не может быть меьше 2х игроков!");
                 return false;
             }
 
-            for(Int32 i=0; i < playerInfos.Length; i++)
+            for (Int32 i = 0; i < playerInfos.Length; i++)
             {
-                for(Int32 j=i+1; j < playerInfos.Length; j++)
+                for (Int32 j = i + 1; j < playerInfos.Length; j++)
                 {
-                    if(playerInfos[i].name == playerInfos[j].name)
+                    if (playerInfos[i].name == playerInfos[j].name)
                     {
-                        errorMessage = "Игроки не могут иметь одинаковые имена!";
+                        GameModelLogger.LogError("Игроки не могут иметь одинаковые имена!");
                         return false;
                     }
-                    if(playerInfos[i].color == playerInfos[j].color)
+                    if (playerInfos[i].color == playerInfos[j].color)
                     {
-                        errorMessage = "Игроки не могут иметь одинаковые цвета!";
+                        GameModelLogger.LogError("Игроки не могут иметь одинаковые цвета!");
                         return false;
                     }
                 }
@@ -621,7 +687,7 @@ namespace Assets.Scripts.GameModel
             FillInfoPlayers(playerInfos);
             this.fieldPrivate.SetPlayers(this.playersPrivate);
 
-            errorMessage = "Нет ошибок.";
+            GameModelLogger.LogError("Нет ошибок.");
             return true;
         }
         /// <summary>
@@ -630,11 +696,10 @@ namespace Assets.Scripts.GameModel
         /// <param name="playerInfos">Информация об игроках.</param>
         /// <returns>isLuckyStart - Началась ли игра.<br/>game - Объект игры.
         /// <br/>errorMessage - Инфо ошибки в случае, если не удалось запустить игру.</returns>
-        public static (Boolean isLuckyStart, Game game, String errorMessage) CreateGameWithStart(GameInfo gameInfo)
+        public static (Boolean isLuckyStart, Game game) CreateGameWithStart(GameInfo gameInfo)
         {
             Game game = new Game();
-            String errorMessage;
-            return (game.Start(gameInfo, out errorMessage), game, errorMessage);
+            return (game.Start(gameInfo), game);
         }
 
         #endregion Создание игроков и начало игры.

@@ -12,27 +12,33 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// Выполнить команду для указаной модели игры.
         /// </summary>
         /// <param name="modelGame">Модель игры. Не должна быть null.</param>
-        public virtual void Execute(Game modelGame)
+        public virtual bool Execute(Game modelGame)
         {
             if (modelGame == null)
             {
                 GameModelLogger.LogError(nameof(modelGame) + " in "
                     + nameof(Execute) + " in "
                     + nameof(GameCommand) + " is null!!!");
+                return false;
             }
+
+            return true;
         }
         /// <summary>
         /// Отменить эту команду.
         /// </summary>
         /// <param name="modelGame">Модель игры. Не должна быть null.</param>
-        public virtual void Undo(Game modelGame)
+        public virtual bool Undo(Game modelGame)
         {
             if (modelGame == null)
             {
                 GameModelLogger.LogError(nameof(modelGame) + " in "
                     + nameof(Execute) + " in "
                     + nameof(GameCommand) + " is null!!!");
+                return false;
             }
+
+            return true;
         }
     }
 }
