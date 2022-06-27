@@ -17,7 +17,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestCreate_CreateDeck_SuccessfullCreate()
         {
-            CardDeck deck = new CardDeck();
+            CardDeck deck = CardDeck.full;
 
             TreasureAndStartPointsType type = TreasureAndStartPointsType.empty;
             Int32 countCardWithTreasure = type.GetMaximalNumberTreasure() - type.GetMinimalNumberTreasure() + 1;
@@ -30,7 +30,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestPop_PopDeck_SuccessfullPop()
         {
-            CardDeck deck = new CardDeck();
+            CardDeck deck = CardDeck.full;
 
             Int32 countBeforePop = deck.count;
             Card topCard = deck.topCard;
@@ -47,7 +47,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestPop_MultyPopDeck_SuccessfullPop()
         {
-            CardDeck deck = new CardDeck();
+            CardDeck deck = CardDeck.full;
 
             Int32 countBeforePop = deck.count;
             Card topCard = deck.topCard;
@@ -64,7 +64,7 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestClone_CloneDeck_SuccessfullClone()
         {
-            CardDeck deck = new CardDeck();
+            CardDeck deck = CardDeck.full;
             CardDeck clone = deck.Clone();
 
             Assert.Equal(clone.isEmpty, deck.isEmpty);
@@ -99,10 +99,10 @@ namespace TestModel.ModelTests
         [Fact]
         public void TestShuffle_DeckShuffle_SuccessfullShuffle()
         {
-            CardDeck deck = new CardDeck();
+            CardDeck deck = CardDeck.full;
             Int32 count = deck.count;
 
-            deck.Shuffle();
+            deck.Shuffle(1);
 
             Assert.Equal(count, deck.count);
         }

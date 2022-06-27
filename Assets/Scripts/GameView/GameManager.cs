@@ -82,11 +82,11 @@ public class GameManager : MonoSingleton<GameManager>
 #endif
 
                 this.gameModelPrivate = new Game();
-                bool isStartedGame = this.gameModelPrivate.Start(gameInfo, out var message);
+                bool isStartedGame = this.gameModelPrivate.Start(gameInfo);
 
                 if (!isStartedGame)
                 {
-                    Debug.LogError("Game not started:\n" + message);
+                    LogError("Game not started!");
                 }
             }
             return this.gameModelPrivate;

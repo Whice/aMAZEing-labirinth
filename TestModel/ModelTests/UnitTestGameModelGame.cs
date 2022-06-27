@@ -20,7 +20,8 @@ namespace TestModel.ModelTests
                 new PlayerInfo("1", Color.Red),
                 new PlayerInfo("2", Color.Yellow),
             };
-            (Boolean isStart, Game game, _) = Game.CreateGameWithStart(playerInfos);
+            GameInfo gameInfo = new GameInfo(playerInfos);
+            (Boolean isStart, Game game) = Game.CreateGameWithStart(gameInfo);
 
             Assert.True(isStart);
 
@@ -44,7 +45,8 @@ namespace TestModel.ModelTests
                 new PlayerInfo("3", Color.Green),
                 new PlayerInfo("4", Color.Purple),
             };
-            (Boolean isStart, Game game, _) = Game.CreateGameWithStart(playerInfos);
+            GameInfo gameInfo = new GameInfo(playerInfos);
+            (Boolean isStart, Game game) = Game.CreateGameWithStart(gameInfo);
 
             Assert.True(isStart);
 
@@ -70,12 +72,11 @@ namespace TestModel.ModelTests
                 new PlayerInfo("5", Color.Firebrick),
             };
             Boolean isStart = true;
-            String errorMessage = "";
 
-            (isStart, _, errorMessage) = Game.CreateGameWithStart(playerInfos);
+            GameInfo gameInfo = new GameInfo(playerInfos);
+            (isStart, _) = Game.CreateGameWithStart(gameInfo);
 
             Assert.False(isStart);
-            Assert.Equal("В игре не может быть больше 4х игроков!", errorMessage);
         }
     }
 }

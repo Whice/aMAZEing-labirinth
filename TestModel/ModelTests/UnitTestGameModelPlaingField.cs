@@ -28,7 +28,7 @@ namespace TestModel.ModelTests
         {
             if (this.field == null)
             {
-                this.field = new Field();
+                this.field = new Field(1);
             }
         }
 
