@@ -68,5 +68,64 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
 
             return result;
         }
+
+        #region Клонирование.
+
+        public override GameCommand Clone()
+        {
+            return GetCellMoveCommandClone();
+        }
+        /// <summary>
+        /// Выполнить глубокое клонирование команды перемещения аватара и получить клон.
+        /// </summary>
+        /// <returns></returns>
+        public CellMoveCommand GetCellMoveCommandClone()
+        {
+            CellMoveCommand clone = new CellMoveCommand();
+            clone.numberLineAndSide = this.numberLineAndSide;
+
+            return clone;
+        }
+
+        #endregion Клонирование.
+
+        #region Сравнение.
+
+        public override Boolean Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is CellMoveCommand cellMoveCommand)
+            {
+                if (this.numberLineAndSide != cellMoveCommand.numberLineAndSide)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+        public override Int32 GetHashCode()
+        {
+            return this.numberLineAndSide.GetHashCode();
+        }
+        public static bool operator ==(CellMoveCommand l, CellMoveCommand r)
+        {
+            if (l is null && r is null)
+                return true;
+            else if (l is null)
+                return false;
+            else
+                return l.Equals(r);
+        }
+        public static bool operator !=(CellMoveCommand l, CellMoveCommand r)
+        {
+            return !(l == r);
+        }
+
+        #endregion Сравнение.
     }
 }

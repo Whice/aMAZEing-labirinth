@@ -78,5 +78,96 @@ namespace TestModel.ModelTests
 
             Assert.False(isStart);
         }
+        [Fact]
+        public void TestEqual_FirstGameComparisonSecondGame_BothGamesIsEqual()
+        {
+            PlayerInfo[] playerInfos = new PlayerInfo[]
+            {
+                new PlayerInfo("1", Color.Red),
+                new PlayerInfo("2", Color.Yellow),
+                new PlayerInfo("3", Color.Green),
+                new PlayerInfo("4", Color.Purple)
+            };
+
+            GameInfo gameInfo = new GameInfo(playerInfos);
+            gameInfo.cardsShuffleSeed = 1;
+            gameInfo.cellsShuffleSeed = 1;
+            gameInfo.fisrtPlayerNumberSeed = 1;
+
+            (Boolean isStart1, Game game1) = Game.CreateGameWithStart(gameInfo.Clone());
+            (Boolean isStart2, Game game2) = Game.CreateGameWithStart(gameInfo.Clone());
+
+            Assert.True(isStart1);
+            Assert.True(isStart2);
+            Assert.True(game1.Equals(game2));
+        }
+        [Fact]
+        public void TestEqual_FirstGameComparisonSecondGame_GamesIsNotEqual()
+        {
+            PlayerInfo[] playerInfos = new PlayerInfo[]
+            {
+                new PlayerInfo("1", Color.Red),
+                new PlayerInfo("2", Color.Yellow),
+                new PlayerInfo("3", Color.Green),
+                new PlayerInfo("4", Color.Purple)
+            };
+
+            GameInfo gameInfo = new GameInfo(playerInfos);
+            gameInfo.cardsShuffleSeed = 1;
+            gameInfo.cellsShuffleSeed = 1;
+            gameInfo.fisrtPlayerNumberSeed = 1;
+
+            (Boolean isStart1, Game game1) = Game.CreateGameWithStart(gameInfo.Clone());
+            gameInfo.cardsShuffleSeed = 1;
+            gameInfo.cellsShuffleSeed = 2;
+            gameInfo.fisrtPlayerNumberSeed = 1;
+            (Boolean isStart2, Game game2) = Game.CreateGameWithStart(gameInfo.Clone());
+
+            Assert.True(isStart1);
+            Assert.True(isStart2);
+            Assert.False(game1.Equals(game2));
+
+
+            gameInfo.cardsShuffleSeed = 2;
+            gameInfo.cellsShuffleSeed = 1;
+            gameInfo.fisrtPlayerNumberSeed = 1;
+            (isStart2, game2) = Game.CreateGameWithStart(gameInfo.Clone());
+
+            Assert.True(isStart1);
+            Assert.True(isStart2);
+            Assert.False(game1.Equals(game2));
+
+
+            gameInfo.cardsShuffleSeed = 1;
+            gameInfo.cellsShuffleSeed = 1;
+            gameInfo.fisrtPlayerNumberSeed = 2;
+            (isStart2, game2) = Game.CreateGameWithStart(gameInfo.Clone());
+
+            Assert.True(isStart1);
+            Assert.True(isStart2);
+            Assert.False(game1.Equals(game2));
+        }
+        [Fact]
+        public void TestCloning_CloningGame_CloneIsEqual()
+        {
+            PlayerInfo[] playerInfos = new PlayerInfo[]
+            {
+                new PlayerInfo("1", Color.Red),
+                new PlayerInfo("2", Color.Yellow),
+                new PlayerInfo("3", Color.Green),
+                new PlayerInfo("4", Color.Purple)
+            };
+
+            GameInfo gameInfo = new GameInfo(playerInfos);
+            gameInfo.cardsShuffleSeed = 1;
+            gameInfo.cellsShuffleSeed = 1;
+            gameInfo.fisrtPlayerNumberSeed = 1;
+
+            (Boolean isStart1, Game game) = Game.CreateGameWithStart(gameInfo.Clone());
+
+            Game gameClone = game.Clone();
+
+            Assert.True(game.Equals(gameClone));
+        }
     }
 }

@@ -250,10 +250,10 @@ namespace Assets.Scripts.GameModel.Player
         ///  Создать глубокую копию.
         /// </summary>
         /// <returns></returns>
-        public GamePlayer Clone()
+        public new GamePlayer Clone()
         {
             CardDeck cardDeck = this.cardDeck.Clone();
-            return new GamePlayer(this.name, this.color, cardDeck, this.positionX, this.positionY, playerNumer);
+            return new GamePlayer(base.Clone(), cardDeck, this.positionX, this.positionY, playerNumer);
         }
 
         #region Сравнение.

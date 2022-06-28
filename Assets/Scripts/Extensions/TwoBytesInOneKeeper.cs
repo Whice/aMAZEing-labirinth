@@ -6,7 +6,11 @@ namespace Assets.Scripts.Extensions
     /// Структура, которая хранит два байта в одном.
     /// Оба байта не должны быть отрицательные и больше 4х бит, т.е. больше 7.
     /// </summary>
+#pragma warning disable CS0660 // Тип определяет оператор == или оператор !=, но не переопределяет Object.Equals(object o)
+#pragma warning disable CS0661 // Тип определяет оператор == или оператор !=, но не переопределяет Object.GetHashCode()
     public struct TwoBytesInOneKeeper
+#pragma warning restore CS0661 // Тип определяет оператор == или оператор !=, но не переопределяет Object.GetHashCode()
+#pragma warning restore CS0660 // Тип определяет оператор == или оператор !=, но не переопределяет Object.Equals(object o)
     {
         /// <summary>
         /// Задать два байта для хранения и создать хранилище.
@@ -76,5 +80,18 @@ namespace Assets.Scripts.Extensions
                 throw new ArgumentException("Value can be only in range 0..7!");
             }
         }
+
+        #region Сравнение.
+
+        public static bool operator ==(TwoBytesInOneKeeper l, TwoBytesInOneKeeper r)
+        {
+            return l.twoValues == r.twoValues;
+        }
+        public static bool operator !=(TwoBytesInOneKeeper l, TwoBytesInOneKeeper r)
+        {
+            return l.twoValues != r.twoValues;
+        }
+
+        #endregion Сравнение.
     }
 }

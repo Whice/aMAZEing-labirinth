@@ -8,7 +8,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
     /// <summary>
     /// Команда для перемещения аватара игрока.
     /// </summary>
-    public class PlayerMoveCommand : GameCommand
+    public class AvatarMoveCommand : GameCommand
     {
         #region Откуда игрок идет.
 
@@ -113,5 +113,78 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
 
             return result;
         }
+
+        #region Клонирование.
+
+        public override GameCommand Clone()
+        {
+            return GetAvatarMoveCommandClone();
+        }
+        /// <summary>
+        /// Выполнить глубокое клонирование команды перемещения аватара и получить клон.
+        /// </summary>
+        /// <returns></returns>
+        public AvatarMoveCommand GetAvatarMoveCommandClone()
+        {
+            AvatarMoveCommand clone = new AvatarMoveCommand();
+            clone.playerMoveFrom = this.playerMoveFrom;
+            clone.playerMoveTo = this.playerMoveTo;
+            clone.playerNumber = this.playerNumber;
+
+            return clone;
+        }
+
+        #endregion Клонирование.
+
+        #region Сравнение.
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is AvatarMoveCommand avatarMoveCommand)
+            {
+                if (this.playerMoveTo != avatarMoveCommand.playerMoveTo)
+                {
+                    return false;
+                }
+                if (this.playerMoveFrom != avatarMoveCommand.playerMoveFrom)
+                {
+                    return false;
+                }
+                if (this.playerNumber != avatarMoveCommand.playerNumber)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+        public override Int32 GetHashCode()
+        {
+            Int32 hashCode = this.playerMoveFrom.GetHashCode();
+            hashCode ^= this.playerMoveTo.GetHashCode();
+            hashCode ^= this.playerNumber;
+
+            return hashCode;
+        }
+        public static bool operator ==(AvatarMoveCommand l, AvatarMoveCommand r)
+        {
+            if (l is null && r is null)
+                return true;
+            else if (l is null)
+                return false;
+            else
+                return l.Equals(r);
+        }
+        public static bool operator !=(AvatarMoveCommand l, AvatarMoveCommand r)
+        {
+            return !(l == r);
+        }
+
+        #endregion Сравнение.
     }
 }

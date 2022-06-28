@@ -75,5 +75,14 @@ namespace Assets.Scripts.GameModel.Player
         }
 
         #endregion Сравнение.
+
+        /// <summary>
+        /// Выполнить глубокое клонирование и получить клон.
+        /// </summary>
+        /// <returns></returns>
+        public PlayerInfo Clone()
+        {
+            return new PlayerInfo(this.name, this.color);
+        }
     }
 }

@@ -565,5 +565,77 @@ namespace Assets.Scripts.GameModel.PlayingField
 
             return false;
         }
+
+        #region Сравнение.
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (obj is Field field)
+            {
+                if (field.freeFieldCellPrivate != this.freeFieldCellPrivate)
+                {
+                    return false;
+                }
+                if (field.seedForShuffle != this.seedForShuffle)
+                {
+                    return false;
+                }
+                for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                    for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
+                    {
+                        if (field.fieldCells[i, j] != this.fieldCells[i, j])
+                        {
+                            return false;
+                        }
+                    }
+                for (Int32 i = 0; i < this.players.Length; i++)
+                {
+                    if (this.players[i] != field.players[i])
+                    {
+                        return false;
+                    }
+                }
+
+
+                        return true;
+            }
+
+            return false;
+        }
+        public override Int32 GetHashCode()
+        {
+            Int32 hashCode = 0;
+            hashCode ^= this.freeFieldCellPrivate.GetHashCode();
+            hashCode ^= this.seedForShuffle.GetHashCode();
+            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
+                {
+                    hashCode ^= this.fieldCells[i, j].GetHashCode();
+                }
+            for (Int32 i = 0; i < this.players.Length; i++)
+            {
+                hashCode ^= this.players[i].GetHashCode();
+            }
+
+            return hashCode;
+        }
+        public static bool operator ==(Field l, Field r)
+        {
+            if (l is null && r is null)
+                return true;
+            else if (l is null)
+                return false;
+            else
+                return l.Equals(r);
+        }
+        public static bool operator !=(Field l, Field r)
+        {
+            return !(l == r);
+        }
+
+        #endregion Сравнение.
     }
 }

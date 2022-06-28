@@ -28,26 +28,6 @@ namespace Assets.Scripts.GameModel
         #region Данные игры.
 
         /// <summary>
-        /// Пул игровых команд.
-        /// </summary>
-        private GameCommandPool commandPool = new GameCommandPool();
-        /// <summary>
-        /// Хранитель игровых команд.
-        /// </summary>
-        private GameCommandKeeper commandKeeperPrivate;
-        /// <summary>
-        /// Хранитель игровых команд.
-        /// </summary>
-        public GameCommandKeeper commandKeeper
-        {
-            get => this.commandKeeperPrivate;
-        }
-        /// <summary>
-        /// Информация об игре, должна быть заполнена при создании игры.
-        /// </summary>
-        private GameInfo gameInfo;
-
-        /// <summary>
         /// Колода карт, сокровища которых были найдены. Тут не может быть стартовых точек.
         /// </summary>
         private CardDeck deckPrivate = null;
@@ -222,6 +202,120 @@ namespace Assets.Scripts.GameModel
 
         #region Во время игры.
 
+        #region Игровые команды.
+
+        /// <summary>
+        /// Пул игровых команд.
+        /// </summary>
+        private GameCommandPool commandPool = new GameCommandPool();
+        /// <summary>
+        /// Хранитель игровых команд.
+        /// </summary>
+        private GameCommandKeeper commandKeeperPrivate;
+        /// <summary>
+        /// Хранитель игровых команд.
+        /// </summary>
+        public GameCommandKeeper commandKeeper
+        {
+            get => this.commandKeeperPrivate;
+        }
+        /// <summary>
+        /// Информация об игре, должна быть заполнена при создании игры.
+        /// </summary>
+        private GameInfo gameInfo;
+
+        /// <summary>
+        /// Выполнить команду.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public Boolean ExecuteCommand(GameCommand command)
+        {
+            Boolean result = false;
+
+            if (command is CellMoveCommand cellMoveCommand)
+            {
+                result = SetFreeCellToField(cellMoveCommand);
+            }
+            else if (command is AvatarMoveCommand avatarMoveCommand)
+            {
+                result = SetPlayerAvatarToField(avatarMoveCommand);
+            }
+            else
+            {
+                GameModelLogger.LogError("Unknow command!");
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Отменить команду.
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public Boolean UndoCommand(GameCommand command)
+        {
+            Boolean result = false;
+
+            if (command is CellMoveCommand cellMoveCommand)
+            {
+                result = UndoInsertFreeCellToField(cellMoveCommand);
+            }
+            else if (command is AvatarMoveCommand avatarMoveCommand)
+            {
+                result = UndoPlayerAvatarMove(avatarMoveCommand);
+            }
+            else
+            {
+                GameModelLogger.LogError("Unknow command!");
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Отменить сдвиг ячеек укзанный в этой команде.
+        /// </summary>
+        private Boolean UndoInsertFreeCellToField(CellMoveCommand cellMoveCommand)
+        {
+            Boolean result = cellMoveCommand.Undo(this);
+            this.commandPool.PutInPool(cellMoveCommand);
+            return result;
+        }
+        /// <summary>
+        /// Поставить свободную ячейку на поле сдвинув линию. 
+        /// </summary>
+        /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
+        /// <param name="side">Сторона поля, куда вставить ячейку.</param>
+        /// <returns></returns>
+        private Boolean SetFreeCellToField(CellMoveCommand cellMoveCommand)
+        {
+            Boolean result = cellMoveCommand.Execute(this);
+            this.commandPool.PutInPool(cellMoveCommand);
+            return result;
+        }
+        /// <summary>
+        /// Переместить аватар игрока в указанную позицию в команде, если это возможно.
+        /// </summary>
+        /// <returns>true, если аватар игрока был перемещен.</returns>
+        private Boolean SetPlayerAvatarToField(AvatarMoveCommand playerMoveCommand)
+        {
+            Boolean result = playerMoveCommand.Execute(this);
+            this.commandPool.PutInPool(playerMoveCommand);
+            return result;
+        }
+        /// <summary>
+        /// Отменить перемещение аватара игрока в указанную начальную позицию в команде.
+        /// </summary>
+        /// <returns>true, если аватар игрока был перемещен.</returns>
+        private Boolean UndoPlayerAvatarMove(AvatarMoveCommand playerMoveCommand)
+        {
+            Boolean result = playerMoveCommand.Undo(this);
+            this.commandPool.PutInPool(playerMoveCommand);
+            return result;
+        }
+
+        #endregion Игровые команды.
+
         #region Предыдущий ход.
 
         /// <summary>
@@ -262,27 +356,6 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         public event Action onNextTurnMoved;
 
-        /// <summary>
-        /// Отменить сдвиг ячеек укзанный в этой команде.
-        /// </summary>
-        public Boolean UndoInsertFreeCellToField(CellMoveCommand cellMoveCommand)
-        {
-            Boolean result = cellMoveCommand.Undo(this);
-            this.commandPool.PutInPool(cellMoveCommand);
-            return result;
-        }
-        /// <summary>
-        /// Поставить свободную ячейку на поле сдвинув линию. 
-        /// </summary>
-        /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
-        /// <param name="side">Сторона поля, куда вставить ячейку.</param>
-        /// <returns></returns>
-        public Boolean SetFreeCellToField(CellMoveCommand cellMoveCommand)
-        {
-            Boolean result = cellMoveCommand.Execute(this);
-            this.commandPool.PutInPool(cellMoveCommand);
-            return result;
-        }
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
         /// </summary>
@@ -420,26 +493,6 @@ namespace Assets.Scripts.GameModel
                     this.deckPrivate.Add(foundCard);
                 }
             }
-        }
-        /// <summary>
-        /// Переместить аватар игрока в указанную позицию в команде, если это возможно.
-        /// </summary>
-        /// <returns>true, если аватар игрока был перемещен.</returns>
-        public Boolean SetPlayerAvatarToField(PlayerMoveCommand playerMoveCommand)
-        {
-            Boolean result = playerMoveCommand.Execute(this);
-            this.commandPool.PutInPool(playerMoveCommand);
-            return result;
-        }
-        /// <summary>
-        /// Отменить перемещение аватара игрока в указанную начальную позицию в команде.
-        /// </summary>
-        /// <returns>true, если аватар игрока был перемещен.</returns>
-        public Boolean UndoPlayerAvatarMove(PlayerMoveCommand playerMoveCommand)
-        {
-            Boolean result = playerMoveCommand.Undo(this);
-            this.commandPool.PutInPool(playerMoveCommand);
-            return result;
         }
         /// <summary>
         /// Переместить аватар игрока в указанную позицию, если это возможно.
@@ -701,9 +754,115 @@ namespace Assets.Scripts.GameModel
             Game game = new Game();
             return (game.Start(gameInfo), game);
         }
+        /// <summary>
+        /// Получить глубокий клон игры.
+        /// </summary>
+        /// <returns></returns>
+        public Game Clone()
+        {
+            Game clone = new Game();
+
+            clone.deckPrivate = this.deckPrivate.Clone();
+            clone.fieldPrivate = this.fieldPrivate.Clone();
+            clone.currentPhasePrivate = this.currentPhasePrivate;
+            clone.commandPool = this.commandPool.Clone();
+            clone.commandKeeperPrivate = this.commandKeeperPrivate.Clone();
+            clone.countOfPlayersPlayingPrivate = this.countOfPlayersPlayingPrivate;
+            clone.currentPlayerNumberPrivate = this.currentPlayerNumberPrivate;
+            clone.gameInfo = this.gameInfo.Clone();
+            clone.isEndPrivate = this.isEndPrivate;
+            clone.lastFieldSide = this.lastFieldSide;
+            clone.lastNumberLine = this.lastNumberLine;
+            clone.numberOfNextWinner = this.numberOfNextWinner;
+
+            clone.playersPrivate = new GamePlayer[this.playersPrivate.Length];
+            for (Int32 i = 0; i < this.playersPrivate.Length; i++)
+            {
+                clone.playersPrivate[i] = this.playersPrivate[i].Clone();
+            }
+
+            return clone;
+        }
 
         #endregion Создание игроков и начало игры.
 
         #endregion Действия.
+
+        /// <summary>
+        /// Сравнение двух игр.
+        /// </summary>
+        /// <param name="otherGame">Другая игра.</param>
+        /// <returns></returns>
+        public bool Equals(Game otherGame)
+        {
+            if (otherGame == null)
+            {
+                return false;
+            }
+            if (otherGame.commandKeeperPrivate != this.commandKeeperPrivate)
+            {
+                return false;
+            }
+            if (otherGame.commandPool != this.commandPool)
+            {
+                return false;
+            }
+            if (otherGame.countOfPlayersPlayingPrivate != this.countOfPlayersPlayingPrivate)
+            {
+                return false;
+            }
+            if (otherGame.currentPhasePrivate != this.currentPhasePrivate)
+            {
+                return false;
+            }
+            if (otherGame.currentPlayerNumberPrivate != this.currentPlayerNumberPrivate)
+            {
+                return false;
+            }
+            if (otherGame.deckPrivate != this.deckPrivate)
+            {
+                return false;
+            }
+            if (otherGame.fieldPrivate != this.fieldPrivate)
+            {
+                return false;
+            }
+            if (otherGame.gameInfo != this.gameInfo)
+            {
+                return false;
+            }
+            if (otherGame.isEndPrivate != this.isEndPrivate)
+            {
+                return false;
+            }
+            if (otherGame.lastFieldSide != this.lastFieldSide)
+            {
+                return false;
+            }
+            if (otherGame.lastNumberLine != this.lastNumberLine)
+            {
+                return false;
+            }
+            if (otherGame.numberOfNextWinner != this.numberOfNextWinner)
+            {
+                return false;
+            }
+            if (otherGame.playersPrivate.Length != this.playersPrivate.Length)
+            {
+                return false;
+            }
+            else
+            {
+                for (int i = 0; i < this.playersPrivate.Length; i++)
+                {
+                    if (otherGame.playersPrivate[i] != this.playersPrivate[i])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }
