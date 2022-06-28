@@ -64,7 +64,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
 
             //Умножение на -1, т.к. противположные стороны имеют противоположный знак.
             FieldSide opositeSide = (FieldSide)((Int32)this.side * -1);
-            result &= modelGame.SetFreeCellToFieldWithAllowedMovesCancellation(this.numberLine, opositeSide);
+            result &= modelGame.SetFreeCellToFieldWithAllowedMovesCancellation(this.numberLine, opositeSide, false);
 
             return result;
         }

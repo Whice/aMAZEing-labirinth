@@ -109,7 +109,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         {
             Boolean result = base.Undo(modelGame);
 
-            result &= modelGame.SetPlayerAvatarToField(this.playerMoveToX, this.playerMoveToY);
+            result &= modelGame.SetPlayerAvatarToField(this.playerMoveFromX, this.playerMoveFromY, false);
 
             return result;
         }

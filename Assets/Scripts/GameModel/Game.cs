@@ -225,6 +225,32 @@ namespace Assets.Scripts.GameModel
         private GameInfo gameInfo;
 
         /// <summary>
+        /// Создать команду хода аватара.
+        /// Она возьмется из пула, инициализируется и положится в хранителя.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        private void CreateAvatarMovingCommand(Int32 x, Int32 y)
+        {
+            GameCommand command = this.commandPool.GetPlayerMoveCommand
+                   (
+                   x, y,
+                   this.currentPlayer.positionX, this.currentPlayer.positionY,
+                   this.currentPlayerNumber
+                   );
+            this.commandKeeperPrivate.Add(command);
+        }
+        /// <summary>
+        /// Создать команду движения ячеек.
+        /// Она возьмется из пула, инициализируется и положится в хранителя.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        private void CreateCellMovingCommand(Int32 numberLine, FieldSide side)
+        {
+            this.commandKeeperPrivate.Add(this.commandPool.GetCellMoveCommand(numberLine, side));
+        }
+        /// <summary>
         /// Выполнить команду.
         /// </summary>
         /// <param name="command"></param>
@@ -362,7 +388,7 @@ namespace Assets.Scripts.GameModel
         /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
         /// <param name="side">Сторона поля, куда вставить ячейку.</param>
         /// <returns></returns>
-        public Boolean SetFreeCellToField(Int32 numberLine, FieldSide side)
+        public Boolean SetFreeCellToField(Int32 numberLine, FieldSide side, Boolean isSaveCommand = true)
         {
             Boolean successfulMove = false;
 
@@ -401,25 +427,31 @@ namespace Assets.Scripts.GameModel
                     }
                     else
                     {
-                        SetNextPhase();
-                    }
+                        if (isSaveCommand)
+                        {
+                            CreateCellMovingCommand(numberLine, side);
+                        }
 
-                    this.lastNumberLine = numberLine;
-                    this.lastFieldSide = side;
+                        SetNextPhase();
+
+                        this.lastNumberLine = numberLine;
+                        this.lastFieldSide = side;
+                    }
                 }
             }
-            this.commandKeeperPrivate.Add(this.commandPool.GetCellMoveCommand(numberLine, side));
+
 
             return successfulMove;
         }
         /// <summary>
         /// Поставить свободную ячейку на поле сдвинув линию. 
-        /// <br/>Отмеха хода разрешена, т.к. именно для этого и предназначен этот метод.
+        /// <br/>Отмена хода разрешена, т.к. именно для этого и предназначен этот метод.
+        /// <br/>Тут не записываются ходы в команды.
         /// </summary>
         /// <param name="numberLine">Номер линии, куда вставить ячейку.</param>
         /// <param name="side">Сторона поля, куда вставить ячейку.</param>
         /// <returns></returns>
-        public Boolean SetFreeCellToFieldWithAllowedMovesCancellation(Int32 numberLine, FieldSide side)
+        public Boolean SetFreeCellToFieldWithAllowedMovesCancellation(Int32 numberLine, FieldSide side, Boolean isSaveCommand = true)
         {
             Boolean successfulMove = false;
 
@@ -456,11 +488,16 @@ namespace Assets.Scripts.GameModel
                 }
                 else
                 {
-                    SetNextPhase();
-                }
+                    if (isSaveCommand)
+                    {
+                        CreateCellMovingCommand(numberLine, side);
+                    }
 
-                this.lastNumberLine = numberLine;
-                this.lastFieldSide = side;
+                    SetNextPhase();
+
+                    this.lastNumberLine = numberLine;
+                    this.lastFieldSide = side;
+                }
             }
 
             return successfulMove;
@@ -500,8 +537,13 @@ namespace Assets.Scripts.GameModel
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns>true, если аватар игрока был перемещен.</returns>
-        public Boolean SetPlayerAvatarToField(Int32 x, Int32 y)
+        public Boolean SetPlayerAvatarToField(Int32 x, Int32 y, Boolean isSaveCommand = true)
         {
+            if (isSaveCommand)
+            {
+                CreateAvatarMovingCommand(x, y);
+            }
+
             Boolean successfulMove = this.currentPhase == TurnPhase.movingAvatar;
             successfulMove = successfulMove && this.field.IsPossibleMove(this.currentPlayer, this.currentPlayer.positionX, this.currentPlayer.positionY, x, y);
 
@@ -524,13 +566,6 @@ namespace Assets.Scripts.GameModel
             {
                 GameModelLogger.LogWarning("The player was unable to complete the move.");
             }
-
-            GameCommand command = this.commandPool.GetPlayerMoveCommand
-                (
-                x, y,
-                this.currentPlayer.positionX, this.currentPlayer.positionY,
-                this.currentPlayerNumber);
-            this.commandKeeperPrivate.Add(command);
 
             return successfulMove;
         }

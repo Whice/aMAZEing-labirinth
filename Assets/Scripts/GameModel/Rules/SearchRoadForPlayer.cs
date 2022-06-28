@@ -153,6 +153,7 @@ namespace Assets.Scripts.GameModel.Rules
             this.cellsForMove.Clear();
 
             this.field = field;
+            this.cellsForMove.Add(playerPosition);
 
             SearchForPassageInNeighboringCells(playerPosition.X, playerPosition.Y);
 
