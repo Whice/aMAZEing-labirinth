@@ -24,29 +24,83 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         public readonly GameInfo gameInfo;
 
         /// <summary>
+        /// Начинать с первой команды в списке хранилища.
+        /// <br/>Первой считается команда, которая была добавлена раньше других, т.е. в самом начале игры.
+        /// </summary>
+        private Boolean isStartWithFirstCommandPrivate = false;
+        /// <summary>
+        /// Начинать выдавать команды в методе <see cref="Pop"/> с первой в списке хранилища.
+        /// <br/>Первой считается команда, которая была добавлена раньше других, т.е. в самом начале игры.
+        /// <br/>Метод <see cref="Add(GameCommand)"/> не будет работать при значении true.
+        /// </summary>
+        public Boolean isStartWithFirstCommand
+        {
+            get
+            {
+                return this.isStartWithFirstCommandPrivate;
+            }
+            set
+            {
+                if (this.isStartWithFirstCommandPrivate != value)
+                {
+                    this.commands.Reverse();
+                }
+                this.isStartWithFirstCommandPrivate = value;
+            }
+        }
+
+        /// <summary>
         /// Хранилище комманд.
         /// </summary>
         private List<GameCommand> commands = new List<GameCommand>();
         /// <summary>
-        /// Количество команд в хранилище.
+        ///Получить клон списка команд, начиная от самой ранней и заканчивая самой поздней.
         /// </summary>
+        public List<GameCommand> commandsClone
+        {
+            get
+            {
+                List<GameCommand> clone  = new List<GameCommand>(this.count);
+                for (Int32 i = 0; i < this.count; i++)
+                {
+                    clone.Add(this.commands[i].Clone());
+                }
+                return clone;
+            }
+        }   
+        /// <summary>
+                 /// Количество команд в хранилище.
+                 /// </summary>
         public Int32 count
         {
             get => this.commands.Count;
         }
         /// <summary>
-        /// Индекс полседней команды.
+        /// В хранилище нет команд.
         /// </summary>
+        public Boolean isEmpty
+        {
+            get => this.count == 0;
+        }     
+        /// <summary>
+                 /// Индекс полседней команды.
+                 /// </summary>
         private Int32 lastIndex
         {
             get => this.count - 1;
         }
         /// <summary>
         /// Добавить команду в хранилище.
+        /// <br/><see cref="GameCommandKeeper.isStartWithFirstCommand"/> должна быть false, чтобы можно было добавлять новые команды.
         /// </summary>
         /// <param name="command"></param>
         public void Add(GameCommand command)
         {
+            if (this.isStartWithFirstCommand == true)
+            {
+                throw new Exception("You cannot add new items when the list of commands is not in the right order!" +
+                    $" It is required to change {this.isStartWithFirstCommand} on false.");
+            }
             this.commands.Add(command);
         }
         /// <summary>
