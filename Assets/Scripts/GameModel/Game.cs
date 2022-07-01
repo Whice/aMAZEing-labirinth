@@ -574,8 +574,7 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         public void PlayerMissMove()
         {
-            if (this.currentPhase == TurnPhase.movingAvatar)
-                SetNextPhase();
+            SetPlayerAvatarToField(this.currentPlayer.positionX, this.currentPlayer.positionY);
         }
         /// <summary>
         /// Ход перешел к следующему игроку.
@@ -736,17 +735,17 @@ namespace Assets.Scripts.GameModel
 
             if (playerInfos == null)
             {
-                GameModelLogger.LogError("Инфо об игроках не может содержать нулевую ссылку!");
+                GameModelLogger.LogError("Player info cannot contain a null link!");
                 return false;
             }
             else if (playerInfos.Length > 4)
             {
-                GameModelLogger.LogError("В игре не может быть больше 4х игроков!");
+                GameModelLogger.LogError("The game can not be more than 4 players!");
                 return false;
             }
             else if (playerInfos.Length < 2)
             {
-                GameModelLogger.LogError("В игре не может быть меьше 2х игроков!");
+                GameModelLogger.LogError("There can be no more than 2 players in the game!");
                 return false;
             }
 
@@ -756,12 +755,12 @@ namespace Assets.Scripts.GameModel
                 {
                     if (playerInfos[i].name == playerInfos[j].name)
                     {
-                        GameModelLogger.LogError("Игроки не могут иметь одинаковые имена!");
+                        GameModelLogger.LogError("Players cannot have the same name!");
                         return false;
                     }
                     if (playerInfos[i].color == playerInfos[j].color)
                     {
-                        GameModelLogger.LogError("Игроки не могут иметь одинаковые цвета!");
+                        GameModelLogger.LogError("Players cannot have the same color!");
                         return false;
                     }
                 }
@@ -775,7 +774,7 @@ namespace Assets.Scripts.GameModel
             FillInfoPlayers(playerInfos);
             this.fieldPrivate.SetPlayers(this.playersPrivate);
 
-            GameModelLogger.LogError("Нет ошибок.");
+            GameModelLogger.LogInfo("Нет ошибок.");
             return true;
         }
         /// <summary>
