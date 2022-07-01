@@ -283,6 +283,8 @@ namespace Assets.Scripts.GameModel
         {
             Boolean result = false;
 
+            GameCommand canceledCommand = this.commandKeeper.Pop();
+
             if (command is CellMoveCommand cellMoveCommand)
             {
                 result = UndoInsertFreeCellToField(cellMoveCommand);
@@ -296,6 +298,11 @@ namespace Assets.Scripts.GameModel
                 GameModelLogger.LogError("Unknow command!");
             }
 
+            if (result == false)
+            {
+                this.commandKeeper.Add(canceledCommand);
+            }
+
             return result;
         }
         /// <summary>
@@ -303,8 +310,26 @@ namespace Assets.Scripts.GameModel
         /// </summary>
         private Boolean UndoInsertFreeCellToField(CellMoveCommand cellMoveCommand)
         {
+            //Подготовить игру к перемещению.
+            this.currentPhasePrivate = TurnPhase.movingCell;
+
             Boolean result = cellMoveCommand.Undo(this);
             this.commandPool.PutInPool(cellMoveCommand);
+
+            //Если было отменено движение ячейкой, то она может двигаться.
+            this.currentPhasePrivate = TurnPhase.movingCell;
+            CellMoveCommand lastCellMoveCommand = this.commandKeeper.GetLastCellMoveCommand();
+            if (lastCellMoveCommand == null)
+            {
+                this.lastNumberLine = 0;
+                this.lastFieldSide = FieldSide.unknow;
+            }
+            else
+            {
+                this.lastFieldSide = lastCellMoveCommand.side;
+                this.lastNumberLine = lastCellMoveCommand.numberLine;
+            }
+
             return result;
         }
         /// <summary>
@@ -335,8 +360,18 @@ namespace Assets.Scripts.GameModel
         /// <returns>true, если аватар игрока был перемещен.</returns>
         private Boolean UndoPlayerAvatarMove(AvatarMoveCommand playerMoveCommand)
         {
+            //Подготовить игру к перемещению.
+            this.currentPhasePrivate = TurnPhase.movingAvatar;
+            this.currentPlayerNumberPrivate = playerMoveCommand.playerNumber;
+
             Boolean result = playerMoveCommand.Undo(this);
             this.commandPool.PutInPool(playerMoveCommand);
+
+            //Если был отменен ход игрока, то теперь игрок может ходить.
+            this.currentPhasePrivate = TurnPhase.movingAvatar;
+            //Ходить может тот же игрок, ход для которого был отменен.
+            this.currentPlayerNumberPrivate = playerMoveCommand.playerNumber;
+
             return result;
         }
 
@@ -799,7 +834,7 @@ namespace Assets.Scripts.GameModel
             clone.deckPrivate = this.deckPrivate.Clone();
             clone.fieldPrivate = this.fieldPrivate.Clone();
             clone.currentPhasePrivate = this.currentPhasePrivate;
-            clone.commandPool = this.commandPool.Clone();
+            //clone.commandPool = this.commandPool.Clone(); - пул не надо клонировать, он не относится к основным данным игры.
             clone.commandKeeperPrivate = this.commandKeeperPrivate.Clone();
             clone.countOfPlayersPlayingPrivate = this.countOfPlayersPlayingPrivate;
             clone.currentPlayerNumberPrivate = this.currentPlayerNumberPrivate;
@@ -837,10 +872,7 @@ namespace Assets.Scripts.GameModel
             {
                 return false;
             }
-            if (otherGame.commandPool != this.commandPool)
-            {
-                return false;
-            }
+            //if (otherGame.commandPool != this.commandPool) - пулы не надо сравнивать, они не относятся к основным данным игры.
             if (otherGame.countOfPlayersPlayingPrivate != this.countOfPlayersPlayingPrivate)
             {
                 return false;

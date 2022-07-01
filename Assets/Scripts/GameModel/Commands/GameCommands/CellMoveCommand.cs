@@ -14,23 +14,23 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// </summary>
         private TwoBytesInOneKeeper numberLineAndSide;
         /// <summary>
-        /// Откуда игрок должен пойти по горизонтали.
+        /// Линия, куда вставлялась свободная ячейка.
         /// </summary>
-        private Int32 numberLine
+        public Int32 numberLine
         {
             get => this.numberLineAndSide.firstValue;
-            set => this.numberLineAndSide.firstValue = (byte)value;
+            private set => this.numberLineAndSide.firstValue = (byte)value;
         }
         /// <summary>
-        /// Откуда игрок должен пойти по вертикали.
+        /// Сторона, куда вставлялась свободная ячейка.
         /// </summary>
-        private FieldSide side
+        public FieldSide side
         {
             get
             {
                 return (FieldSide)(this.numberLineAndSide.secondValue - 2);
             }
-            set
+            private set
             {
                 byte numberSide = (byte)value;
                 numberSide += 2;//Т.к. минимум -2, то надо немного сдвинуть, чтобы число было положительным.

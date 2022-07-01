@@ -67,8 +67,48 @@ namespace TestModel.ModelTests
                 ++commandsCount;
             }
         }
+        /// <summary>
+        /// Выполнить один неправильный ход игрока: сдвинуть клетку и 
+        /// попытатьсясдвинуть аватара туда, куда не получиться, а потому туда, куда получиться.
+        /// </summary>
+        /// <param name="game">Модель игры.</param>
+        /// <param name="commandsCount">Количество комманд, которое увеличится при совершении хода.</param>
+        private void PerformOnePlayerWrongMove(Game game, ref Int32 commandsCount)
+        {
+            game.SetFreeCellToField(1, FieldSide.left);
+            ++commandsCount;
 
+            Point[] cellsForMove = GetPointsForMove(game);
+            Point wrongMove = new Point(0, 0);
+            Boolean isBadMove = true;
+            for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
+                for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
+                {
+                    isBadMove = true;
+                    foreach (Point point in cellsForMove)
+                    {
+                        if (point.X == i && point.Y == j)
+                        {
+                            isBadMove = false;
+                        }
+                        if (isBadMove)
+                        {
+                            wrongMove = new Point(i, j);
+                            goto isBadMove;
+                        }
+                    }
+                }
 
+            isBadMove:
+            game.SetPlayerAvatarToField(cellsForMove[0].X, cellsForMove[0].Y);
+            ++commandsCount;
+
+            if (cellsForMove.Length > 0)
+            {
+                game.SetPlayerAvatarToField(cellsForMove[0].X, cellsForMove[0].Y);
+                ++commandsCount;
+            }
+        }
         /// <summary>
         /// Удачное создание нескольких команд.
         /// </summary>
@@ -126,6 +166,8 @@ namespace TestModel.ModelTests
             PerformOnePlayerMove(game, ref commandsCount);
             PerformOnePlayerMove(game, ref commandsCount);
             PerformOnePlayerMove(game, ref commandsCount);
+            PerformOnePlayerWrongMove(game, ref commandsCount);
+
 
             GameCommandKeeper keeper = game.commandKeeper.Clone();
             while (!keeper.isEmpty)

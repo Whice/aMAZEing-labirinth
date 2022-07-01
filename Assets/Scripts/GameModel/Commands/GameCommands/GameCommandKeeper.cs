@@ -129,6 +129,36 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
 
             return clone;
         }
+        /// <summary>
+        /// Получить последнюю по порядку команду передвижения ячеек.
+        /// </summary>
+        /// <param name="commands"></param>
+        /// <returns></returns>
+        public CellMoveCommand GetLastCellMoveCommand()
+        {
+            if (this.isStartWithFirstCommand)
+            {
+                for (Int32 i = 0; i< this.commands.Count; i--)
+                {
+                    if (this.commands[i] is CellMoveCommand cellMoveCommand)
+                    {
+                        return cellMoveCommand;
+                    }
+                }
+            }
+            else
+            {
+                for (Int32 i = this.commands.Count - 1; i > -1; i--)
+                {
+                    if (this.commands[i] is CellMoveCommand cellMoveCommand)
+                    {
+                        return cellMoveCommand;
+                    }
+                }
+            }
+
+            return null;
+        }
 
         #region Сравнение.
 

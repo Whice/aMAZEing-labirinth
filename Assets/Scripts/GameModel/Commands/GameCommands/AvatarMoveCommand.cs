@@ -63,8 +63,14 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// <summary>
         /// Номер игрока, нужен для проверки правильности игрока.
         /// </summary>
-        private byte playerNumber;
-
+        private byte playerNumberPrivate;
+        /// <summary>
+        /// Номер игрока, нужен для проверки правильности игрока.
+        /// </summary>
+        public byte playerNumber
+        {
+            get => playerNumberPrivate;
+        }
         /// <summary>
         /// Инициализировать команду.
         /// </summary>
@@ -80,7 +86,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
             this.playerMoveToY = (byte)playerMoveToY;
             this.playerMoveFromX = (byte)playerMoveFromX;
             this.playerMoveFromY = (byte)playerMoveFromY;
-            this.playerNumber = (byte)playerNumber;
+            this.playerNumberPrivate = (byte)playerNumber;
         }
 
         public override bool Execute(Game modelGame)
@@ -94,7 +100,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 return false;
             }
 
-            if (modelGame.currentPlayer.playerNumer != this.playerNumber)
+            if (modelGame.currentPlayer.playerNumer != this.playerNumberPrivate)
             {
                 GameModelLogger.LogError("When you execute a command, the number of the player " +
                     "in the model does not equal the number of the player in the command!");
@@ -129,7 +135,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
             AvatarMoveCommand clone = new AvatarMoveCommand();
             clone.playerMoveFrom = this.playerMoveFrom;
             clone.playerMoveTo = this.playerMoveTo;
-            clone.playerNumber = this.playerNumber;
+            clone.playerNumberPrivate = this.playerNumberPrivate;
 
             return clone;
         }
@@ -153,7 +159,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 {
                     return false;
                 }
-                if (this.playerNumber != avatarMoveCommand.playerNumber)
+                if (this.playerNumberPrivate != avatarMoveCommand.playerNumberPrivate)
                 {
                     return false;
                 }
@@ -167,7 +173,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         {
             Int32 hashCode = this.playerMoveFrom.GetHashCode();
             hashCode ^= this.playerMoveTo.GetHashCode();
-            hashCode ^= this.playerNumber;
+            hashCode ^= this.playerNumberPrivate;
 
             return hashCode;
         }
