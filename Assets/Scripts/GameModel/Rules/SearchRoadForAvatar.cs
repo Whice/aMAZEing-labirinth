@@ -9,7 +9,7 @@ namespace Assets.Scripts.GameModel.Rules
     /// <summary>
     /// Класс для поиска пути, куда может ходить игрок.
     /// </summary>
-    public class SearchRoadForPlayer
+    public class SearchRoadForAvatar
     {
         /// <summary>
         /// Координаты ячеек, куда можно ходить.

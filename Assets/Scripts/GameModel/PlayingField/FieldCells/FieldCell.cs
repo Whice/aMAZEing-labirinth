@@ -5,6 +5,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 {
     /// <summary>
     /// Ячейка игрового поля.
+    /// <br/>По умолчанию:
+    /// <br/>У уголка пути: верх и право.
+    /// <br/>У линии пути: верх и низ.
+    /// <br/>У линии пути: верх, право и низ.
     /// </summary>
     public class FieldCell
     {

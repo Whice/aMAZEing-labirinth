@@ -113,7 +113,7 @@ namespace Assets.Scripts.GameModel.PlayingField
         /// <summary>
         /// Класс для поиска пути.
         /// </summary>
-        private SearchRoadForPlayer searchRoadForPlayer = new SearchRoadForPlayer();
+        private SearchRoadForAvatar searchRoadForPlayer = new SearchRoadForAvatar();
         /// <summary>
         /// Координаты ячеек игрового поля, куда игрок может совершить ход.
         /// </summary>
