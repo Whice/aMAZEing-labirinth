@@ -774,7 +774,7 @@ namespace Assets.Scripts.GameModel
             FillInfoPlayers(playerInfos);
             this.fieldPrivate.SetPlayers(this.playersPrivate);
 
-            GameModelLogger.LogInfo("Нет ошибок.");
+            GameModelLogger.LogInfo("No errors. Game started.");
             return true;
         }
         /// <summary>
