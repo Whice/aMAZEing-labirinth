@@ -7,6 +7,8 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
     /// <summary>
     /// Комманда сдвига линии ячеек свободной ячейкой.
     /// </summary>
+
+    [Serializable]
     public class CellMoveCommand : GameCommand
     {
         /// <summary>
@@ -38,22 +40,53 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 this.numberLineAndSide.secondValue = numberSide;
             }
         }
+        /// <summary>
+        /// Количество поворотов по часовой стрелке.
+        /// <br/>По сути определяет направление.
+        /// <br/>Значение может быть с 0 по 3.
+        /// </summary>
+        private TwoBytesInOneKeeper turnsClockwiseCountBeforeAndAfter;
+        /// <summary>
+        /// Количество поворотов по часовой стрелке до совершения хода.
+        /// <br/>По сути определяет направление.
+        /// <br/>Значение может быть с 0 по 3.
+        /// </summary>
+        public Int32 turnsClockwiseCountBefore
+        {
+            get => this.turnsClockwiseCountBeforeAndAfter.firstValue;
+            private set => this.turnsClockwiseCountBeforeAndAfter.firstValue = (byte)value;
+        }
+        /// <summary>
+        /// Количество поворотов по часовой стрелке после совершения хода.
+        /// <br/>По сути определяет направление.
+        /// <br/>Значение может быть с 0 по 3.
+        /// </summary>
+        public Int32 turnsClockwiseCountAfter
+        {
+            get => this.turnsClockwiseCountBeforeAndAfter.secondValue;
+            private set => this.turnsClockwiseCountBeforeAndAfter.secondValue = (byte)value;
+        }
 
         /// <summary>
         /// Инициализировать команду.
         /// </summary>
         /// <param name="numberLine">Номер линии.</param>
         /// <param name="side">Сторона, с которой вставляется ячейка.</param>
-        public void Init(Int32 numberLine, FieldSide side)
+        /// <param name="turnsClockwiseCountBefore">Количество поворотов по часовой стрелке до совершения хода.</param>
+        /// <param name="turnsClockwiseCountAfter">Количество поворотов по часовой стрелке после совершения хода.</param>
+        public void Init(Int32 numberLine, FieldSide side, Int32 turnsClockwiseCountBefore, Int32 turnsClockwiseCountAfter)
         {
             this.numberLine = numberLine;
             this.side = side;
+            this.turnsClockwiseCountBefore = turnsClockwiseCountBefore;
+            this.turnsClockwiseCountAfter = turnsClockwiseCountAfter;
         }
 
         public override bool Execute(Game modelGame)
         {
             Boolean result = base.Execute(modelGame);
 
+            modelGame.freeCell.SetClockwise(this.turnsClockwiseCountAfter);
             result &= modelGame.SetFreeCellToField(this.numberLine, this.side);
 
             return result;
@@ -64,6 +97,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
 
             //Умножение на -1, т.к. противположные стороны имеют противоположный знак.
             FieldSide opositeSide = (FieldSide)((Int32)this.side * -1);
+            modelGame.freeCell.SetClockwise(this.turnsClockwiseCountBefore);
             result &= modelGame.SetFreeCellToFieldWithAllowedMovesCancellation(this.numberLine, opositeSide, false);
 
             return result;

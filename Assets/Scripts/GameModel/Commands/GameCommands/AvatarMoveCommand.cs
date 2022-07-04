@@ -8,6 +8,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
     /// <summary>
     /// Команда для перемещения аватара игрока.
     /// </summary>
+    [Serializable]
     public class AvatarMoveCommand : GameCommand
     {
         #region Откуда игрок идет.
@@ -100,7 +101,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 return false;
             }
 
-            if (modelGame.currentPlayer.playerNumer != this.playerNumberPrivate)
+            if (modelGame.currentPlayer.number != this.playerNumberPrivate)
             {
                 GameModelLogger.LogError("When you execute a command, the number of the player " +
                     "in the model does not equal the number of the player in the command!");

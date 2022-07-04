@@ -7,6 +7,7 @@ using Assets.Scripts.Extensions;
 using System.Drawing;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.Rules;
+using Assets.Scripts.GameModel.Logging;
 
 namespace Assets.Scripts.GameModel.PlayingField
 {
@@ -64,12 +65,22 @@ namespace Assets.Scripts.GameModel.PlayingField
                 this.OnFreeCellChange?.Invoke();
             }
         }
+        /// <summary>
+        /// Количество поворотов свободной ячейки до свершения текущего поля.
+        /// (В начале игры или после передвижения последнего аватара.)
+        /// </summary>
+        private Int32 turnClockwiseFreeCellBeforeMovePrivate;
+        /// <summary>
+        /// Количество поворотов свободной ячейки до свершения текущего поля.
+        /// (В начале игры или после передвижения последнего аватара.)
+        /// </summary>
+        public Int32 turnClockwiseFreeCellBeforeMove
+        {
+            get => this.turnClockwiseFreeCellBeforeMovePrivate;
+        }
+
 
         #endregion Свободная ячейка.
-
-        #endregion Данные игрового поля.
-
-        #region
 
 
         /// <summary>
@@ -96,7 +107,7 @@ namespace Assets.Scripts.GameModel.PlayingField
             this.players = players;
         }
 
-        #endregion
+        #endregion Данные игрового поля.
 
         /// <summary>
         /// 
@@ -104,8 +115,8 @@ namespace Assets.Scripts.GameModel.PlayingField
         public Field(Int32 seedForShuffle)
         {
             this.fieldCells = new FieldCell[FIELD_SIZE, FIELD_SIZE];
-            CreateField();
             this.seedForShuffle = seedForShuffle;
+            CreateField();
         }
 
         #region Поиск пути.
@@ -312,6 +323,8 @@ namespace Assets.Scripts.GameModel.PlayingField
             //Ячейки поля не должны изменяться.
             foreach (FieldCell cell in this.fieldCells)
                 cell.isInteractable = false;
+
+            this.turnClockwiseFreeCellBeforeMovePrivate = this.freeFieldCell.turnsClockwiseCount;
         }
 
         #endregion Создание ячеек на поле.
@@ -386,7 +399,7 @@ namespace Assets.Scripts.GameModel.PlayingField
             }
             else
             {
-                //сообщить об ошибке.
+                GameModelLogger.LogError(nameof(this.players) + " in " + nameof(Field) + " is null reference!");
             }
 
             //Двигать можно только четные(нечетные. т.к. нумерация идет с 0) линии.
@@ -441,6 +454,7 @@ namespace Assets.Scripts.GameModel.PlayingField
 
                 this.freeFieldCell = plowingCell;
                 this.freeFieldCell.isInteractable = true;
+                this.turnClockwiseFreeCellBeforeMovePrivate = this.freeFieldCell.turnsClockwiseCount;
 
                 return true;
             }

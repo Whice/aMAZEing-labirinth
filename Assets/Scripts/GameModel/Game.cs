@@ -222,8 +222,14 @@ namespace Assets.Scripts.GameModel
         /// <summary>
         /// Информация об игре, должна быть заполнена при создании игры.
         /// </summary>
-        private GameInfo gameInfo;
-
+        private GameInfo gameInfoPrivate;
+        /// <summary>
+        /// Информация об игре, должна быть заполнена при создании игры.
+        /// </summary>
+        public GameInfo gameInfo
+        {
+            get => gameInfoPrivate;
+        }
         /// <summary>
         /// Создать команду хода аватара.
         /// Она возьмется из пула, инициализируется и положится в хранителя.
@@ -244,11 +250,14 @@ namespace Assets.Scripts.GameModel
         /// Создать команду движения ячеек.
         /// Она возьмется из пула, инициализируется и положится в хранителя.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        private void CreateCellMovingCommand(Int32 numberLine, FieldSide side)
+        /// <param name="numberLine">Номер линии.</param>
+        /// <param name="side">Сторона, с которой вставляется ячейка.</param>
+        /// <param name="turnsClockwiseCountBefore">Количество поворотов по часовой стрелке до совершения хода.</param>
+        /// <param name="turnsClockwiseCountAfter">Количество поворотов по часовой стрелке после совершения хода.</param>
+        private void CreateCellMovingCommand(Int32 numberLine, FieldSide side, Int32 turnsClockwiseCountBefore, Int32 turnsClockwiseCountAfter)
         {
-            this.commandKeeperPrivate.Add(this.commandPool.GetCellMoveCommand(numberLine, side));
+            CellMoveCommand command = this.commandPool.GetCellMoveCommand(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
+            this.commandKeeperPrivate.Add(command);
         }
         /// <summary>
         /// Выполнить команду.
@@ -429,6 +438,8 @@ namespace Assets.Scripts.GameModel
 
             if (IsNotUndoPreviousMove(numberLine, side))
             {
+                Int32 turnsClockwiseCountBefore = this.field.turnClockwiseFreeCellBeforeMove;
+                Int32 turnsClockwiseCountAfter = this.freeCell.turnsClockwiseCount;
                 switch (side)
                 {
                     case FieldSide.bottom:
@@ -451,6 +462,11 @@ namespace Assets.Scripts.GameModel
                             successfulMove = this.field.MoveLineLeft(numberLine);
                             break;
                         }
+                    default:
+                        {
+                            GameModelLogger.LogError(nameof(FieldSide) + " is unknow!");
+                            break;
+                        }
                 }
 
                 if (successfulMove)
@@ -464,7 +480,7 @@ namespace Assets.Scripts.GameModel
                     {
                         if (isSaveCommand)
                         {
-                            CreateCellMovingCommand(numberLine, side);
+                            CreateCellMovingCommand(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
                         }
 
                         SetNextPhase();
@@ -489,6 +505,9 @@ namespace Assets.Scripts.GameModel
         public Boolean SetFreeCellToFieldWithAllowedMovesCancellation(Int32 numberLine, FieldSide side, Boolean isSaveCommand = true)
         {
             Boolean successfulMove = false;
+
+            Int32 turnsClockwiseCountBefore = this.field.turnClockwiseFreeCellBeforeMove;
+            Int32 turnsClockwiseCountAfter = this.freeCell.turnsClockwiseCount;
 
             switch (side)
             {
@@ -525,7 +544,7 @@ namespace Assets.Scripts.GameModel
                 {
                     if (isSaveCommand)
                     {
-                        CreateCellMovingCommand(numberLine, side);
+                        CreateCellMovingCommand(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
                     }
 
                     SetNextPhase();
@@ -715,7 +734,7 @@ namespace Assets.Scripts.GameModel
             {
                 //по умолчанию колода создается со всеми сокровищами.
                 CardDeck deck = CardDeck.full;
-                deck.Shuffle(this.gameInfo.cardsShuffleSeed);
+                deck.Shuffle(this.gameInfoPrivate.cardsShuffleSeed);
 
                 //выяснить, сколько карт каждому игроку
                 Int32 countCardsForOnePlayer = deck.count / this.countOfPlayersPlaying;
@@ -753,7 +772,7 @@ namespace Assets.Scripts.GameModel
         private void FillInfoPlayers(PlayerInfo[] playerInfos)
         {
             //Выбрать начального игрока случайным образом.
-            Random random = new Random(this.gameInfo.fisrtPlayerNumberSeed);
+            Random random = new Random(this.gameInfoPrivate.fisrtPlayerNumberSeed);
             this.currentPlayerNumberPrivate = random.Next(playerInfos.Length);
 
             DealCardsToPlayers(playerInfos);
@@ -764,7 +783,7 @@ namespace Assets.Scripts.GameModel
         /// <param name="gameInfo">Начальные данные игры.</param>
         public Boolean Start(GameInfo gameInfo)
         {
-            this.gameInfo = gameInfo;
+            this.gameInfoPrivate = gameInfo;
             this.commandKeeperPrivate = new GameCommandKeeper(gameInfo);
             PlayerInfo[] playerInfos = gameInfo.playersInfo;
 
@@ -801,7 +820,7 @@ namespace Assets.Scripts.GameModel
                 }
             }
 
-            this.fieldPrivate = new Field(this.gameInfo.cellsShuffleSeed);
+            this.fieldPrivate = new Field(this.gameInfoPrivate.cellsShuffleSeed);
             this.currentPhasePrivate = TurnPhase.movingCell;
             this.countOfPlayersPlayingPrivate = playerInfos.Length;
             this.deckPrivate = CardDeck.empty;
@@ -838,7 +857,7 @@ namespace Assets.Scripts.GameModel
             clone.commandKeeperPrivate = this.commandKeeperPrivate.Clone();
             clone.countOfPlayersPlayingPrivate = this.countOfPlayersPlayingPrivate;
             clone.currentPlayerNumberPrivate = this.currentPlayerNumberPrivate;
-            clone.gameInfo = this.gameInfo.Clone();
+            clone.gameInfoPrivate = this.gameInfoPrivate.Clone();
             clone.isEndPrivate = this.isEndPrivate;
             clone.lastFieldSide = this.lastFieldSide;
             clone.lastNumberLine = this.lastNumberLine;
@@ -893,7 +912,7 @@ namespace Assets.Scripts.GameModel
             {
                 return false;
             }
-            if (otherGame.gameInfo != this.gameInfo)
+            if (otherGame.gameInfoPrivate != this.gameInfoPrivate)
             {
                 return false;
             }

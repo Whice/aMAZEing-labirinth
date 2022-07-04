@@ -182,6 +182,35 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             }
         }
         /// <summary>
+        /// Установить количество поворотов ячейки на указанное.
+        /// </summary>
+        /// <param name="turnsClockwiseCount">Количество поворотов по часовой стрелке.</param>
+        public void SetClockwise(Int32 turnsClockwiseCount)
+        {
+            //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
+            if (!this.isInteractable)
+                return;
+
+            turnsClockwiseCount = turnsClockwiseCount % 4;
+
+            Int32 additionalTurnClockwiseCount = 0;
+
+            if (this.turnsClockwiseCount > turnsClockwiseCount)
+            {
+                Int32 maxTurnsCount = 4;
+                additionalTurnClockwiseCount = (maxTurnsCount - this.turnsClockwiseCount) - turnsClockwiseCount;
+            }
+            else if (this.turnsClockwiseCount < turnsClockwiseCount)
+            {
+                additionalTurnClockwiseCount = turnsClockwiseCount - this.turnsClockwiseCount;
+            }
+
+            TurnClockwise(additionalTurnClockwiseCount);
+            this.OnTurnedClockwise?.Invoke(additionalTurnClockwiseCount);
+
+            this.turnsClockwiseCountPrivate = turnsClockwiseCount;
+        }
+        /// <summary>
         /// Происходит поворот против часовой стрелки.
         /// </summary>
         public event Action<Int32> OnTurnedCountclockwise;

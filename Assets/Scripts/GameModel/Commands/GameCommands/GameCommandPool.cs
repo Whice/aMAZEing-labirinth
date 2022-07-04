@@ -86,8 +86,10 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// </summary>
         /// <param name="numberLine">Номер линии.</param>
         /// <param name="side">Сторона, с которой вставляется ячейка.</param>
+        /// <param name="turnsClockwiseCountBefore">Количество поворотов по часовой стрелке до совершения хода.</param>
+        /// <param name="turnsClockwiseCountAfter">Количество поворотов по часовой стрелке после совершения хода.</param>
         /// <returns></returns>
-        public CellMoveCommand GetCellMoveCommand(Int32 numberLine, FieldSide side)
+        public CellMoveCommand GetCellMoveCommand(Int32 numberLine, FieldSide side, Int32 turnsClockwiseCountBefore, Int32 turnsClockwiseCountAfter)
         {
             Int32 lastListIndex = this.cellCommands.Count - 1;
             CellMoveCommand command = null;
@@ -101,7 +103,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 this.cellCommands.RemoveAt(lastListIndex);
             }
 
-            command.Init(numberLine, side);
+            command.Init(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
 
             return command;
         }

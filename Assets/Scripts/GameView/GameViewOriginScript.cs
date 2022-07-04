@@ -1,4 +1,4 @@
-using Assets.Scripts.GameModel;
+﻿using Assets.Scripts.GameModel;
 using System;
 using UnityEngine;
 
@@ -9,7 +9,10 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     /// </summary>
     public Game gameModel
     {
-        get => GameManager.instance.gameModel;
+        get
+        {
+            return GameManager.instance.gameModel;
+        }
     }
 
 
@@ -38,6 +41,9 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     {
         get => this.gameObject.activeSelf;
     }
-    protected virtual void Awake() { }
+    protected virtual void Awake() 
+    {
+        GameManager.instance.AddGameViewOriginScript(this);
+    }
     protected virtual void OnDestroy() { }
 }

@@ -14,7 +14,7 @@ namespace Assets.Scripts.GameModel.Player
         /// <summary>
         /// Номер игрока.
         /// </summary>
-        public readonly Int32 playerNumer;
+        public readonly Int32 number;
         /// <summary>
         /// Игрок при перемещении ячеек был перемещен на противоположную сторону.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Assets.Scripts.GameModel.Player
             : base(name, color)
         {
             this.cardDeck = cardDeck;
-            this.playerNumer = playerNumer;
+            this.number = playerNumer;
             SetPosition(positionX, positionY);
         }
         /// <summary>
@@ -200,7 +200,7 @@ namespace Assets.Scripts.GameModel.Player
             //Если положение игрока изменилось, то надо сообщить.
             if (oldPositionX != this.positionX || oldPositionY != this.positionY)
             {
-                this.onAvatarMoved?.Invoke(oldPositionX, oldPositionY, this.positionX, this.positionY, this.playerNumer);
+                this.onAvatarMoved?.Invoke(oldPositionX, oldPositionY, this.positionX, this.positionY, this.number);
             }
         }
 
@@ -253,7 +253,7 @@ namespace Assets.Scripts.GameModel.Player
         public new GamePlayer Clone()
         {
             CardDeck cardDeck = this.cardDeck.Clone();
-            return new GamePlayer(base.Clone(), cardDeck, this.positionX, this.positionY, playerNumer);
+            return new GamePlayer(base.Clone(), cardDeck, this.positionX, this.positionY, number);
         }
 
         #region Сравнение.

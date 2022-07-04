@@ -66,6 +66,54 @@ namespace Assets.Scripts.GameView
         }
 
         /// <summary>
+        /// Расставить стартовые точки для игроков.
+        /// </summary>
+        /// <param name="player"></param>
+        private void SetPlayerStartPointFromNumber(GamePlayer player)
+        {
+            Int32 lastNumberPositionInField = Field.FIELD_SIZE - 1;
+            CellSlotFill slot;
+
+            switch (player.number)
+            {
+                case 0:
+                    {
+                        slot = this.slots[0, 0];
+                        break;
+                    }
+                case 1:
+                    {
+                        slot = this.slots[0, lastNumberPositionInField];
+                        break;
+                    }
+                case 2:
+                    {
+                        slot = this.slots[lastNumberPositionInField, lastNumberPositionInField];
+                        break;
+                    }
+                case 3:
+                    {
+                        slot = this.slots[lastNumberPositionInField, 0];
+                        break;
+                    }
+                default:
+                    {
+                        LogError("Player number may be in range 0..3!");
+                        return;
+                    }
+            }
+
+            slot.SetPlayerStartPoint
+                        (
+                        new Color
+                        (
+                            player.color.R,
+                            player.color.G,
+                            player.color.B
+                        )
+                        );
+        }
+        /// <summary>
         /// Заполнить игровое поле ячейками.
         /// </summary>
         private void FillFieldWithCell()
@@ -85,15 +133,7 @@ namespace Assets.Scripts.GameView
             //Установить стартовые точки для игроков.
             foreach (GamePlayer player in this.gameModel.players)
             {
-                this.slots[player.positionX, player.positionY].SetPlayerStartPoint
-                    (
-                    new Color
-                    (
-                        player.color.R,
-                        player.color.G,
-                        player.color.B
-                    )
-                    );
+                SetPlayerStartPointFromNumber(player);
             }
 
             //Установить игроков на поле.
@@ -498,7 +538,7 @@ namespace Assets.Scripts.GameView
             }
 
             this.isShifting = false;
-            ShowCellsWhereCanMoveIfNeed(this.gameModel.currentPlayer);
+            ShowCellsWhereCanMoveIfNeed();
         }
 
         /// <summary>
@@ -667,6 +707,8 @@ namespace Assets.Scripts.GameView
 
         /// <summary>
         /// Надо показать ячейки, куда можно ходить.
+        /// <br/>Переменая нужна для того, чтобы можно было выставить режим
+        /// показывать/непоказывать, в зависимости от предпочтений игрока.
         /// </summary>
         [SerializeField]
         private Boolean isNeedShowCellsWhereCanMove = true;
@@ -684,30 +726,36 @@ namespace Assets.Scripts.GameView
         /// <summary>
         /// Показать ячейки, куда можно ходить, если надо.
         /// </summary>
-        private void ShowCellsWhereCanMoveIfNeed(GamePlayer player)
+        private void ShowCellsWhereCanMoveIfNeed()
         {
             if (this.isNeedShowCellsWhereCanMove)
             {
-                ResetHeightAllCells();
-
-                HashSet<System.Drawing.Point> pointsCellsForMove = this.gameModel.field.GetPointsForMove(player);
-                foreach (System.Drawing.Point point in pointsCellsForMove)
+                if (this.gameModel.currentPhase == TurnPhase.movingAvatar)
                 {
-                    this.slots[point.X, point.Y].height = 0.5f;
+                    ResetHeightAllCells();
+
+                    HashSet<System.Drawing.Point> pointsCellsForMove = this.gameModel.field.GetPointsForMove(this.gameModel.currentPlayer);
+                    foreach (System.Drawing.Point point in pointsCellsForMove)
+                    {
+                        this.slots[point.X, point.Y].height = 0.5f;
+                    }
                 }
             }
         }
 
         #endregion Показать ячейки, куда можно ходить.
 
-        protected override void Awake()
+        /// <summary>
+        /// Воссоздать всю визуальную часть поля на основе глобально изместной модели игры.
+        /// </summary>
+        public void Initialize()
         {
-            base.Awake();
             FillFreeCellSlot();
             FillFieldWithCell();
             ToCheckIfViewOfFieldCorrespondsToItModel();
 
             AddArrowSlotsForFreeCell();
+            ShowCellsWhereCanMoveIfNeed();
 
             foreach (GamePlayer player in this.gameModel.players)
             {
@@ -733,18 +781,21 @@ namespace Assets.Scripts.GameView
 
         protected override void OnDestroy()
         {
-            foreach (CellSlotFill slot in this.slots)
+            if (!GameManager.isApplicationQuited)
             {
-                slot.OnCellSlotClicked -= MoveAvatarInModel;
-            }
+                foreach (CellSlotFill slot in this.slots)
+                {
+                    slot.OnCellSlotClicked -= MoveAvatarInModel;
+                }
 
-            foreach (GamePlayer player in this.gameModel.players)
-            {
-                player.onAvatarMoved -= MoveAvatarView;
-            }
+                foreach (GamePlayer player in this.gameModel.players)
+                {
+                    player.onAvatarMoved -= MoveAvatarView;
+                }
 
-            this.gameModel.onPhaseChange -= ResetHeightAllCells;
-            base.OnDestroy();
+                this.gameModel.onPhaseChange -= ResetHeightAllCells;
+                base.OnDestroy();
+            }
         }
     }
 }

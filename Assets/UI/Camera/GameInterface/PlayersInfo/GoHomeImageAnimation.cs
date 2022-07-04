@@ -33,7 +33,7 @@ namespace UI
             this.gameObject.SetActive(isActivate);
 
             //по номеру игрока определяется, проигрывалась ли для него анимация.
-            Int32 playerNumber = player.playerNumer;
+            Int32 playerNumber = player.number;
             Boolean isFisrtTimeForPlayer = !this.playersForWhichHaveAlreadyShown.Contains(playerNumber);
             if (isActivate && isFisrtTimeForPlayer)
             {

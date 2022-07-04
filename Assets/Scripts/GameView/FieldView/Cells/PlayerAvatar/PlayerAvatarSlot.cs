@@ -61,7 +61,7 @@ namespace Assets.Scripts.GameView
         {
             if (currentPlayer != null)
             {
-                this.isShowParticleUnderHead = this.gameModel.currentPlayer.playerNumer == this.playerNumber;
+                this.isShowParticleUnderHead = this.gameModel.currentPlayer.number == this.playerNumber;
             }
         }
         /// <summary>
@@ -80,7 +80,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         public Int32 playerNumber
         {
-            get => currentPlayerPrivate.playerNumer;
+            get => currentPlayerPrivate.number;
         }
         /// <summary>
         /// Установить объект игрока из модели для этого слота.
