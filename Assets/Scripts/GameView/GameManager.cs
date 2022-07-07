@@ -20,6 +20,12 @@ public class GameManager : MonoSingleton<GameManager>
     #region View info
 
     /// <summary>
+    /// Главный корневой объект на сцене.
+    /// Нужен, чтобы задавать активность для всех других объектов, через него.
+    /// </summary>
+    [SerializeField]
+    private GameObject gameMinRootObject = null;
+    /// <summary>
     /// Скрипты всех представлений в текущей игре.
     /// </summary>
     private List<GameObject> allViewsInGame = new List<GameObject>();
@@ -112,7 +118,7 @@ public class GameManager : MonoSingleton<GameManager>
     /// <summary>
     /// Начать новую игру.
     /// </summary>
-    private void StartNewGame()
+    public void StartNewGame()
     {
         PlayerInfo[] playerInfos = new PlayerInfo[]
                         {
@@ -208,6 +214,7 @@ public class GameManager : MonoSingleton<GameManager>
             }
 
             this.currentFieldView = Instantiate(this.fieldViewTemplate);
+            this.currentFieldView.transform.SetParent(this.gameMinRootObject.transform, false);
             this.currentFieldView.Initialize();
         }
     }
@@ -225,10 +232,10 @@ public class GameManager : MonoSingleton<GameManager>
 
         //Новая игра начнется сама при первом вызове this.gameModel
         //Но если до этого момента этого так и не случилось, то стоит начать игру принудительно
-        if (this.gameModelPrivate == null)
+        /*if (this.gameModelPrivate == null)
         {
             StartNewGame();
-        }
+        }*/
     }
 
     private void OnApplicationQuit()

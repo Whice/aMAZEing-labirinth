@@ -1,8 +1,10 @@
 ﻿using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
+using Assets.UI.MainMenuInterface;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace UI
 {
@@ -19,6 +21,20 @@ namespace UI
             if(this.gameModel.currentPhase == TurnPhase.movingAvatar)
                 this.gameModel.PlayerMissMove();
         }
+
+        #region Переход в главное меню.
+
+        private MenuManager menuManager
+        {
+            get => MenuManager.instance;
+        }
+        public void OpenMainMenu()
+        {
+            SceneManager.SetActiveScene(this.menuManager.mainMenuScene);
+            this.menuManager.SetActiveMainMenu(MenuType.mainMenu);            
+        }
+
+        #endregion Переход в главное меню.
 
         #region Конец игры.
 
