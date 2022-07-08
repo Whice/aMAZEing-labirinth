@@ -1,16 +1,30 @@
 ﻿using Assets.UI.MainMenuInterface;
+using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Главный управляющий скрипт меню.
+/// </summary>
 public class MenuManager : MonoSingleton<MenuManager>
 {
     #region Активность корневых объектов (какие окна меню показываются).
 
+    /// <summary>
+    /// Сцена главного меню.
+    /// </summary>
     private Scene mainMenuScenePrivate;
+    /// <summary>
+    /// Сцена главного меню.
+    /// </summary>
     public Scene mainMenuScene
     {
         get => this.mainMenuScenePrivate;
     }
+    /// <summary>
+    /// Событие смены (открытия) меню.
+    /// </summary>
+    public event Action onMenuChanged;
 
     /// <summary>
     /// Текущее открытое меню.
@@ -52,6 +66,8 @@ public class MenuManager : MonoSingleton<MenuManager>
         this.currentMenuRootScript.SetActive(false);
         this.currentMenuRootScript = this.menuRootScripts[menuType];
         this.currentMenuRootScript.SetActive(true);
+        this.onMenuChanged?.Invoke();
+
     }
     /// <summary>
     /// Скрыть все меню.
@@ -59,6 +75,7 @@ public class MenuManager : MonoSingleton<MenuManager>
     public void UnactiveAllMenus()
     {
         this.currentMenuRootScript.SetActive(false);
+        this.onMenuChanged?.Invoke();
     }
 
     #endregion Активность корневых объектов (какие окна меню показываются).

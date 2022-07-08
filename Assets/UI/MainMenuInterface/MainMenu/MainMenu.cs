@@ -20,6 +20,8 @@ namespace Assets.UI.MainMenuInterface
 
         public void ResumeLastGame()
         {
+            SceneManager.SetActiveScene(this.currentGameScene);
+            MenuManager.instance.SetActiveMainMenu(MenuType.gameRoot);
             GameManager.instance.LoadAndStartLastGameOrStartNewGame();
         }
         public void StartNewGame()
@@ -42,19 +44,5 @@ namespace Assets.UI.MainMenuInterface
         }
 
 
-
-        public void LoadGameScene()
-        {
-            SceneManager.LoadScene("PrototypeScene", LoadSceneMode.Additive);
-
-        }
-        public void SetAcvtivePrototypeScene()
-        {
-            SceneManager.SetActiveScene(this.currentGameScene);
-        }
-        public void UploadGameScene()
-        {
-            SceneManager.UnloadSceneAsync(this.currentGameScene.buildIndex);
-        }
     }
 }

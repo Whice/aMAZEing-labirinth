@@ -6,8 +6,12 @@ using Assets.Scripts.GameView;
 using Assets.Scripts.Saving;
 using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
+/// <summary>
+/// Главный управляющий скрипт игры.
+/// </summary>
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField]
@@ -24,7 +28,7 @@ public class GameManager : MonoSingleton<GameManager>
     /// Нужен, чтобы задавать активность для всех других объектов, через него.
     /// </summary>
     [SerializeField]
-    private GameObject gameMinRootObject = null;
+    private GameObject gameMainRootObject = null;
     /// <summary>
     /// Скрипты всех представлений в текущей игре.
     /// </summary>
@@ -47,6 +51,21 @@ public class GameManager : MonoSingleton<GameManager>
             if (this.allViewsInGame[index] != null)
                 Destroy(this.allViewsInGame[index], 0f);
         }
+    }
+
+    /// <summary>
+    /// Игровой контроллер UI.
+    /// </summary>
+    [SerializeField]
+    private GameUIController gameUIController;
+    /// <summary>
+    ///  Инициализировать UI скрипты, которые были заданы для инициализации 
+    ///  в игровом контроллере UI.
+    /// </summary>
+    private void InitializeUIScripts()
+    {
+
+        this.gameUIController.InitializeUIScripts();
     }
 
     #endregion View info
@@ -116,6 +135,14 @@ public class GameManager : MonoSingleton<GameManager>
     /// </summary>
     private FieldView currentFieldView = null;
     /// <summary>
+    /// Инициализировать игру, интерфейс и т.п.
+    /// </summary>
+    private void InitializeGame()
+    {
+        InitializeUIScripts();
+        CreateNewFieldView();
+    }
+    /// <summary>
     /// Начать новую игру.
     /// </summary>
     public void StartNewGame()
@@ -146,7 +173,10 @@ public class GameManager : MonoSingleton<GameManager>
         if (!isStartedGame)
         {
             LogError("Game not started!");
+            return;
         }
+
+        InitializeGame();
     }
 
     #endregion Модель и представление игры.
@@ -178,6 +208,20 @@ public class GameManager : MonoSingleton<GameManager>
         this.saver.Save(this.gameModel.commandKeeper, this.fullFileNameForSave);
     }
     /// <summary>
+    /// Создать новое представление игрового поля на основе модели игры.
+    /// </summary>
+    private void CreateNewFieldView()
+    {
+        if (this.currentFieldView != null)
+        {
+            GameObject.Destroy(this.currentFieldView.gameObject);
+        }
+
+        this.currentFieldView = Instantiate(this.fieldViewTemplate);
+        this.currentFieldView.transform.SetParent(this.gameMainRootObject.transform, false);
+        this.currentFieldView.Initialize();
+    }
+    /// <summary>
     /// Загрузить последнюю игру или начать новую, если сохранения нет.
     /// </summary>
     public void LoadAndStartLastGameOrStartNewGame()
@@ -206,16 +250,8 @@ public class GameManager : MonoSingleton<GameManager>
                         this.gameModel.ExecuteCommand(gameKeeper.Pop());
                     }
                 }
+                InitializeGame();
             }
-
-            if (this.currentFieldView != null)
-            {
-                GameObject.Destroy(this.currentFieldView.gameObject);
-            }
-
-            this.currentFieldView = Instantiate(this.fieldViewTemplate);
-            this.currentFieldView.transform.SetParent(this.gameMinRootObject.transform, false);
-            this.currentFieldView.Initialize();
         }
     }
 

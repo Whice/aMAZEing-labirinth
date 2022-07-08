@@ -83,19 +83,30 @@ namespace UI
         }
 
 
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+            this.gameModel.onPlayerChanged += FillPlayersDeck;
+        }
+        protected override void Unsubscribe()
+        {
+            this.gameModel.onPlayerChanged -= FillPlayersDeck;
+            base.Unsubscribe();
+        }
+        public override void Initialized()
+        {
+            base.Initialized();
+            CreateDeck();
+            FillPlayersDeck();
+        }
         protected override void Awake()
         {
             base.Awake();
-            CreateDeck();
-            FillPlayersDeck();
-
-            this.gameModel.onPlayerChanged += FillPlayersDeck;
+            MenuManager.instance.onMenuChanged += ClearDeck;
         }
-
         protected override void OnDestroy()
         {
-
-            this.gameModel.onPlayerChanged -= FillPlayersDeck;
+            MenuManager.instance.onMenuChanged -= ClearDeck;
             base.OnDestroy();
         }
     }

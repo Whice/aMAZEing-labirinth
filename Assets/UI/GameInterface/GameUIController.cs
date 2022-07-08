@@ -22,19 +22,41 @@ namespace UI
                 this.gameModel.PlayerMissMove();
         }
 
-        #region Переход в главное меню.
+        #region Переход в главное меню и из него.
 
+        /// <summary>
+        /// Сокращенная ссылка на главный управляющий скрипт меню.
+        /// </summary>
         private MenuManager menuManager
         {
             get => MenuManager.instance;
         }
+        /// <summary>
+        /// Открыть главное меню.
+        /// </summary>
         public void OpenMainMenu()
         {
+            GameManager.instance.SaveLastGame();
             SceneManager.SetActiveScene(this.menuManager.mainMenuScene);
             this.menuManager.SetActiveMainMenu(MenuType.mainMenu);            
         }
+        /// <summary>
+        /// Bнициализируемые скрипты.
+        /// </summary>
+        [SerializeField]
+        private GameUIOriginScript[] initializableUIScripts = new GameUIOriginScript[0];
+        /// <summary>
+        ///  Инициализировать UI скрипты, которые были заданы для инициализации.
+        /// </summary>
+        public void InitializeUIScripts()
+        {
+            foreach (GameUIOriginScript script in this.initializableUIScripts)
+            {
+                script.Initialized();
+            }
+        }
 
-        #endregion Переход в главное меню.
+        #endregion Переход в главное меню и из него.
 
         #region Конец игры.
 
@@ -60,16 +82,21 @@ namespace UI
 
         #endregion Конец игры.
 
-        protected override void Awake()
+
+        protected override void Subscribe()
         {
-            base.Awake();
-            this.isShouldInterruptPressesInWorld = false;
+            base.Subscribe();
             this.gameModel.OnGameEnded += ShowGameEndTable;
         }
-        protected override void OnDestroy()
+        protected override void Unsubscribe()
         {
             this.gameModel.OnGameEnded -= ShowGameEndTable;
-            base.OnDestroy();
+            base.Unsubscribe();
+        }
+        public override void Initialized()
+        {
+            base.Initialized();
+            this.isShouldInterruptPressesInWorld = false;
         }
     }
 }

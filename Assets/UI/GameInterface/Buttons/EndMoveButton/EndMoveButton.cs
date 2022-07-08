@@ -44,17 +44,21 @@ namespace UI
             this.hideShowAnimator.speed = 0;
         }
 
-        protected override void Awake()
+        protected override void Subscribe()
         {
-            base.Awake();
-            SetEnableObjectAnimationBegin();
+            base.Subscribe();
             this.gameModel.onPhaseChange += ChangeVisibility;
-            this.gameObject.SetActive(false);
         }
-        protected override void OnDestroy()
+        protected override void Unsubscribe()
         {
             this.gameModel.onPhaseChange -= ChangeVisibility;
-            base.OnDestroy();
+            base.Unsubscribe();
+        }
+        public override void Initialized()
+        {
+            base.Initialized();
+            SetEnableObjectAnimationBegin();
+            this.gameObject.SetActive(false);
         }
     }
 }

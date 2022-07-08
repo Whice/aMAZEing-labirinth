@@ -77,19 +77,23 @@ namespace UI
 
         #endregion Дополнительная информация об игроке.
 
-        protected override void Awake()
-        {
-            base.Awake();
 
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+            this.gameModel.onNextTurnMoved += FillPlayerName;
+        }
+        protected override void Unsubscribe()
+        {
+            this.gameModel.onNextTurnMoved -= FillPlayerName;
+            base.Unsubscribe();
+        }
+        public override void Initialized()
+        {
+            base.Initialized();
             AnimationEnable(false);
             this.playerName.text = this.currentPlayer.name;
             FillPlayerName();
-            this.gameModel.onNextTurnMoved += FillPlayerName;
-        }
-        protected override void OnDestroy()
-        {
-            this.gameModel.onNextTurnMoved -= FillPlayerName;
-            base.OnDestroy();
         }
     }
 }

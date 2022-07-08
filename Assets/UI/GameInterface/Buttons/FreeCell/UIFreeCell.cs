@@ -12,7 +12,6 @@ namespace UI
     /// </summary>
     public class UIFreeCell : GameUIOriginScript
     {
-
         /// <summary>
         /// Ссылка на свободную ячейку в модели.
         /// </summary>
@@ -112,10 +111,22 @@ namespace UI
                     }
             }
         }
-
-        protected override void Awake()
+        protected override void Subscribe()
         {
-            base.Awake();
+            base.Subscribe();
+            this.fieldCells.OnFreeCellChange += ChageSprite;
+            this.gameModel.onPhaseChange += ChangeVisibility;
+        }
+        protected override void Unsubscribe()
+        {
+            this.fieldCells.OnFreeCellChange -= ChageSprite;
+            this.gameModel.onPhaseChange -= ChangeVisibility;
+            base.Unsubscribe();
+        }
+        public override void Initialized()
+        {
+            base.Initialized();
+
             if (this.lineCellUISprite == null)
             {
                 LogError(nameof(this.lineCellUISprite) + " not found!");
@@ -129,16 +140,6 @@ namespace UI
                 LogError(nameof(this.threeDirectionCellUISprite) + " not found!");
             }
             ChageSprite();
-
-            this.fieldCells.OnFreeCellChange += ChageSprite;
-            this.gameModel.onPhaseChange += ChangeVisibility;
-        }
-
-        protected override void OnDestroy()
-        {
-            this.fieldCells.OnFreeCellChange -= ChageSprite;
-            this.gameModel.onPhaseChange -= ChangeVisibility;
-            base.OnDestroy();
         }
 
         #region Поворот.
