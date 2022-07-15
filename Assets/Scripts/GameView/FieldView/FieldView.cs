@@ -147,6 +147,75 @@ namespace Assets.Scripts.GameView
             }
         }
 
+        #region Свободная ячейка.
+
+        /// <summary>
+        /// Слот для запоминания свободной ячейки.
+        /// </summary>
+        private CellSlotFill freeCellSlot;
+        /// <summary>
+        /// Слот для слота свободной ячейки.
+        /// </summary>
+        [SerializeField]
+        private Transform slotForFreeCellSlot = null;
+        /// <summary>
+        /// Задать местоположение для слота свободной ячейки через положение слота для нее.
+        /// </summary>
+        /// <param name="parent"></param>
+        private void SetPlaceForFreeCellSlot(Transform parent, ArrowForFreeCellSlotFill slot)
+        {
+            if (!this.isShifting)
+            {
+                //Если слот остался прежним, то должен произойти сдвиг.
+                if (slot == this.freeCellSlot.arrowForFreeCellSlotFill)
+                {
+                    BeginPerformShift(slot);
+                }
+                else
+                {
+                    this.freeCellSlot.transform.parent = parent;
+                    this.freeCellSlot.transform.localPosition = new Vector3(0, -ArrowForFreeCellSlotFill.HEIGHT_FOR_ARROW_SLOT, 0);
+
+                    ArrowForFreeCellSlotFill oldSlot = this.freeCellSlot.arrowForFreeCellSlotFill as ArrowForFreeCellSlotFill;
+                    slot.freeCellSlot = this.freeCellSlot;
+                    this.freeCellSlot.arrowForFreeCellSlotFill = slot;
+                    if (oldSlot != null)
+                    {
+                        oldSlot.freeCellSlot = null;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Заполнить слот для свободной ячейкой.
+        /// </summary>
+        private void FillFreeCellSlot()
+        {
+            CellSlotFill freeCellSlot = Instantiate(this.cellSlotPrefab);
+            freeCellSlot.OnCellSlotClicked += MoveAvatarInModel;
+            freeCellSlot.SetCellFromModelCell(this.playingField.freeFieldCell);
+            SetFreeCell(freeCellSlot);
+        }
+        /// <summary>
+        /// Очистить слот свободной ячейки. Переменная после этого равна null.
+        /// </summary>
+        private void ClearFreeCellSlot()
+        {
+            this.freeCellSlot = null;
+        }
+        /// <summary>
+        /// Задать указанную ячейку как свободную и посметить в слот.
+        /// </summary>
+        /// <param name="slot"></param>
+        private void SetFreeCell(CellSlotFill slot)
+        {
+            this.freeCellSlot = slot;
+            this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
+            this.freeCellSlot.transform.localPosition = Vector3.zero;
+        }
+
+        #endregion Свободная ячейка.
+
         #endregion Ячейки игрового поля.
 
         #region Игровые аватары.
@@ -634,74 +703,6 @@ namespace Assets.Scripts.GameView
         }
 
         #endregion Сдвиг линии при толчке свободной ячейкой.
-
-        #region Свободная ячейка.
-
-        /// <summary>
-        /// Слот для запоминания свободной ячейки.
-        /// </summary>
-        private CellSlotFill freeCellSlot;
-        /// <summary>
-        /// Слот для слота свободной ячейки.
-        /// </summary>
-        [SerializeField]
-        private Transform slotForFreeCellSlot = null;
-        /// <summary>
-        /// Задать местоположение для слота свободной ячейки через положение слота для нее.
-        /// </summary>
-        /// <param name="parent"></param>
-        private void SetPlaceForFreeCellSlot(Transform parent, ArrowForFreeCellSlotFill slot)
-        {
-            if (!this.isShifting)
-            {
-                //Если слот остался прежним, то должен произойти сдвиг.
-                if (slot == this.freeCellSlot.arrowForFreeCellSlotFill)
-                {
-                    BeginPerformShift(slot);
-                }
-                else
-                {
-                    this.freeCellSlot.transform.parent = parent;
-                    this.freeCellSlot.transform.localPosition = new Vector3(0, -ArrowForFreeCellSlotFill.HEIGHT_FOR_ARROW_SLOT, 0);
-
-                    ArrowForFreeCellSlotFill oldSlot = this.freeCellSlot.arrowForFreeCellSlotFill as ArrowForFreeCellSlotFill;
-                    slot.freeCellSlot = this.freeCellSlot;
-                    this.freeCellSlot.arrowForFreeCellSlotFill = slot;
-                    if (oldSlot != null)
-                    {
-                        oldSlot.freeCellSlot = null;
-                    }
-                }
-            }
-        }
-        /// <summary>
-        /// Заполнить слот для свободной ячейкой.
-        /// </summary>
-        private void FillFreeCellSlot()
-        {
-            CellSlotFill freeCellSlot = Instantiate(this.cellSlotPrefab);
-            freeCellSlot.SetCellFromModelCell(this.playingField.freeFieldCell);
-            SetFreeCell(freeCellSlot);
-        }
-        /// <summary>
-        /// Очистить слот свободной ячейки. Переменная после этого равна null.
-        /// </summary>
-        private void ClearFreeCellSlot()
-        {
-            this.freeCellSlot = null;
-        }
-        /// <summary>
-        /// Задать указанную ячейку как свободную и посметить в слот.
-        /// </summary>
-        /// <param name="slot"></param>
-        private void SetFreeCell(CellSlotFill slot)
-        {
-            this.freeCellSlot = slot;
-            this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
-            this.freeCellSlot.transform.localPosition = Vector3.zero;
-        }
-
-        #endregion Свободная ячейка.
 
         #region Показать ячейки, куда можно ходить.
 
