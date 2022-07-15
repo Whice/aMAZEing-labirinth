@@ -57,6 +57,8 @@ namespace UI
             TreasureAndStartPointsType[] treasures = this.gameModel.currentPlayer.treasuresOfThisDeck;
             foreach (TreasureAndStartPointsType treasure in treasures)
             {
+                //Точка старта записана для простоты как сокровище,
+                //Потому ее надо пропустить и показывать только карты с сокровищем.
                 if ((Int32)treasure > treasure.GetMaximalNumberStartPoint())
                 {
                     currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
