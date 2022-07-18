@@ -160,9 +160,9 @@ public class GameManager : MonoSingleton<GameManager>
         gameInfo.cellsShuffleSeed = 1;
 
 #else
-                gameInfo.cardsShuffleSeed = Random.Range(-999, 999);
-                gameInfo.fisrtPlayerNumberSeed = Random.Range(-999, 999);
-                gameInfo.cellsShuffleSeed = Random.Range(-999, 999);
+                gameInfo.cardsShuffleSeed = UnityEngine.Random.Range(-999, 999);
+                gameInfo.fisrtPlayerNumberSeed = UnityEngine.Random.Range(-999, 999);
+                gameInfo.cellsShuffleSeed = UnityEngine.Random.Range(-999, 999);
 #endif
 
         this.gameModelPrivate = new Game();
