@@ -52,6 +52,11 @@ namespace UI
         /// </summary>
         private void FillPlayersDeck()
         {
+            if (this.cardSlots == null)
+            {
+                CreateDeck();
+            }
+             
             ClearDeck();
             UICardWithTreasureSlot currentSlot = null;
             TreasureAndStartPointsType[] treasures = this.gameModel.currentPlayer.treasuresOfThisDeck;
@@ -98,17 +103,14 @@ namespace UI
         public override void Initialized()
         {
             base.Initialized();
-            CreateDeck();
             FillPlayersDeck();
         }
         protected override void Awake()
         {
             base.Awake();
-            MenuManager.instance.onMenuChanged += ClearDeck;
         }
         protected override void OnDestroy()
         {
-            MenuManager.instance.onMenuChanged -= ClearDeck;
             base.OnDestroy();
         }
     }

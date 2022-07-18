@@ -19,7 +19,6 @@ namespace UI
         }
         protected override void Awake()
         {
-            Initialized();
             GameInterfaceRectanglesDetected.instance.AddGameViewOriginScripts(this);
         }
 
