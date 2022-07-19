@@ -10,7 +10,7 @@
         public static TurnPhase GetNextPhase(this TurnPhase currentPhase)
         {
             currentPhase = currentPhase + 1;
-            if (currentPhase > TurnPhase.movingAvatar)
+            if ((int)currentPhase > (int)TurnPhase.movingAvatar)
             {
                 currentPhase = TurnPhase.movingCell;
             }
