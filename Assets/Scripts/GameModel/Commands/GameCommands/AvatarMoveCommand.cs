@@ -3,7 +3,7 @@ using Assets.Scripts.Extensions;
 using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 
-namespace Assets.Scripts.GameModel.Commands.GameCommands
+namespace Assets.Scripts.GameModel.Commands
 {
     /// <summary>
     /// Команда для перемещения аватара игрока.
@@ -75,19 +75,13 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// <summary>
         /// Инициализировать команду.
         /// </summary>
-        /// <param name="playerMoveToX">Куда игрок должен пойти по горизонтали.</param>
-        /// <param name="playerMoveToY">Куда игрок должен пойти по вертикали.</param>
-        /// <param name="playerMoveFromX">Откуда игрок должен пойти по горизонтали.</param>
-        /// <param name="playerMoveFromY">Откуда игрок должен пойти по вертикали.</param>
-        /// <param name="playerNumber">Номер игрока, нужен для проверки правильности игрока.</param>
-        public void Init(Int32 playerMoveToX, Int32 playerMoveToY,
-            Int32 playerMoveFromX, Int32 playerMoveFromY, Int32 playerNumber)
+        public void Init(in AvatarMoveCommandSetup setup)
         {
-            this.playerMoveToX = (byte)playerMoveToX;
-            this.playerMoveToY = (byte)playerMoveToY;
-            this.playerMoveFromX = (byte)playerMoveFromX;
-            this.playerMoveFromY = (byte)playerMoveFromY;
-            this.playerNumberPrivate = (byte)playerNumber;
+            this.playerMoveToX = (byte)setup.playerMoveToX;
+            this.playerMoveToY = (byte)setup.playerMoveToY;
+            this.playerMoveFromX = (byte)setup.playerMoveFromX;
+            this.playerMoveFromY = (byte)setup.playerMoveFromY;
+            this.playerNumberPrivate = (byte)setup.playerNumber;
         }
 
         public override bool Execute(Game modelGame)

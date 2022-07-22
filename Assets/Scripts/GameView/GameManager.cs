@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.GameModel;
-using Assets.Scripts.GameModel.Commands.GameCommands;
+using Assets.Scripts.GameModel.Commands;
 using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameView;

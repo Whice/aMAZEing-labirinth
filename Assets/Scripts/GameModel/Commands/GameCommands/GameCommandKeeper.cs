@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.GameModel.Commands.GameCommands
+namespace Assets.Scripts.GameModel.Commands
 {
     /// <summary>
     /// Хранит команды для сохранения.

@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.GameModel.Logging;
 using System;
 
-namespace Assets.Scripts.GameModel.Commands.GameCommands
+namespace Assets.Scripts.GameModel.Commands
 {
     /// <summary>
     /// Общий класс для игровых команд.
