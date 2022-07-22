@@ -5,10 +5,10 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 {
     /// <summary>
     /// Ячейка игрового поля.
-    /// <br/>По умолчанию:
+    /// <br/>Положения клеток по умолчанию:
     /// <br/>У уголка пути: верх и право.
     /// <br/>У линии пути: верх и низ.
-    /// <br/>У линии пути: верх, право и низ.
+    /// <br/>У клетки с тремя направлениями пути: верх, право и низ.
     /// </summary>
     public class FieldCell
     {
@@ -180,16 +180,28 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 
                 this.directions[0] = lastDirection;
             }
+            LineRotationContract();
         }
         /// <summary>
+        /// Максимальное количество эффективных поворотов, 
+        /// т.к. превышая это значение мы начинаем идти "по кругу".
+        /// </summary>
+        private const Int32 MAX_TURNS_COUNT = 4;
+        /// <summary>
         /// Установить количество поворотов ячейки на указанное.
+        /// <br/>Число повротов должно быть положительным.
         /// </summary>
         /// <param name="turnsClockwiseCount">Количество поворотов по часовой стрелке.</param>
         public void SetClockwise(Int32 turnsClockwiseCount)
         {
             //Если взаимодействие с ячейкой не разрешено, то ничего не делать.
-            if (!this.isInteractable)
-                return;
+            if (!this.isInteractable) return;
+            //Незачем вертеть, если поворот тот же.
+            if (this.turnsClockwiseCount == turnsClockwiseCount) return;
+
+            if (turnsClockwiseCount < 0)
+                throw new Exception("An attempt to set the " + nameof(FieldCell) +
+                    " to a negative turn in " + nameof(SetClockwise));
 
             turnsClockwiseCount = turnsClockwiseCount % 4;
 
@@ -197,18 +209,47 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 
             if (this.turnsClockwiseCount > turnsClockwiseCount)
             {
-                Int32 maxTurnsCount = 4;
-                additionalTurnClockwiseCount = (maxTurnsCount - this.turnsClockwiseCount) - turnsClockwiseCount;
+                additionalTurnClockwiseCount = MAX_TURNS_COUNT - (this.turnsClockwiseCount - turnsClockwiseCount);
             }
             else if (this.turnsClockwiseCount < turnsClockwiseCount)
             {
                 additionalTurnClockwiseCount = turnsClockwiseCount - this.turnsClockwiseCount;
             }
 
+            if (additionalTurnClockwiseCount < 0)
+                throw new Exception("An attempt to set the " + nameof(FieldCell) +
+                    " to a negative turn in " + nameof(SetClockwise));
+
             TurnClockwise(additionalTurnClockwiseCount);
             this.OnTurnedClockwise?.Invoke(additionalTurnClockwiseCount);
 
             this.turnsClockwiseCountPrivate = turnsClockwiseCount;
+            LineRotationContract();
+        }
+        private void LineRotationContract()
+        {
+            if (this.CellType == CellType.line)
+            {
+                //Изначально узнать положение ячейки: проходы вертикальные илди горизонтальные.
+                bool directionMatching = turnsClockwiseCount % 2 == 0;
+
+                if (directionMatching)
+                {
+                    directionMatching &= this.IsHaveDirectionUp && this.IsHaveDirectionDown;
+                    directionMatching &= !(this.IsHaveDirectionLeft && this.IsHaveDirectionRight);
+                }
+                else
+                {
+                    directionMatching = !directionMatching;
+                    directionMatching &= !(this.IsHaveDirectionUp && this.IsHaveDirectionDown);
+                    directionMatching &= this.IsHaveDirectionLeft && this.IsHaveDirectionRight;
+                }
+                if (!directionMatching)
+                {
+                    throw new Exception("Какая-то хрень!");
+                }
+            }
+
         }
         /// <summary>
         /// Происходит поворот против часовой стрелки.
@@ -240,6 +281,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
 
                 this.directions[end] = firstDirection;
             }
+            LineRotationContract();
         }
 
         #endregion Действия с ячейкой.
@@ -312,6 +354,7 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
             FieldCell cell = new FieldCell(this.CellType, this.treasureOrStartPoints);
             cell.directions = this.CopyDirections();
             cell.isInteractable = this.isInteractable;
+            cell.turnsClockwiseCountPrivate = this.turnsClockwiseCountPrivate;
             return cell;
         }
         /// <summary>

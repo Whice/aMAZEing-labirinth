@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Cards;
-using Assets.Scripts.GameModel.Commands.GameCommands;
+using Assets.Scripts.GameModel.Commands;
 using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
@@ -238,25 +238,23 @@ namespace Assets.Scripts.GameModel
         /// <param name="y"></param>
         private void CreateAvatarMovingCommand(Int32 x, Int32 y)
         {
-            GameCommand command = this.commandPool.GetPlayerMoveCommand
-                   (
-                   x, y,
-                   this.currentPlayer.positionX, this.currentPlayer.positionY,
-                   this.currentPlayerNumber
-                   );
+            AvatarMoveCommandSetup setup = new AvatarMoveCommandSetup();
+            setup.playerMoveToX = x;
+            setup.playerMoveToY = y;
+            setup.playerMoveFromX= this.currentPlayer.positionX;
+            setup.playerMoveFromY= this.currentPlayer.positionY;
+            setup.playerNumber = this.currentPlayer.number;
+
+            GameCommand command = this.commandPool.GetPlayerMoveCommand(setup);
             this.commandKeeperPrivate.Add(command);
         }
         /// <summary>
         /// Создать команду движения ячеек.
         /// Она возьмется из пула, инициализируется и положится в хранителя.
         /// </summary>
-        /// <param name="numberLine">Номер линии.</param>
-        /// <param name="side">Сторона, с которой вставляется ячейка.</param>
-        /// <param name="turnsClockwiseCountBefore">Количество поворотов по часовой стрелке до совершения хода.</param>
-        /// <param name="turnsClockwiseCountAfter">Количество поворотов по часовой стрелке после совершения хода.</param>
-        private void CreateCellMovingCommand(Int32 numberLine, FieldSide side, Int32 turnsClockwiseCountBefore, Int32 turnsClockwiseCountAfter)
+        private void CreateCellMovingCommand(in CellMoveCommandSetup setup)
         {
-            CellMoveCommand command = this.commandPool.GetCellMoveCommand(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
+            CellMoveCommand command = this.commandPool.GetCellMoveCommand(setup);
             this.commandKeeperPrivate.Add(command);
         }
         /// <summary>
@@ -438,8 +436,9 @@ namespace Assets.Scripts.GameModel
 
             if (IsNotUndoPreviousMove(numberLine, side))
             {
-                Int32 turnsClockwiseCountBefore = this.field.turnClockwiseFreeCellBeforeMove;
-                Int32 turnsClockwiseCountAfter = this.freeCell.turnsClockwiseCount;
+                CellMoveCommandSetup setup = new CellMoveCommandSetup();
+                setup.turnsClockwiseCountFreeCellBefore = this.freeCell.turnsClockwiseCount;
+
                 switch (side)
                 {
                     case FieldSide.bottom:
@@ -468,6 +467,9 @@ namespace Assets.Scripts.GameModel
                             break;
                         }
                 }
+                setup.turnsClockwiseCountFreeCellAfter = this.freeCell.turnsClockwiseCount;
+                setup.numberLine = numberLine;
+                setup.side = side;
 
                 if (successfulMove)
                 {
@@ -480,7 +482,7 @@ namespace Assets.Scripts.GameModel
                     {
                         if (isSaveCommand)
                         {
-                            CreateCellMovingCommand(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
+                            CreateCellMovingCommand(setup);
                         }
 
                         SetNextPhase();
@@ -506,8 +508,8 @@ namespace Assets.Scripts.GameModel
         {
             Boolean successfulMove = false;
 
-            Int32 turnsClockwiseCountBefore = this.field.turnClockwiseFreeCellBeforeMove;
-            Int32 turnsClockwiseCountAfter = this.freeCell.turnsClockwiseCount;
+            CellMoveCommandSetup setup = new CellMoveCommandSetup();
+            setup.turnsClockwiseCountFreeCellBefore = this.freeCell.turnsClockwiseCount;
 
             switch (side)
             {
@@ -533,6 +535,10 @@ namespace Assets.Scripts.GameModel
                     }
             }
 
+            setup.turnsClockwiseCountFreeCellAfter = this.freeCell.turnsClockwiseCount;
+            setup.numberLine = numberLine;
+            setup.side = side;
+
             if (successfulMove)
             {
                 //Еслли игра закончилась, то ход уже невозможен.
@@ -544,7 +550,7 @@ namespace Assets.Scripts.GameModel
                 {
                     if (isSaveCommand)
                     {
-                        CreateCellMovingCommand(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
+                        CreateCellMovingCommand(setup);
                     }
 
                     SetNextPhase();

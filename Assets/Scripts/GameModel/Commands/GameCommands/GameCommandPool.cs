@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.GameModel.Commands.GameCommands
+namespace Assets.Scripts.GameModel.Commands
 {
     /// <summary>
     /// Пул игровых команд.
@@ -62,8 +62,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
         /// <param name="playerMoveFromY">Откуда игрок должен пойти по вертикали.</param>
         /// <param name="playerNumber">Номер игрока, нужен для проверки правильности игрока.</param>
         /// <returns></returns>
-        public AvatarMoveCommand GetPlayerMoveCommand(Int32 playerMoveToX, Int32 playerMoveToY,
-            Int32 playerMoveFromX, Int32 playerMoveFromY, Int32 playerNumber)
+        public AvatarMoveCommand GetPlayerMoveCommand(in AvatarMoveCommandSetup setup)
         {
             Int32 lastListIndex = this.avatarMoveCommands.Count - 1;
             AvatarMoveCommand command = null;
@@ -77,19 +76,15 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 this.avatarMoveCommands.RemoveAt(lastListIndex);
             }
 
-            command.Init(playerMoveToX, playerMoveToY, playerMoveFromX, playerMoveFromY, playerNumber);
+            command.Init(setup);
 
             return command;
         }
         /// <summary>
         ///  Получить команду для перемещения ячейки.
         /// </summary>
-        /// <param name="numberLine">Номер линии.</param>
-        /// <param name="side">Сторона, с которой вставляется ячейка.</param>
-        /// <param name="turnsClockwiseCountBefore">Количество поворотов по часовой стрелке до совершения хода.</param>
-        /// <param name="turnsClockwiseCountAfter">Количество поворотов по часовой стрелке после совершения хода.</param>
         /// <returns></returns>
-        public CellMoveCommand GetCellMoveCommand(Int32 numberLine, FieldSide side, Int32 turnsClockwiseCountBefore, Int32 turnsClockwiseCountAfter)
+        public CellMoveCommand GetCellMoveCommand(in CellMoveCommandSetup setup)
         {
             Int32 lastListIndex = this.cellCommands.Count - 1;
             CellMoveCommand command = null;
@@ -103,7 +98,7 @@ namespace Assets.Scripts.GameModel.Commands.GameCommands
                 this.cellCommands.RemoveAt(lastListIndex);
             }
 
-            command.Init(numberLine, side, turnsClockwiseCountBefore, turnsClockwiseCountAfter);
+            command.Init(setup);
 
             return command;
         }

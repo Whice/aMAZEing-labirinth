@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.GameModel;
-using Assets.Scripts.GameModel.Commands.GameCommands;
+﻿using Assets.Scripts.GameModel.Commands;
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;

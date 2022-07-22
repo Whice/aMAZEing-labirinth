@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.GameModel;
-using Assets.Scripts.GameModel.Commands.GameCommands;
+using Assets.Scripts.GameModel.Commands;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameModel.PlayingField;
 using System;
@@ -134,9 +134,9 @@ namespace TestModel.ModelTests
         {
             Game firstGame = CreateAndStartGameWithTwoPlayes();
             Game secondGame = firstGame.Clone();
+            Assert.True(firstGame.Equals(secondGame));
             Int32 commandsCount = 0;
 
-            PerformOnePlayerMove(firstGame, ref commandsCount);
             PerformOnePlayerMove(firstGame, ref commandsCount);
             PerformOnePlayerMove(firstGame, ref commandsCount);
 
@@ -161,6 +161,8 @@ namespace TestModel.ModelTests
         {
             Game game = CreateAndStartGameWithTwoPlayes();
             Game originGame = game.Clone();
+            Assert.True(game.Equals(originGame));
+
             Int32 commandsCount = 0;
 
             PerformOnePlayerMove(game, ref commandsCount);

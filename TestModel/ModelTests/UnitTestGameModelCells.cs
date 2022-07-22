@@ -124,6 +124,176 @@ namespace TestModel.ModelTests
             Assert.True(cell.IsHaveDirectionLeft);
         }
 
+        //SET
+        [Fact]
+        public void TestSetRotateThreeDirectionFieldCell_TurnClockwise_SuccessfullRotate()
+        {
+            FieldCell cell = new FieldCell(CellType.threeDirection);
+
+            cell.TurnClockwise(7);
+
+            cell.SetClockwise(0);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(1);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(2);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(3);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(2);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(1);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(0);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+        }
+        [Fact]
+        public void TestSetRotateLineTwoDirectionFieldCell_TurnClockwise_SuccessfullRotate()
+        {
+            FieldCell cell = new FieldCell(CellType.line);
+
+            cell.TurnClockwise(7);
+
+            cell.SetClockwise(0);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(1);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(2);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(3);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(2);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(1);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(0);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+        }
+        [Fact]
+        public void TestSetRotateCornerTwoDirectionFieldCell_TurnClockwise_SuccessfullRotate()
+        {
+            FieldCell cell = new FieldCell(CellType.corner);
+
+            cell.TurnClockwise(7);
+
+            cell.SetClockwise(0);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(1);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(2);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(3);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(2);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.False(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.True(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(1);
+
+            Assert.False(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.True(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+
+            cell.SetClockwise(0);
+
+            Assert.True(cell.IsHaveDirectionUp);
+            Assert.True(cell.IsHaveDirectionRight);
+            Assert.False(cell.IsHaveDirectionDown);
+            Assert.False(cell.IsHaveDirectionLeft);
+        }
+
         #endregion Rotate
 
         #region Interaction
