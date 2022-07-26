@@ -150,7 +150,7 @@ public class GameManager : MonoSingleton<GameManager>
         PlayerInfo[] playerInfos = new PlayerInfo[]
                         {
                         new PlayerInfo("test1", System.Drawing.Color.Orange),
-                        new PlayerInfo("test2", System.Drawing.Color.Red)
+                        new PlayerInfo("test2", System.Drawing.Color.Yellow)
                         };
         GameInfo gameInfo = new GameInfo(playerInfos);
 
