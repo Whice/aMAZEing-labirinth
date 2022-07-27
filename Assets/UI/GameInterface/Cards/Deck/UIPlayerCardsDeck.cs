@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UI
 {
@@ -9,6 +10,18 @@ namespace UI
     /// </summary>
     public class UIPlayerCardsDeck : GameUIOriginScript
     {
+        /// <summary>
+        /// Место, куда будут складироваться карты,
+        /// которые показываются в нынешний момент.
+        /// </summary>
+        [SerializeField]
+        private Transform activeCardsParent = null;
+        /// <summary>
+        /// Место, куда будут складироваться карты,
+        /// которые скрыты в нынешний момент.
+        /// </summary>
+        [SerializeField]
+        private Transform unactiveCardsParent = null;
         /// <summary>
         /// UI колода игрока.
         /// </summary>
@@ -41,6 +54,7 @@ namespace UI
         {
             for (Int32 i = 0; i < this.cardSlots.Count; i++)
             {
+                this.cardSlots[i].transform.SetParent(this.unactiveCardsParent, false);
                 this.cardSlots[i].Hide();
                 this.cardSlots[i].OnCliked -= FlipCard;
             }
@@ -69,7 +83,7 @@ namespace UI
                     currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
                     this.cardSlots.Add(currentSlot);
                     currentSlot.Close();
-                    currentSlot.transform.SetParent(this.transform, false);
+                    currentSlot.transform.SetParent(this.activeCardsParent, false);
                     currentSlot.OnCliked += FlipCard;
                 }
             }

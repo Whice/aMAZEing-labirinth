@@ -241,6 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isShouldInterruptPressesInWorld: 1
+  initializableUIScripts: []
   tmpForWinnerTable: {fileID: 5397460766971934329}
   endGameObject: {fileID: 3177527073372203306}
 --- !u!1 &7812052982931076303
@@ -1982,11 +1983,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3589646612149603805, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3589646612149603805, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 120
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3589646612149603805, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2239,6 +2240,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 5622907715262912909, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5849488280179399999, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
       propertyPath: m_Name
       value: CardDeckWithTreasuresReceived
@@ -2250,6 +2255,10 @@ PrefabInstance:
     - target: {fileID: 5849488280179399999, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7148456690039518230, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69cbe3070037bd141a3bc293b59e58e3, type: 3}

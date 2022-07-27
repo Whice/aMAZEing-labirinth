@@ -149,16 +149,15 @@ public class GameManager : MonoSingleton<GameManager>
     {
         PlayerInfo[] playerInfos = new PlayerInfo[]
                         {
-                        new PlayerInfo("test1", System.Drawing.Color.Orange),
+                        new PlayerInfo("test1", System.Drawing.Color.Purple),
                         new PlayerInfo("test2", System.Drawing.Color.Yellow)
                         };
         GameInfo gameInfo = new GameInfo(playerInfos);
 
 #if UNITY_EDITOR
-        gameInfo.cardsShuffleSeed = 1;
-        gameInfo.fisrtPlayerNumberSeed = 1;
-        gameInfo.cellsShuffleSeed = 1;
-
+                gameInfo.cardsShuffleSeed = 1;
+                gameInfo.fisrtPlayerNumberSeed = 1;
+                gameInfo.cellsShuffleSeed = 1;
 #else
                 gameInfo.cardsShuffleSeed = UnityEngine.Random.Range(-999, 999);
                 gameInfo.fisrtPlayerNumberSeed = UnityEngine.Random.Range(-999, 999);
