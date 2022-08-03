@@ -1,6 +1,7 @@
 ﻿using Assets.UI.MainMenuInterface;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -83,5 +84,6 @@ public class MenuManager : MonoSingleton<MenuManager>
     private void Awake()
     {
         this.mainMenuScenePrivate = SceneManager.GetSceneByName("MainMenu");
+        Screen.SetResolution(1280, 720, false);
     }
 }
