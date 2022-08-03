@@ -174,6 +174,8 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         InitializeGame();
+        GeneralSettings.instance.isThereGameStarted = true;
+        this.gameModelPrivate.OnGameEnded += EndGame;
     }
 
     #endregion Модель и представление игры.
@@ -254,6 +256,18 @@ public class GameManager : MonoSingleton<GameManager>
 
     #endregion Сохранение.
 
+    #region Общие настройки.
+
+    /// <summary>
+    /// Выполнить действия, которые предназначены для конца игры.
+    /// </summary>
+    private void EndGame()
+    {
+        GeneralSettings.instance.isThereGameStarted = false;
+    }
+
+    #endregion Общие настройки.
+
     private void Start()
     {
         Application.targetFrameRate = 30;
@@ -270,7 +284,6 @@ public class GameManager : MonoSingleton<GameManager>
             StartNewGame();
         }*/
     }
-
     private void OnApplicationQuit()
     {
         SaveLastGame();
