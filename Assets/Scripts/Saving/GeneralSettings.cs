@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GeneralSettings : MonoSingleton<GeneralSettings>
@@ -16,9 +15,9 @@ public class GeneralSettings : MonoSingleton<GeneralSettings>
         field = value;
         PlayerPrefs.SetInt(fieldName, value ? 1 : 0);
     }
-    private Boolean GetValueBool(string fieldName)
+    private Boolean GetValueBool(string fieldName, Boolean defaultValue)
     {
-        return PlayerPrefs.GetInt(fieldName) == 1;
+        return PlayerPrefs.GetInt(fieldName, defaultValue ? 1 : 0) == 1;
     }
 
     #endregion Установка значений в PlayerPrefs и указаное поле.
@@ -36,6 +35,6 @@ public class GeneralSettings : MonoSingleton<GeneralSettings>
 
     private void Awake()
     {
-        this.isThereGameStartedPrivate = GetValueBool(nameof(this.isThereGameStartedPrivate));
+        this.isThereGameStartedPrivate = GetValueBool(nameof(this.isThereGameStartedPrivate), false);
     }
 }

@@ -1,12 +1,18 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.UI.MainMenuInterface
 {
-
-    public class MainMenu : MonoBehaviour
+    /// <summary>
+    /// Скрипт главного меню.
+    /// </summary>
+    public class MainMenu : MonoBehaviourLogger
     {
+        /// <summary>
+        /// Компонент кнопки "продолжить".
+        /// </summary>
+        [SerializeField] private Button resumeButton = null;
         /// <summary>
         /// Инфо сцены с игрой.
         /// </summary>
@@ -15,9 +21,17 @@ namespace Assets.UI.MainMenuInterface
         {
             SceneManager.LoadSceneAsync("PrototypeScene", LoadSceneMode.Additive);
             this.currentGameScene = SceneManager.GetSceneByName("PrototypeScene");
+            this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
+            MenuManager.instance.onMenuChanged += ChangeInteractableResumeLastGameButton;
         }
 
-
+        private void ChangeInteractableResumeLastGameButton()
+        {
+            if (MenuManager.instance.currentMenuType == MenuType.mainMenu)
+            {
+                this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
+            }
+        }
         public void ResumeLastGame()
         {
             SceneManager.SetActiveScene(this.currentGameScene);
@@ -41,6 +55,10 @@ namespace Assets.UI.MainMenuInterface
         public void QuitApplication()
         {
             Application.Quit();
+        }
+        private void OnDestroy()
+        {
+            MenuManager.instance.onMenuChanged -= ChangeInteractableResumeLastGameButton;
         }
 
 

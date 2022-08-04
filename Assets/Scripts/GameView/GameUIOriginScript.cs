@@ -26,17 +26,13 @@ namespace UI
         /// Подписаться на все нужные события.
         /// Используется во время инициализации скрипта.
         /// </summary>
-        protected virtual void Subscribe()
-        {
-        }
+        protected virtual void Subscribe() { }
         /// <summary>
         /// Отписаться от ненужных событий.
         /// Используется во время инициализации скрипта.
         /// Поу молчанию используется при уничтожении объекта.
         /// </summary>
-        protected virtual void Unsubscribe()
-        {
-        }
+        protected virtual void Unsubscribe() { }
         /// <summary>
         /// Инициализировать элементы интерфейса для новой модели.
         /// </summary>

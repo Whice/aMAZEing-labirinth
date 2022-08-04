@@ -26,6 +26,10 @@ public class MenuManager : MonoSingleton<MenuManager>
     /// Событие смены (открытия) меню.
     /// </summary>
     public event Action onMenuChanged;
+    /// <summary>
+    /// Текущий тип меню.
+    /// </summary>
+    public MenuType currentMenuType { get; private set; }
 
     /// <summary>
     /// Текущее открытое меню.
@@ -66,9 +70,9 @@ public class MenuManager : MonoSingleton<MenuManager>
     {
         this.currentMenuRootScript.SetActive(false);
         this.currentMenuRootScript = this.menuRootScripts[menuType];
+        this.currentMenuType = menuType;
         this.currentMenuRootScript.SetActive(true);
         this.onMenuChanged?.Invoke();
-
     }
     /// <summary>
     /// Скрыть все меню.
@@ -76,6 +80,7 @@ public class MenuManager : MonoSingleton<MenuManager>
     public void UnactiveAllMenus()
     {
         this.currentMenuRootScript.SetActive(false);
+        this.currentMenuType = MenuType.unknow;
         this.onMenuChanged?.Invoke();
     }
 
