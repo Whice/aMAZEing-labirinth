@@ -2,20 +2,34 @@ Shader "Labirinth/Enviroment/Grass3DShader"
 {
     Properties
     {
+        //Текстура травы
         _MainTex("Main Texture", 2D) = "white" {}
-        _WaveSpeed("Wave Speed", Range(0, 10)) = 1
-        _WaveHeight("Wave Height", Range(0, 1)) = 0.1
+        _Color("Color", Color) = (1, 1, 1, 1)
+        /// <summary>
+        /// Скорость смены угла наклона.
+        /// </summary>
+        _AngleChangeSpeed("Angle change speed", Range(0, 100)) = 1
+        /// <summary>
+        /// Высота, с которой будет менятся угол наклона
+        /// </summary>
+        _AngleChangeHeight("Angle change height", Range(0, 20)) = 1
+        /// <summary>
+        /// Сила покачивания травы.
+        /// </summary>
+        _JiggleForce("Jiggle force", Range(0, 2)) = 0.1
     }
 
         SubShader
         {
+            //Учесть наличие прозрачности у текстуры
             Tags { "RenderType" = "Transparent" "Queue" = "Transparent" }
-            LOD 100
-
-            Cull Off // Disable backface culling
-
             ZWrite Off // Disable writing to the depth buffer
             Blend SrcAlpha OneMinusSrcAlpha // Use standard alpha blending
+
+            LOD 100
+
+            //Включить отображение с обеих сторон меша
+            Cull Off // Disable backface culling
 
             Pass
             {
@@ -27,19 +41,21 @@ Shader "Labirinth/Enviroment/Grass3DShader"
 
                 struct appdata
                 {
-                    float4 vertex : POSITION;
-                    float2 uv : TEXCOORD0;
+                    fixed4 vertex : POSITION;
+                    fixed2 uv : TEXCOORD0;
                 };
 
                 struct v2f
                 {
-                    float2 uv : TEXCOORD0;
-                    float4 vertex : SV_POSITION;
+                    fixed2 uv : TEXCOORD0;
+                    fixed4 vertex : SV_POSITION;
                 };
 
                 sampler2D _MainTex;
-                float _WaveSpeed;
-                float _WaveHeight;
+                fixed4 _Color;
+                fixed _AngleChangeSpeed;
+                fixed _AngleChangeHeight;
+                fixed _JiggleForce;
 
                 // Функция для вычисления прозрачности текстуры
                 fixed CalculateAlpha(fixed2 uv : TEXCOORD0)
@@ -56,9 +72,17 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                 v2f vert(appdata v)
                 {
                     v2f o;
-                    o.vertex = UnityObjectToClipPos(v.vertex);
+                    fixed2 uv = v.uv;
+                    //Рассчитать угол наклона со временем.
+                    fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed) * _JiggleForce;
 
-                    o.uv = v.uv + fixed2(0,v.uv.y);
+                    //Расчитать налон в зависимости от высоты по uv и скорости движения
+                    fixed shift = pow(uv.y, _AngleChangeHeight) * deltaAngle;
+
+                    //Применить сдвиг в координатах мира
+                    o.vertex = UnityObjectToClipPos(v.vertex + fixed4(shift, 0, 0, 0));
+
+                    o.uv = uv;
 
                     return o;
                 }
@@ -69,7 +93,7 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                     fixed4 texColor = tex2D(_MainTex, i.uv);
 
                 // Apply transparency
-                fixed4 color = texColor;
+                fixed4 color = texColor * _Color + 0.1* _Color;
                 color.a *= texColor.a;
 
                 return color;
