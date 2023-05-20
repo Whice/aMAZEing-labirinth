@@ -106,12 +106,6 @@
     <Reference Include="UnityEngine.ClothModule">
       <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClothModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterInputModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterRendererModule.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -270,9 +264,6 @@
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
       <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.VideoModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VirtualTexturingModule">
-      <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.VirtualTexturingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
       <HintPath>E:\Program Files\Unity\Editor\2021.3.22f1\Editor\Data\Managed\UnityEngine\UnityEngine.WindModule.dll</HintPath>

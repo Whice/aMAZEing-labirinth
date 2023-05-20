@@ -30,7 +30,6 @@ Shader "Labirinth/Enviroment/Grass3DShader"
             { 
                 "RenderType" = "Transparent"
                 "Queue" = "Transparent"
-                //"EnableGPUInstancing"
             }
             ZWrite Off // Disable writing to the depth buffer
             Blend SrcAlpha OneMinusSrcAlpha // Use standard alpha blending
@@ -45,7 +44,7 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                 CGPROGRAM
                 #pragma vertex vert
                 #pragma fragment frag
-                //#pragma multi_compile_instancing
+                #pragma multi_compile_instancing
                 #pragma target 3.0
                 #include "UnityCG.cginc"
 

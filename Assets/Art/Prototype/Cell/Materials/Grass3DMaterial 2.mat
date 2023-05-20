@@ -58,7 +58,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AngleChangeHeight: 3
+    - _AngleChangeHeight: 2
     - _AngleChangeSpeed: 65
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -67,10 +67,10 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _JiggleForce: 2
+    - _JiggleForce: 0.5
     - _Metallic: 0
     - _Mode: 0
-    - _MovementReferencePoint: 0.46
+    - _MovementReferencePoint: -0.05
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
@@ -82,6 +82,6 @@ Material:
     - _WaveSpeed: 5.08
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.14324494, g: 0.3490566, b: 0.1533613, a: 1}
+    - _Color: {r: 0.11764706, g: 0.43529412, b: 0.08627451, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
