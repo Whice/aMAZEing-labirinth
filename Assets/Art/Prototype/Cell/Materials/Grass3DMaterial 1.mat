@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grass3DMaterial
+  m_Name: Grass3DMaterial 1
   m_Shader: {fileID: 4800000, guid: 5902f6abb4b96c849ae922e837923b31, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -70,7 +70,7 @@ Material:
     - _JiggleForce: 2
     - _Metallic: 0
     - _Mode: 0
-    - _MovementReferencePoint: -2.37
+    - _MovementReferencePoint: 0.46
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0

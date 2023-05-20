@@ -14,6 +14,10 @@ Shader "Labirinth/Enviroment/Grass3DShader"
         /// </summary>
         _AngleChangeHeight("Angle change height", Range(0, 20)) = 1
         /// <summary>
+        /// Точка отсчета движения
+        /// </summary>
+        _MovementReferencePoint("Movement reference point", Range(-3.14, 3.14)) = 1
+        /// <summary>
         /// Сила покачивания травы.
         /// </summary>
         _JiggleForce("Jiggle force", Range(0, 2)) = 0.1
@@ -22,7 +26,12 @@ Shader "Labirinth/Enviroment/Grass3DShader"
         SubShader
         {
             //Учесть наличие прозрачности у текстуры
-            Tags { "RenderType" = "Transparent" "Queue" = "Transparent" }
+            Tags 
+            { 
+                "RenderType" = "Transparent"
+                "Queue" = "Transparent"
+                //"EnableGPUInstancing"
+            }
             ZWrite Off // Disable writing to the depth buffer
             Blend SrcAlpha OneMinusSrcAlpha // Use standard alpha blending
 
@@ -36,6 +45,7 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                 CGPROGRAM
                 #pragma vertex vert
                 #pragma fragment frag
+                //#pragma multi_compile_instancing
                 #pragma target 3.0
                 #include "UnityCG.cginc"
 
@@ -55,6 +65,7 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                 fixed4 _Color;
                 fixed _AngleChangeSpeed;
                 fixed _AngleChangeHeight;
+                fixed _MovementReferencePoint;
                 fixed _JiggleForce;
 
                 // Функция для вычисления прозрачности текстуры
@@ -74,7 +85,7 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                     v2f o;
                     fixed2 uv = v.uv;
                     //Рассчитать угол наклона со временем.
-                    fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed) * _JiggleForce;
+                    fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed + _MovementReferencePoint) * _JiggleForce;
 
                     //Расчитать налон в зависимости от высоты по uv и скорости движения
                     fixed shift = pow(uv.y, _AngleChangeHeight) * deltaAngle;
@@ -92,13 +103,13 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                     // Sample the main texture
                     fixed4 texColor = tex2D(_MainTex, i.uv);
 
-                // Apply transparency
-                fixed4 color = texColor * _Color + 0.1* _Color;
-                color.a *= texColor.a;
+                    // Apply transparency
+                    fixed4 color = texColor * _Color + 0.1* _Color;
+                    color.a *= texColor.a;
 
-                return color;
-            }
+                    return color;
+                }
             ENDCG
+            }
         }
-    }
 }
