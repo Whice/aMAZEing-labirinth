@@ -55,7 +55,7 @@ namespace Assets.Scripts.GameView
         {
             if (this.resourcesDictionary.ContainsKey(treasureID))
             {
-                return Instantiate(this.resourcesDictionary[treasureID]);
+                return this.resourcesDictionary[treasureID];
             }
             else
             {

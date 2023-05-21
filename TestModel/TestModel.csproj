@@ -28,6 +28,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\Library\ScriptAssemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="GameModel">
+      <HintPath>..\Library\ScriptAssemblies\GameModel.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

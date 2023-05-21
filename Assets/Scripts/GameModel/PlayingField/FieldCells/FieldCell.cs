@@ -318,13 +318,13 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         public override Int32 GetHashCode()
         {
             Int32 hashCode = 0;
-            hashCode += this.isInteractable ? 1 : 0;
-            hashCode += this.IsHaveDirectionUp ? 1 : 0;
-            hashCode += this.IsHaveDirectionRight ? 1 : 0;
-            hashCode += this.IsHaveDirectionDown ? 1 : 0;
-            hashCode += this.IsHaveDirectionLeft ? 1 : 0;
-            hashCode |= this.directionCount;
-            hashCode |= (Int32)this.CellType;
+            hashCode ^= this.isInteractable ? 1 : 0;
+            hashCode ^= this.IsHaveDirectionUp ? 1 : 0;
+            hashCode ^= this.IsHaveDirectionRight ? 1 : 0;
+            hashCode ^= this.IsHaveDirectionDown ? 1 : 0;
+            hashCode ^= this.IsHaveDirectionLeft ? 1 : 0;
+            hashCode ^= this.directionCount;
+            hashCode ^= (Int32)this.CellType;
             return hashCode;
         }
         public static bool operator ==(FieldCell l, FieldCell r)
@@ -346,18 +346,6 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
         #region Клонирование.
 
         /// <summary>
-        /// Создание глубокого клона ячейки.
-        /// </summary>
-        /// <returns></returns>
-        public FieldCell Clone()
-        {
-            FieldCell cell = new FieldCell(this.CellType, this.treasureOrStartPoints);
-            cell.directions = this.CopyDirections();
-            cell.isInteractable = this.isInteractable;
-            cell.turnsClockwiseCountPrivate = this.turnsClockwiseCountPrivate;
-            return cell;
-        }
-        /// <summary>
         /// Копировать данные массива направлений.
         /// </summary>
         /// <returns></returns>
@@ -369,6 +357,18 @@ namespace Assets.Scripts.GameModel.PlayingField.FieldCells
                 directionsClone[i] = this.directions[i];
             }
             return directionsClone;
+        }
+        /// <summary>
+        /// Создание глубокого клона ячейки.
+        /// </summary>
+        /// <returns></returns>
+        public FieldCell Clone()
+        {
+            FieldCell cell = new FieldCell(this.CellType, this.treasureOrStartPoints);
+            cell.directions = this.CopyDirections();
+            cell.isInteractable = this.isInteractable;
+            cell.turnsClockwiseCountPrivate = this.turnsClockwiseCountPrivate;
+            return cell;
         }
 
         #endregion Клонирование.

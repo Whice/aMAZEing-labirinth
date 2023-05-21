@@ -56,7 +56,7 @@ namespace Assets.Scripts.GameModel.Player
         public override Int32 GetHashCode()
         {
             Int32 hashCode = this.name.GetHashCode();
-            hashCode |= this.color.GetHashCode();
+            hashCode ^= this.color.GetHashCode();
 
             return hashCode;
         }

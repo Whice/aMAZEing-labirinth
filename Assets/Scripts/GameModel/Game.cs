@@ -166,14 +166,7 @@ namespace Assets.Scripts.GameModel
                     }
                     else//если количество карт одинакого, то просто воспользуемся именами. Они то точно разные.
                     {
-                        if (x.name.GetHashCode() > y.name.GetHashCode())
-                        {
-                            return 1;
-                        }
-                        else
-                        {
-                            return -1;
-                        }
+                        return 0;
                     }
                 }
             }
