@@ -246,52 +246,7 @@ namespace UI
                 this.bordersForMinMaxX = new Vector2(Single.MinValue, Single.MaxValue);
                 this.bordersForMinMaxY = new Vector2(Single.MinValue, Single.MaxValue);
             }
-
-                //Прямоугольники для отлавливания касания края экрана.
-              /*  {
-                this.rightSide = CalculateRectFromRectTransform(this.rightSideRectTransform);
-                this.leftSide = CalculateRectFromRectTransform(this.leftSideRectTransform);
-                this.topSide = CalculateRectFromRectTransform(this.topSideRectTransform);
-                this.bottomSide = CalculateRectFromRectTransform(this.bottomSideRectTransform);
-            }*/
         }
-
-        /*private void Update()
-        {
-            //Прямоугольники для отлавливания касания края экрана.
-            {
-                if (this.rightSide.Contains(Input.mousePosition))
-                {
-                    MoveRight();
-                }
-                else if (this.leftSide.Contains(Input.mousePosition))
-                {
-                    MoveLeft();
-                }
-                if (this.topSide.Contains(Input.mousePosition))
-                {
-                    MoveUp();
-                }
-                else if (bottomSide.Contains(Input.mousePosition))
-                {
-                    MoveDown();
-                }
-            }
-
-            if(this.isRightButtonPressed && Input.GetMouseButtonUp(1))
-            {
-                this.isRightButtonPressed = false;
-            }
-            else if(!this.isRightButtonPressed && Input.GetMouseButtonDown(1))
-            {
-                this.isRightButtonPressed = true;
-            }
-            if (this.isRightButtonPressed)
-            {
-                Move(this.increasedMoveSpeed * this.distanceOfCursorFromCenterInPercent.x, this.increasedMoveSpeed * this.distanceOfCursorFromCenterInPercent.y);
-            }
-        }*/
-
 
         public void OnDrag(PointerEventData eventData)
         {
