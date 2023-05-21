@@ -222,9 +222,6 @@ namespace UI
         {
             //Расчитать значение скорости для нестандартного разрешения (не 1920х1080)
             this.moveSpeed *= this.resolutionScaling;
-#if !UNITY_ANDROID
-            this.moveSpeed *= 0.2f;
-#endif
             this.increasedMoveSpeed = this.moveSpeed * RIGHT_CLICK_MULTIPLIER;
 
             this.centerCoordinate = new Vector2(this.rectForResolution.rect.width / 2, this.rectForResolution.rect.height / 2);

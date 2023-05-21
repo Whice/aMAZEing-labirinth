@@ -732,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1225450254052844893, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: moveSpeed
-      value: 1.5
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1225450254052844893, guid: 2d35623dac96ea24c809ff2a9f547b4c, type: 3}
       propertyPath: objectsForBorders
