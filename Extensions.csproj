@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{2911492C-8384-6A7E-5522-38702538656A}</ProjectGuid>
+    <ProjectGuid>{E2F1B54F-5548-3F94-365E-9EDC8285FA62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>IngameDebugConsole.Runtime</AssemblyName>
+    <AssemblyName>Extensions</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -56,27 +56,13 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogIndexList.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\Commands\PlayerPrefsCommands.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugsOnScrollListener.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogItem.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogPopup.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogResizeListener.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogConsole.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogRecycledListView.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\CircularBuffer.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogEntry.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\EventSystemHandler.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\ConsoleMethodAttribute.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogItemCopyWebGL.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\Commands\TimeCommands.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Android\DebugLogLogcatListener.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\Commands\SceneCommands.cs" />
-    <Compile Include="Assets\Plugins\IngameDebugConsole\Scripts\DebugLogManager.cs" />
+    <Compile Include="Assets\Scripts\Extensions\MonoBehaviourLogger.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ListExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\TwoBytesInOneKeeper.cs" />
+    <Compile Include="Assets\Scripts\Extensions\MonoSingleton.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\IngameDebugConsole\IngameDebugConsole.Runtime.asmdef" />
-    <None Include="Assets\Plugins\IngameDebugConsole\README.txt" />
+    <None Include="Assets\Scripts\Extensions\Extensions.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
