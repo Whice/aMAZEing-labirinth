@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,10 +18,11 @@ namespace Assets.UI.MainMenuInterface
         /// Инфо сцены с игрой.
         /// </summary>
         private Scene currentGameScene;
+        private const string PROTOTIPE_SCENE_NAME = "PrototypeScene";
         private void Awake()
         {
-            SceneManager.LoadSceneAsync("PrototypeScene", LoadSceneMode.Additive);
-            this.currentGameScene = SceneManager.GetSceneByName("PrototypeScene");
+            SceneManager.LoadSceneAsync(PROTOTIPE_SCENE_NAME, LoadSceneMode.Additive);
+            this.currentGameScene = SceneManager.GetSceneByName(PROTOTIPE_SCENE_NAME);
             this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
             MenuManager.instance.onMenuChanged += ChangeInteractableResumeLastGameButton;
         }
