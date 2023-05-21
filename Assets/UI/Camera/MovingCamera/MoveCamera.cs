@@ -247,25 +247,17 @@ namespace UI
                 this.bordersForMinMaxY = new Vector2(Single.MinValue, Single.MaxValue);
             }
 
-#if UNITY_ANDROID
-            //Пересчитать скорость перемещения для андроида.
-            this.moveSpeed *= ANDROID_SPEED_MIULTIPLUER;
-#else
                 //Прямоугольники для отлавливания касания края экрана.
-                {
+              /*  {
                 this.rightSide = CalculateRectFromRectTransform(this.rightSideRectTransform);
                 this.leftSide = CalculateRectFromRectTransform(this.leftSideRectTransform);
                 this.topSide = CalculateRectFromRectTransform(this.topSideRectTransform);
                 this.bottomSide = CalculateRectFromRectTransform(this.bottomSideRectTransform);
-            }
-#endif
+            }*/
         }
 
-        private void Update()
+        /*private void Update()
         {
-#if UNITY_ANDROID
-
-#else
             //Прямоугольники для отлавливания касания края экрана.
             {
                 if (this.rightSide.Contains(Input.mousePosition))
@@ -298,17 +290,12 @@ namespace UI
             {
                 Move(this.increasedMoveSpeed * this.distanceOfCursorFromCenterInPercent.x, this.increasedMoveSpeed * this.distanceOfCursorFromCenterInPercent.y);
             }
-#endif
-        }
+        }*/
 
 
         public void OnDrag(PointerEventData eventData)
         {
-#if UNITY_ANDROID
-
             Move(-eventData.delta.x, -eventData.delta.y);
-
-#endif
         }
     }
 }
