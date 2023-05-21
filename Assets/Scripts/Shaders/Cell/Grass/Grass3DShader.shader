@@ -67,27 +67,15 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                 fixed _MovementReferencePoint;
                 fixed _JiggleForce;
 
-                // ‘ункци€ дл€ вычислени€ прозрачности текстуры
-                fixed CalculateAlpha(fixed2 uv : TEXCOORD0)
-                {
-                    // ѕолучение вертикальной координаты текстуры
-                    fixed v = uv.y;
-
-                    // ¬ычисление прозрачности на основе вертикальной координаты
-                    fixed delta = smoothstep(0, 1.0, v);
-
-                    return delta;
-                }
-
                 v2f vert(appdata v)
                 {
                     v2f o;
                     fixed2 uv = v.uv;
                     //–ассчитать угол наклона со временем.
-                    fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed + _MovementReferencePoint) * _JiggleForce;
+                    //fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed + _MovementReferencePoint) * _JiggleForce;
 
                     //–асчитать налон в зависимости от высоты по uv и скорости движени€
-                    fixed shift = pow(uv.y, _AngleChangeHeight) * deltaAngle;
+                    fixed shift = 0;// pow(uv.y, _AngleChangeHeight)* deltaAngle;
 
                     //ѕрименить сдвиг в координатах мира
                     o.vertex = UnityObjectToClipPos(v.vertex + fixed4(shift, 0, 0, 0));
