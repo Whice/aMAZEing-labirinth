@@ -270,7 +270,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
-        Application.targetFrameRate = 30;
+        //Application.targetFrameRate = 30;
 
         //Подключение логирования.
         GameModelLogger.onLogError += LogError;

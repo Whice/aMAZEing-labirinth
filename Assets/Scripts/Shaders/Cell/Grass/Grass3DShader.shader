@@ -72,10 +72,10 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                     v2f o;
                     fixed2 uv = v.uv;
                     //–ассчитать угол наклона со временем.
-                    //fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed + _MovementReferencePoint) * _JiggleForce;
+                    fixed deltaAngle = sin(_Time.x * _AngleChangeSpeed + _MovementReferencePoint) * _JiggleForce;
 
                     //–асчитать налон в зависимости от высоты по uv и скорости движени€
-                    fixed shift = 0;// pow(uv.y, _AngleChangeHeight)* deltaAngle;
+                    fixed shift = pow(uv.y, _AngleChangeHeight)* deltaAngle;
 
                     //ѕрименить сдвиг в координатах мира
                     o.vertex = UnityObjectToClipPos(v.vertex + fixed4(shift, 0, 0, 0));
@@ -92,7 +92,7 @@ Shader "Labirinth/Enviroment/Grass3DShader"
 
                     // Apply transparency
                     fixed4 color = texColor * _Color + 0.1* _Color;
-                    color.a *= texColor.a;
+                    color.a = texColor.a * _Color.a;
 
                     return color;
                 }
