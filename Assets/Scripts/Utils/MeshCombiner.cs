@@ -14,52 +14,52 @@ namespace Utils
     public class MeshCombiner
     {
         /// <summary>
-        /// Надо ли уничтожать все переданные объекты.
+        /// Надо ли уничтожать все объедененные объекты.
         /// </summary>
         private bool isDestroyAllOldObjects;
         /// <summary>
-        /// 
+        /// Надо ли уничтожать все дочерние объекты.
+        /// </summary>
+        private bool isDestroyAllChildrenObjects;
+        /// <summary>
+        /// Если для уничтожения объектов установлены одинаковые флаги, то они не будут уничтожены.
+        /// Даже, если оба флага - true.
         /// </summary>
         /// <param name="isDestroyAllOldObjects">Надо ли уничтожать все переданные объекты.</param>
-        public MeshCombiner(bool isDestroyAllOldObjects = false)
+        /// <param name="isDestroyAllChildrenObjects">Надо ли уничтожать дочерние объекты.</param>
+        public MeshCombiner(bool isDestroyAllOldObjects = false, bool isDestroyAllChildrenObjects = false)
         {
             this.isDestroyAllOldObjects = isDestroyAllOldObjects;
+            this.isDestroyAllChildrenObjects = isDestroyAllChildrenObjects;
         }
 
-        /// <summary>
-        /// Объекты отрисовки для объеденения
-        /// </summary>
-        private List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
         /// <summary>
         /// Список объектов, из которых получены объекты отрисовки.
         /// </summary>
         private List<GameObject> oldGameObjects = new List<GameObject>();
         /// <summary>
-        /// Задать список объектов для объеденения.
+        /// Запомнить список дочерних объектов.
         /// </summary>
-        /// <param name="gameObjects"></param>
-        public void SetObjects(List<GameObject> gameObjects)
+        private void RememberChildGameobjects(Transform parent)
         {
             this.oldGameObjects.Clear();
-            this.oldGameObjects.AddRange(gameObjects);
 
-            for (int i = 0; i < gameObjects.Count; i++)
+            int childrenCount = parent.childCount;
+
+            for (int i = 0; i < childrenCount; i++)
             {
-                // Get all MeshRenderer components from children objects
-                MeshRenderer[] meshRenderers = gameObjects[i].GetComponentsInChildren<MeshRenderer>();
-
-                foreach (MeshRenderer meshRenderer in meshRenderers)
-                    if (meshRenderer != null)
-                    {
-                        this.meshRenderers.Add(meshRenderer);
-                    }
+                this.oldGameObjects.Add(parent.GetChild(i).gameObject);
             }
         }
+        /// <summary>
+        /// Объекты созданные при объединении мешей.
+        /// </summary>
+        public List<GameObject> newObjects { get; private set; } = new List<GameObject>();
         /// <summary>
         /// Объеденить в один меш все прочие, у которых один материал.
         /// </summary>
         /// <param name="parent">Родительский узел для новых мешей.</param>
-        public void CombineMeshes(Transform parent)
+        public void CombineMeshes(Transform parent, MeshRenderer[] meshRenderers)
         {
             Dictionary<Material, List<MeshFilter>> meshesByMaterial = new Dictionary<Material, List<MeshFilter>>();
 
@@ -111,7 +111,7 @@ namespace Utils
                         combineInstancesLists[combineInstancesListsLastIndex].Add(combineInstance);
 
                         //Незачем отдельно унитожать, если будут оничтожены все переданные объекты
-                        if (!this.isDestroyAllOldObjects)
+                        if (!this.isDestroyAllChildrenObjects && this.isDestroyAllOldObjects)
                             GameObject.Destroy(meshes[i].gameObject);
                     }
 
@@ -126,22 +126,78 @@ namespace Utils
 
                         MeshRenderer meshRendererCombined = combinedObject.AddComponent<MeshRenderer>();
                         meshRendererCombined.sharedMaterial = material;
+                        this.newObjects.Add(combinedObject);
                     }
                 }
             }
 
             //Уничтожить старые объекты, если требуется.
-            if (this.isDestroyAllOldObjects)
+            if (this.isDestroyAllChildrenObjects && !this.isDestroyAllOldObjects)
             {
-                //ToDo надо не уничтожать те объекты, которые не были затронуты объеденениями.
-                GameObject lastGO = null;
-                while (this.oldGameObjects.Count != 0)
+                for (int i = 0; i < this.oldGameObjects.Count; i++)
                 {
-                    lastGO = this.oldGameObjects[this.oldGameObjects.Count - 1];
-                    GameObject.Destroy(lastGO);
-                    this.oldGameObjects.RemoveAt(this.oldGameObjects.Count - 1);
+                    GameObject.Destroy(this.oldGameObjects[i]);
+                }
+                this.oldGameObjects.Clear();
+            }
+        }
+        /// <summary>
+        /// Объеденить в один меш все прочие, у которых один материал.
+        /// Меши с одинаковыми материалами будут искаться среди дочерних элементов.
+        /// </summary>
+        /// <param name="parent">Родительский узел для новых мешей.</param>
+        public void CombineMeshes(Transform parent)
+        {
+            this.newObjects.Clear();
+
+            if (this.isDestroyAllChildrenObjects)
+                RememberChildGameobjects(parent);
+
+            MeshRenderer[] meshRenderers = parent.GetComponentsInChildren<MeshRenderer>();
+
+            List<MeshRenderer> meshRenderersList = new List<MeshRenderer>(meshRenderers.Length);
+            foreach (MeshRenderer meshRenderer in meshRenderers)
+            {
+                if (meshRenderers != null)
+                {
+                    meshRenderersList.Add(meshRenderer);
                 }
             }
+
+            CombineMeshes(parent, meshRenderers);
+        }
+        /// <summary>
+        /// Объеденить в один меш все прочие, у которых один материал.
+        /// Объединит меши с одинаковыми материалами принадлежащие объектам и их дочерним объектам,
+        /// и добавить новые объекты дочерними к указанному родителю.
+        /// </summary>
+        /// <param name="parent">Родительский узел для новых мешей.</param>
+        public void CombineMeshes(Transform parent, List<GameObject> gameObjects)
+        {
+            this.oldGameObjects.Clear();
+            this.oldGameObjects.AddRange(gameObjects);
+            HashSet<MeshRenderer> meshRenderersHashSet = new HashSet<MeshRenderer>();
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                MeshRenderer objectMeshRenderer = gameObjects[i].GetComponent<MeshRenderer>();
+                if (objectMeshRenderer != null)
+                    meshRenderersHashSet.Add(objectMeshRenderer);
+
+                MeshRenderer[] meshRenderers = gameObjects[i].GetComponentsInChildren<MeshRenderer>();
+                foreach (MeshRenderer meshRenderer in meshRenderers)
+                    if (meshRenderer != null)
+                        meshRenderersHashSet.Add(meshRenderer);
+            }
+
+            MeshRenderer[] meshRenderersArray = new MeshRenderer[meshRenderersHashSet.Count];
+            int counter = 0;
+            foreach (MeshRenderer meshRenderer in meshRenderersHashSet)
+            {
+                meshRenderersArray[counter] = meshRenderer;
+                ++counter;
+            }
+
+            CombineMeshes(parent, meshRenderersArray);
         }
     }
 }

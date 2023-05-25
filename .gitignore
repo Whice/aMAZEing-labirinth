@@ -72,3 +72,16 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 /Assembly-CSharp.csproj
+/Zenject-TestFramework.csproj
+/Zenject-ReflectionBaking-Editor.csproj
+/Zenject-PoolMonitor-Editor.csproj
+/Zenject-IntegrationTests.csproj
+/Zenject-IntegrationTests-Editor.csproj
+/Zenject-Editor.csproj
+/IngameDebugConsole.Runtime.csproj
+/IngameDebugConsole.Editor.csproj
+/GameModel.csproj
+/Extensions.csproj
+/Assembly-CSharp-firstpass.csproj
+/Zenject-UnitTests-Editor.csproj
+/Zenject.csproj

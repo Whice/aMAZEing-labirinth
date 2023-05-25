@@ -90,8 +90,8 @@ Shader "Labirinth/Enviroment/Grass3DShader"
                     // Sample the main texture
                     fixed4 texColor = tex2D(_MainTex, i.uv);
 
-                    // Apply transparency
                     fixed4 color = texColor * _Color + 0.1* _Color;
+                    // Apply transparency
                     color.a = texColor.a * _Color.a;
 
                     return color;

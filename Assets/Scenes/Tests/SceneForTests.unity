@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &9562729
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -235,12 +235,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPrefabs:
-  - {fileID: 4856525044686659192, guid: dcf97437635ddc44dad298d3455b3657, type: 3}
-  - {fileID: 4856525044686659192, guid: 3705f2a067d705148a9ad962f03fe082, type: 3}
-  - {fileID: 4856525044686659192, guid: 2e04564e515a961468d9027818bbace4, type: 3}
+  - {fileID: 8651716734947021242, guid: 6d9bec6d4516ca34b9bc2bf182a51b08, type: 3}
   boundsTransform: {fileID: 9562732}
-  density: 1
+  density: 5
   borderOffset: 0.25
+  isAllowObjecsCross: 1
   seed: 2
 --- !u!1 &59735362
 GameObject:
@@ -620,6 +619,10 @@ PrefabInstance:
     - target: {fileID: 6934213469072006468, guid: 2f71b5b77114c444c8fe4257d01cd1b8, type: 3}
       propertyPath: m_Name
       value: CornerCell
+      objectReference: {fileID: 0}
+    - target: {fileID: 6934213469072006468, guid: 2f71b5b77114c444c8fe4257d01cd1b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f71b5b77114c444c8fe4257d01cd1b8, type: 3}
