@@ -25,6 +25,7 @@ namespace Utils
         /// Смещение от границ.
         /// </summary>
         [SerializeField] private float borderOffset = 0.25f;
+        [SerializeField] private bool isAllowObjecsCross = false;
         /// <summary>
         /// Созданные объекты.
         /// </summary>
@@ -99,7 +100,7 @@ namespace Utils
         /// <summary>
         /// Скрипт для объединения мешей с одинаковым материалом в один меш.
         /// </summary>
-        private MeshCombiner meshCombiner = new MeshCombiner(true);
+        private MeshCombiner meshCombiner = new MeshCombiner(isDestroyAllChildrenObjects: true);
 
         /// <summary>
         /// Разместить объекты.
@@ -151,7 +152,7 @@ namespace Utils
                         // Instantiate the object at the random position
                         GameObject newObj = Instantiate(nextObjectForCreate, randomPosition, Quaternion.identity);
 
-                        if (!CheckOverlap(newObj))
+                        if (this.isAllowObjecsCross || !this.isAllowObjecsCross && !CheckOverlap(newObj))
                         {
                             this.createdObjects.Add(newObj);
                             SetRandomRotation(newObj);
@@ -167,8 +168,7 @@ namespace Utils
                 }
             }
 
-            this.meshCombiner.SetObjects(this.createdObjects);
-            this.meshCombiner.CombineMeshes(this.boundsTransform);
+            this.meshCombiner.CombineMeshes(this.transform);
         }
         void Start()
         {

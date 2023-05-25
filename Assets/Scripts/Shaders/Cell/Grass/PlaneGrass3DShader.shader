@@ -3,7 +3,13 @@ Shader "Labirinth/Enviroment/PlaneGrass3DShader"
     Properties
     {
         _MainTex("Texture", 2D) = "white" {}
-        _Height("Height", 2D) = "white" {}
+        _HeightTexture("HeightTexture", 2D) = "white" {}
+        _Color("Color", Color) = (1, 1, 1, 1)
+        
+        /// <summary>
+        /// Высота травы
+        /// </summary>
+        _Height("Height", Range(0, 3)) = 1
     }
     SubShader
     {
@@ -29,21 +35,23 @@ Shader "Labirinth/Enviroment/PlaneGrass3DShader"
 
             struct appdata
             {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
+                fixed4 vertex : POSITION;
+                fixed2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
+                fixed2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
-                float4 vertex : SV_POSITION;
+                fixed4 vertex : SV_POSITION;
             };
 
             sampler2D _MainTex;
-            sampler2D _Height;
-            float4 _MainTex_ST;
-            float4 _Height_ST;
+            sampler2D _HeightTexture;
+            fixed4 _MainTex_ST;
+            fixed4 _Height_ST;
+                fixed _Height;
+                fixed4 _Color;
 
             v2f vert (appdata v)
             {
@@ -51,10 +59,10 @@ Shader "Labirinth/Enviroment/PlaneGrass3DShader"
                 fixed2 uv = v.uv;
                 fixed2 uv2 = _Height_ST.xy;
 
-                fixed4 hCol = tex2Dlod(_Height, fixed4(v.uv, 0, 0));
+                fixed4 hCol = tex2Dlod(_HeightTexture, fixed4(v.uv, 0, 0));
 
                 //h = h / 2;
-                fixed h = hCol.r * 5;
+                fixed h = hCol.r * _Height;
                 
                 //Применить сдвиг в координатах мира
                 o.vertex = UnityObjectToClipPos(v.vertex + fixed4(0, h, 0, 0));
@@ -66,11 +74,12 @@ Shader "Labirinth/Enviroment/PlaneGrass3DShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col2 = tex2Dlod(_Height, fixed4(i.uv, 0, 0));
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-                // apply fog
-                UNITY_APPLY_FOG(i.fogCoord, col);
+
+                col.rgb = col.rgb*_Color.rgb;
+                col.a *= _Color.a;
+
                 return col;
             }
             ENDCG
