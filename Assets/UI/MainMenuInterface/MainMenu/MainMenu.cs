@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Assets.UI.MainMenuInterface
 {
@@ -19,17 +20,18 @@ namespace Assets.UI.MainMenuInterface
         /// </summary>
         private Scene currentGameScene;
         private const string PROTOTIPE_SCENE_NAME = "PrototypeScene";
+        [Inject] private MenuManager menuManager;
         private void Awake()
         {
             SceneManager.LoadSceneAsync(PROTOTIPE_SCENE_NAME, LoadSceneMode.Additive);
             this.currentGameScene = SceneManager.GetSceneByName(PROTOTIPE_SCENE_NAME);
             this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
-            MenuManager.instance.onMenuChanged += ChangeInteractableResumeLastGameButton;
+            menuManager.onMenuChanged += ChangeInteractableResumeLastGameButton;
         }
 
         private void ChangeInteractableResumeLastGameButton()
         {
-            if (MenuManager.instance.currentMenuType == MenuType.mainMenu)
+            if (menuManager.currentMenuType == MenuType.mainMenu)
             {
                 this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
             }
@@ -37,13 +39,13 @@ namespace Assets.UI.MainMenuInterface
         public void ResumeLastGame()
         {
             SceneManager.SetActiveScene(this.currentGameScene);
-            MenuManager.instance.SetActiveMainMenu(MenuType.gameRoot);
+            menuManager.SetActiveMainMenu(MenuType.gameRoot);
             GameManager.instance.LoadAndStartLastGameOrStartNewGame();
         }
         public void StartNewGame()
         {
             SceneManager.SetActiveScene(this.currentGameScene);
-            MenuManager.instance.SetActiveMainMenu(MenuType.gameRoot);
+            menuManager.SetActiveMainMenu(MenuType.gameRoot);
             GameManager.instance.StartNewGame();
         }
         public void OpenHowToPlay()
@@ -60,7 +62,7 @@ namespace Assets.UI.MainMenuInterface
         }
         private void OnDestroy()
         {
-            MenuManager.instance.onMenuChanged -= ChangeInteractableResumeLastGameButton;
+            menuManager.onMenuChanged -= ChangeInteractableResumeLastGameButton;
         }
 
 

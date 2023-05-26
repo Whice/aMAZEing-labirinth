@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Главный управляющий скрипт меню.
 /// </summary>
-public class MenuManager : MonoSingleton<MenuManager>
+public class MenuManager:MonoBehaviourLogger
 {
     #region Активность корневых объектов (какие окна меню показываются).
 

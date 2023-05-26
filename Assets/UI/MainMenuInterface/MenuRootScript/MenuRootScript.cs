@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.UI.MainMenuInterface
 {
@@ -21,6 +22,7 @@ namespace Assets.UI.MainMenuInterface
             get => this.rootTypePrivate;
         }
 
+        [Inject] private MenuManager menuManager;
         /// <summary>
         /// Показать все объекты принадлежащие этому кроневому объекту.
         /// </summary>
@@ -32,10 +34,10 @@ namespace Assets.UI.MainMenuInterface
 
         [SerializeField]
         private Boolean isActiveInAwake = false;
-        private void Awake()
+        private void Start()
         {
             SetActive(this.isActiveInAwake);
-            MenuManager.instance.AddMenuRootScript(this);
+            menuManager.AddMenuRootScript(this);
         }
     }
 }

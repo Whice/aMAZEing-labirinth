@@ -5,6 +5,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace UI
 {
@@ -27,10 +28,7 @@ namespace UI
         /// <summary>
         /// Сокращенная ссылка на главный управляющий скрипт меню.
         /// </summary>
-        private MenuManager menuManager
-        {
-            get => MenuManager.instance;
-        }
+        [Inject]private MenuManager menuManager;
         /// <summary>
         /// Открыть главное меню.
         /// </summary>
