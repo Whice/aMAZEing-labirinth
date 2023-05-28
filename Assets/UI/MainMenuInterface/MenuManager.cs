@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Главный управляющий скрипт меню.
 /// </summary>
-public class MenuManager:MonoBehaviourLogger
+public class MenuManager : MonoBehaviourLogger
 {
     #region Активность корневых объектов (какие окна меню показываются).
 
@@ -59,6 +59,20 @@ public class MenuManager:MonoBehaviourLogger
         if (this.currentMenuRootScript == null)
         {
             this.currentMenuRootScript = menuRootScript;
+        }
+    }
+    /// <summary>
+    /// Получить ссылку на меню указанного типа.
+    /// </summary>
+    public MenuRootScript GetMenuByType(MenuType type)
+    {
+        if (this.menuRootScripts.ContainsKey(type))
+        {
+            return this.menuRootScripts[type];
+        }
+        else
+        {
+            return null;
         }
     }
     /// <summary>

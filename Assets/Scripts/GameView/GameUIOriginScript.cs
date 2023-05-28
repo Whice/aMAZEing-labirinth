@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.GameModel;
-using Assets.Scripts.GameModel.Player;
+﻿using Assets.Scripts.GameModel.Player;
 using System;
 
 namespace UI
@@ -17,8 +16,9 @@ namespace UI
         {
             get => this.gameModel.currentPlayer;
         }
-        protected override void Awake()
+        protected override void Start()
         {
+            base.Start();
             GameInterfaceRectanglesDetected.instance.AddGameViewOriginScripts(this);
         }
 

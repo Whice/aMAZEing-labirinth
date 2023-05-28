@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 namespace UI
 {
@@ -80,7 +81,7 @@ namespace UI
                 //Потому ее надо пропустить и показывать только карты с сокровищем.
                 if ((Int32)treasure > treasure.GetMaximalNumberStartPoint())
                 {
-                    currentSlot = GameManager.instance.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
+                    currentSlot = this.gameManager.uiCardWithTreasureSlotProvider.GetCardSlot(treasure);
                     this.cardSlots.Add(currentSlot);
                     currentSlot.Close();
                     currentSlot.transform.SetParent(this.activeCardsParent, false);
@@ -118,10 +119,6 @@ namespace UI
         {
             base.Initialized();
             FillPlayersDeck();
-        }
-        protected override void Awake()
-        {
-            base.Awake();
         }
         protected override void OnDestroy()
         {

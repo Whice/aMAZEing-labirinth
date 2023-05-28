@@ -7,7 +7,7 @@ namespace Assets.Scripts.GameView
 {
     [Serializable]
     [CreateAssetMenu(fileName = "Treasure Provider", menuName = "Game view/Treasure Provider")]
-    public class TreasureProvider : ScriptableObject
+    public class TreasureProvider : AbstractProvider
     {
         [Serializable]
         private class ObjectWithID
@@ -55,7 +55,7 @@ namespace Assets.Scripts.GameView
         {
             if (this.resourcesDictionary.ContainsKey(treasureID))
             {
-                return Instantiate(this.resourcesDictionary[treasureID]);
+                return InstantiateWithInject(this.resourcesDictionary[treasureID]);
             }
             else
             {

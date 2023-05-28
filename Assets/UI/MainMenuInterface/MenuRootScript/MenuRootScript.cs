@@ -12,8 +12,7 @@ namespace Assets.UI.MainMenuInterface
         /// <summary>
         /// Тип меню для этого корневого объекта.
         /// </summary>
-        [SerializeField]
-        private MenuType rootTypePrivate = MenuType.unknow;
+        [SerializeField] private MenuType rootTypePrivate = MenuType.unknow;
         /// <summary>
         /// Тип меню для этого корневого объекта.
         /// </summary>
@@ -31,13 +30,14 @@ namespace Assets.UI.MainMenuInterface
         {
             this.gameObject.SetActive(isActive);
         }
-
-        [SerializeField]
-        private Boolean isActiveInAwake = false;
+        /// <summary>
+        /// Активировать или деактивировать объект при создании.
+        /// </summary>
+        [SerializeField] private Boolean isActiveInAwake = false;
         private void Start()
         {
             SetActive(this.isActiveInAwake);
-            menuManager.AddMenuRootScript(this);
+            this.menuManager.AddMenuRootScript(this);
         }
     }
 }

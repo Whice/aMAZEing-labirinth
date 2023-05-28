@@ -44,12 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f7a8faf6265d24795405918fcfe365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCameraObjectPrivate: {fileID: 0}
-  gameMainRootObject: {fileID: 0}
-  gameUIController: {fileID: 0}
+  fieldViewTemplate: {fileID: 3050734525478503452, guid: 30f669be8b6101945b7bdbd3a9af3086, type: 3}
   prefabsProviderPrivate: {fileID: 11400000, guid: 93a1ccc5f20372340a54d289ed3c2753, type: 2}
   treasureProviderPrivate: {fileID: 11400000, guid: 6441ed65c7d2d5b409d39ba133226d10, type: 2}
   treasureSpriteProviderPrivate: {fileID: 11400000, guid: 20d0724d271c52d4abf9b768d646cd58, type: 2}
   uiCardWithTreasureSlotProviderPrivate: {fileID: 11400000, guid: 8a9874ed93328184883afa386624e777, type: 2}
   playerAvatarsProviderPrivate: {fileID: 11400000, guid: a8d66ba1405150440a50dda1c6cdbba8, type: 2}
-  fieldViewTemplate: {fileID: 3050734525478503452, guid: 30f669be8b6101945b7bdbd3a9af3086, type: 3}

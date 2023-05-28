@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Assets.Scripts.GameView
 {
     [Serializable]
-    public abstract class GameObjectProvider : ScriptableObject
+    public abstract class GameObjectProvider : AbstractProvider
     {
         #region Объекты в провайдере.
 
@@ -43,7 +43,7 @@ namespace Assets.Scripts.GameView
         {
             if (this.resourcesDictionary.ContainsKey(prefabName))
             {
-                return Instantiate(this.resourcesDictionary[prefabName]);
+                return InstantiateWithInject(this.resourcesDictionary[prefabName]);
             }
             else
             {

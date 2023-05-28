@@ -1,9 +1,11 @@
 ﻿using Assets.Scripts.GameModel;
 using System;
 using UnityEngine;
+using Zenject;
 
 public abstract class GameViewOriginScript : MonoBehaviourLogger
 {
+    [Inject] protected GameManager gameManager;
     /// <summary>
     /// Модель игры, реализовывает логику взаимодействия всех частей.
     /// </summary>
@@ -11,10 +13,9 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     {
         get
         {
-            return GameManager.instance.gameModel;
+            return this.gameManager.gameModel;
         }
     }
-
 
     /// <summary>
     /// Получить клон указанного по имени префаба из провайдер.
@@ -23,16 +24,16 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     /// <returns></returns>
     protected GameObject GetPrefabClone(String name)
     {
-        return GameManager.instance.prefabsProvider.GetPrefabClone(name);
+        return this.gameManager.prefabsProvider.GetPrefabClone(name);
     }
 
     /// <summary>
     /// Включить или отключить объект этого скрипта.
     /// </summary>
-    /// <param name="isEnable"></param>
-    public void SetEnableObject(Boolean isEnable)
+    /// <param name="isActive"></param>
+    public void SetActive(Boolean isActive)
     {
-        this.gameObject.SetActive(isEnable);
+        this.gameObject.SetActive(isActive);
     }
     /// <summary>
     /// Включен или отключен объект этого скрипта.
@@ -41,9 +42,9 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     {
         get => this.gameObject.activeSelf;
     }
-    protected virtual void Awake() 
+    protected virtual void Start() 
     {
-        GameManager.instance.AddGameViewOriginScript(this);
+        this.gameManager.AddGameViewOriginScript(this);
     }
     protected virtual void OnDestroy() { }
 }

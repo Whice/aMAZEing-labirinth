@@ -46,7 +46,7 @@ namespace UI
         /// </summary>
         public void EnableObject()
         {
-            SetEnableObject(true);
+            SetActive(true);
         }
         /// <summary>
         /// Изменить видимость ячейки.

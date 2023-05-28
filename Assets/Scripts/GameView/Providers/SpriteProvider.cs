@@ -7,7 +7,7 @@ namespace Assets.Scripts.GameView
 {
     [Serializable]
     [CreateAssetMenu(fileName = "Sprite Provider", menuName = "Game view/Sprite Provider")]
-    public class SpriteProvider : ScriptableObject
+    public class SpriteProvider : AbstractProvider
     {
         [Serializable]
         private class ObjectWithID

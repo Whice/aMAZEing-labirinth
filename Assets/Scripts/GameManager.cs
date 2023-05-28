@@ -6,40 +6,27 @@ using Assets.Scripts.GameView;
 using Assets.Scripts.Saving;
 using System;
 using System.Collections.Generic;
-using UI;
 using UnityEngine;
 
 /// <summary>
 /// Главный управляющий скрипт игры.
 /// </summary>
-public class GameManager : MonoSingleton<GameManager>
+public class GameManager : MonoBehaviourLogger
 {
-    [SerializeField]
-    private GameObject mainCameraObjectPrivate = null;
-    public GameObject mainCameraObject
-    {
-        get => this.mainCameraObjectPrivate;
-    }
-
+    public static GameManager instance;
     #region View info
 
     /// <summary>
-    /// Главный корневой объект на сцене.
-    /// Нужен, чтобы задавать активность для всех других объектов, через него.
-    /// </summary>
-    [SerializeField]
-    private GameObject gameMainRootObject = null;
-    /// <summary>
     /// Скрипты всех представлений в текущей игре.
     /// </summary>
-    private List<GameObject> allViewsInGame = new List<GameObject>();
+    private List<GameViewOriginScript> allViewsInGame = new List<GameViewOriginScript>();
     /// <summary>
     /// Добавить объект скрипта в список представлений текущей игры.
     /// </summary>
     /// <param name="script"></param>
     public void AddGameViewOriginScript(GameViewOriginScript script)
     {
-        this.allViewsInGame.Add(script.gameObject);
+        this.allViewsInGame.Add(script);
     }
     /// <summary>
     /// Разрушить все представления в игре.
@@ -49,23 +36,9 @@ public class GameManager : MonoSingleton<GameManager>
         for (Int32 index = 0; index < this.allViewsInGame.Count; index++)
         {
             if (this.allViewsInGame[index] != null)
-                Destroy(this.allViewsInGame[index], 0f);
+                Destroy(this.allViewsInGame[index].gameObject);
         }
-    }
-
-    /// <summary>
-    /// Игровой контроллер UI.
-    /// </summary>
-    [SerializeField]
-    private GameUIController gameUIController;
-    /// <summary>
-    ///  Инициализировать UI скрипты, которые были заданы для инициализации 
-    ///  в игровом контроллере UI.
-    /// </summary>
-    private void InitializeUIScripts()
-    {
-
-        this.gameUIController.InitializeUIScripts();
+        this.allViewsInGame.Clear();
     }
 
     #endregion View info
@@ -126,20 +99,10 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
     /// <summary>
-    /// Шаблон, по которому будет воссоздаваться игровое поле.
-    /// </summary>
-    [SerializeField]
-    private FieldView fieldViewTemplate = null;
-    /// <summary>
-    /// Текущее представление игрового поля.
-    /// </summary>
-    private FieldView currentFieldView = null;
-    /// <summary>
     /// Инициализировать игру, интерфейс и т.п.
     /// </summary>
     private void InitializeGame()
     {
-        InitializeUIScripts();
         CreateNewFieldView();
     }
     /// <summary>
@@ -206,51 +169,46 @@ public class GameManager : MonoSingleton<GameManager>
     {
         this.saver.Save(this.gameModel.commandKeeper, this.fullFileNameForSave);
     }
+
+    /// <summary>
+    /// Создать новое представление игрового поля на основе модели игры.
+    /// </summary>
+    public event Action createdNewFieldView;
     /// <summary>
     /// Создать новое представление игрового поля на основе модели игры.
     /// </summary>
     private void CreateNewFieldView()
     {
-        if (this.currentFieldView != null)
-        {
-            GameObject.Destroy(this.currentFieldView.gameObject);
-        }
-
-        this.currentFieldView = Instantiate(this.fieldViewTemplate);
-        this.currentFieldView.transform.SetParent(this.gameMainRootObject.transform, false);
-        this.currentFieldView.Initialize();
+        this.createdNewFieldView?.Invoke();
     }
     /// <summary>
     /// Загрузить последнюю игру или начать новую, если сохранения нет.
     /// </summary>
     public void LoadAndStartLastGameOrStartNewGame()
     {
-        if (!isApplicationQuited)
+        GameCommandKeeper gameKeeper = this.saver.Load(this.fullFileNameForSave);
+        if (gameKeeper == null)
         {
-            GameCommandKeeper gameKeeper = this.saver.Load(this.fullFileNameForSave);
-            if (gameKeeper == null)
+            StartNewGame();
+        }
+        else
+        {
+            this.gameModelPrivate = new Game();
+            bool isStartedGame = this.gameModelPrivate.Start(gameKeeper.gameInfo);
+
+            if (!isStartedGame)
             {
-                StartNewGame();
+                LogError("Game not started!");
             }
             else
             {
-                this.gameModelPrivate = new Game();
-                bool isStartedGame = this.gameModelPrivate.Start(gameKeeper.gameInfo);
-
-                if (!isStartedGame)
+                gameKeeper.isStartWithFirstCommand = true;
+                while (!gameKeeper.isEmpty)
                 {
-                    LogError("Game not started!");
+                    this.gameModel.ExecuteCommand(gameKeeper.Pop());
                 }
-                else
-                {
-                    gameKeeper.isStartWithFirstCommand = true;
-                    while (!gameKeeper.isEmpty)
-                    {
-                        this.gameModel.ExecuteCommand(gameKeeper.Pop());
-                    }
-                }
-                InitializeGame();
             }
+            InitializeGame();
         }
     }
 

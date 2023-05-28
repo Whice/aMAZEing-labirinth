@@ -123,7 +123,7 @@ namespace Assets.Scripts.GameView
             for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                 for (Int32 j = 0; j < Field.FIELD_SIZE; j++)
                 {
-                    this.slots[i, j] = Instantiate(this.cellSlotPrefab);
+                    this.slots[i, j] = InstantiateWithInject(this.cellSlotPrefab);
                     this.slots[i, j].SetCellFromModelCell(this.playingField[i, j]);
                     this.slots[i, j].SetSlotPosition(i, j);
                     this.slots[i, j].transform.parent = this.slotForFieldSlots;
@@ -191,7 +191,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         private void FillFreeCellSlot()
         {
-            CellSlotFill freeCellSlot = Instantiate(this.cellSlotPrefab);
+            CellSlotFill freeCellSlot = InstantiateWithInject(this.cellSlotPrefab);
             freeCellSlot.OnCellSlotClicked += MoveAvatarInModel;
             freeCellSlot.SetCellFromModelCell(this.playingField.freeFieldCell);
             SetFreeCell(freeCellSlot);
@@ -304,7 +304,7 @@ namespace Assets.Scripts.GameView
             //Добавить только одну стрелочку для 
             void SetParametrsForArrowSlotForFreeCell(ref ArrowForFreeCellSlotFill slot, Int32 turnClockwiseCount, FieldSide side)
             {
-                slot = Instantiate(this.arrowForFreeCellSlotPrefab);
+                slot = InstantiateWithInject(this.arrowForFreeCellSlotPrefab);
                 slot.SetArrowForFreeCell();
                 slot.transform.parent = this.arrowsForFreeCellSlots;
                 slot.OnArrowClicked += SetPlaceForFreeCellSlot;
@@ -782,21 +782,18 @@ namespace Assets.Scripts.GameView
 
         protected override void OnDestroy()
         {
-            if (!GameManager.isApplicationQuited)
+            foreach (CellSlotFill slot in this.slots)
             {
-                foreach (CellSlotFill slot in this.slots)
-                {
-                    slot.OnCellSlotClicked -= MoveAvatarInModel;
-                }
-
-                foreach (GamePlayer player in this.gameModel.players)
-                {
-                    player.onAvatarMoved -= MoveAvatarView;
-                }
-
-                this.gameModel.onPhaseChange -= ResetHeightAllCells;
-                base.OnDestroy();
+                slot.OnCellSlotClicked -= MoveAvatarInModel;
             }
+
+            foreach (GamePlayer player in this.gameModel.players)
+            {
+                player.onAvatarMoved -= MoveAvatarView;
+            }
+
+            this.gameModel.onPhaseChange -= ResetHeightAllCells;
+            base.OnDestroy();
         }
     }
 }

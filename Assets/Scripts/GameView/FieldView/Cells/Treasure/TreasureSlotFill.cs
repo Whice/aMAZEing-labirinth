@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.GameModel.PlayingField.Treasures;
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.GameView
 {
@@ -32,12 +33,12 @@ namespace Assets.Scripts.GameView
             Int32 typeID = (Int32)type;
             if (typeID >= type.GetMinimalNumberTreasure() && typeID <= type.GetMaximalNumberTreasure())
             {
-                this.treasureObject = GameManager.instance.treasureProvider.GetPrefabClone(typeID);
+                this.treasureObject = this.gameManager.treasureProvider.GetPrefabClone(typeID);
                 this.treasureObject.transform.parent = this.model3DSlot;
                 this.treasureObject.transform.localPosition = Vector3.zero;
                 //delete
                 this.treasureObject.SetActive(false);
-                this.treasureIconSlot.sprite = GameManager.instance.treasureSpriteProvider.GetSpriteClone(typeID);
+                this.treasureIconSlot.sprite = this.gameManager.treasureSpriteProvider.GetSpriteClone(typeID);
                 this.transform.gameObject.SetActive(true);
             }
         }

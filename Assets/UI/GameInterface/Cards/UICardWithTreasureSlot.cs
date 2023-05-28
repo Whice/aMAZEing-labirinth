@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
@@ -88,7 +89,7 @@ namespace UI
             Int32 treasureID = (Int32)treasure;
             if (treasure.GetMinimalNumberTreasure() <= treasureID && treasure.GetMaximalNumberTreasure() >= treasureID)
             {
-                this.treasureSlot.sprite = GameManager.instance.treasureSpriteProvider.GetSpriteClone(treasureID);
+                this.treasureSlot.sprite = this.gameManager.treasureSpriteProvider.GetSpriteClone(treasureID);
             }
         }
         /// <summary>

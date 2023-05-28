@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8620c058a9173b84a97d72ed5e94dbd7, type: 3}
+  m_Name: ZenjectDefaultSceneContractConfig
+  m_EditorClassIdentifier: 
+  DefaultContracts:
+  - ContractName: Menu
+    Scene: {fileID: 102900000, guid: 9468ead253c643f41a40e9a94f9881f9, type: 3}
+  - ContractName: Game
+    Scene: {fileID: 102900000, guid: dc7022ce5aa401c43b601e070ccaca4f, type: 3}
+  - ContractName: Test
+    Scene: {fileID: 102900000, guid: 114f5d45603eadd4cb16286a14372ef0, type: 3}

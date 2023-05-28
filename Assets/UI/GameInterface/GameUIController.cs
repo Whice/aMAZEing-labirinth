@@ -28,13 +28,13 @@ namespace UI
         /// <summary>
         /// Сокращенная ссылка на главный управляющий скрипт меню.
         /// </summary>
-        [Inject]private MenuManager menuManager;
+        [Inject] private MenuManager menuManager;
         /// <summary>
         /// Открыть главное меню.
         /// </summary>
         public void OpenMainMenu()
         {
-            GameManager.instance.SaveLastGame();
+            this.gameManager.SaveLastGame();
             SceneManager.SetActiveScene(this.menuManager.mainMenuScene);
             this.menuManager.SetActiveMainMenu(MenuType.mainMenu);            
         }
@@ -95,6 +95,11 @@ namespace UI
         {
             base.Initialized();
             this.isShouldInterruptPressesInWorld = false;
+        }
+
+        private void Start()
+        {
+            InitializeUIScripts();
         }
     }
 }

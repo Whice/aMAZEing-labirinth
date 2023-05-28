@@ -6,7 +6,7 @@ namespace UnityEngine
     /// Создан для упрощения выдачи сообщений в консоль,
     /// а также формирования своих.
     /// </summary>
-    public class MonoBehaviourLogger : MonoBehaviour
+    public class MonoBehaviourLogger : InjectableObject
     {
         /// <summary>
         /// Вывести сообщение об ошибке в консоль.

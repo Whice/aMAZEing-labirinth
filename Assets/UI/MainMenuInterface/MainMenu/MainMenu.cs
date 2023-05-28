@@ -21,12 +21,14 @@ namespace Assets.UI.MainMenuInterface
         private Scene currentGameScene;
         private const string PROTOTIPE_SCENE_NAME = "PrototypeScene";
         [Inject] private MenuManager menuManager;
-        private void Awake()
+        [Inject] private GameManager gameManager;
+        private void Start()
         {
             SceneManager.LoadSceneAsync(PROTOTIPE_SCENE_NAME, LoadSceneMode.Additive);
             this.currentGameScene = SceneManager.GetSceneByName(PROTOTIPE_SCENE_NAME);
             this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
-            menuManager.onMenuChanged += ChangeInteractableResumeLastGameButton;
+            this.menuManager.onMenuChanged += ChangeInteractableResumeLastGameButton;
+            LogError(this.gameManager);
         }
 
         private void ChangeInteractableResumeLastGameButton()
@@ -40,13 +42,13 @@ namespace Assets.UI.MainMenuInterface
         {
             SceneManager.SetActiveScene(this.currentGameScene);
             menuManager.SetActiveMainMenu(MenuType.gameRoot);
-            GameManager.instance.LoadAndStartLastGameOrStartNewGame();
+            this.gameManager.LoadAndStartLastGameOrStartNewGame();
         }
         public void StartNewGame()
         {
             SceneManager.SetActiveScene(this.currentGameScene);
             menuManager.SetActiveMainMenu(MenuType.gameRoot);
-            GameManager.instance.StartNewGame();
+            this.gameManager.StartNewGame();
         }
         public void OpenHowToPlay()
         {

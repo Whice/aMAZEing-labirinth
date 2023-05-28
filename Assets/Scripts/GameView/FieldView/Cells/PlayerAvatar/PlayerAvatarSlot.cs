@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.GameModel.Player;
 using System;
 using UnityEngine;
+using Zenject;
 using static UnityEngine.ParticleSystem;
 
 namespace Assets.Scripts.GameView
@@ -19,7 +20,7 @@ namespace Assets.Scripts.GameView
         /// </summary>
         private void SetAvatar()
         {
-            this.avatar = GameManager.instance.playerAvatarsProvider.GetPrefabClone("Player" + this.playerNumber);
+            this.avatar = this.gameManager.playerAvatarsProvider.GetPrefabClone("Player" + this.playerNumber);
             this.avatar.transform.parent = this.transform;
             this.avatar.transform.localPosition = Vector3.zero;
         }
@@ -93,9 +94,9 @@ namespace Assets.Scripts.GameView
             PlayerChanged();
         }
 
-        protected override void Awake()
+        protected override void Start()
         {
-            base.Awake();
+            base.Start();
             this.gameModel.onPlayerChanged += PlayerChanged;
         }
         protected override void OnDestroy()
