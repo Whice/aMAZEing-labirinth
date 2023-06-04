@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Settings;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -22,20 +23,20 @@ namespace Assets.UI.MainMenuInterface
         private const string PROTOTIPE_SCENE_NAME = "PrototypeScene";
         [Inject] private MenuManager menuManager;
         [Inject] private GameManager gameManager;
+        [Inject] private GeneralSettings generalSettings;
         private void Start()
         {
             SceneManager.LoadSceneAsync(PROTOTIPE_SCENE_NAME, LoadSceneMode.Additive);
             this.currentGameScene = SceneManager.GetSceneByName(PROTOTIPE_SCENE_NAME);
-            this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
+            this.resumeButton.interactable = generalSettings.isThereGameStarted;
             this.menuManager.onMenuChanged += ChangeInteractableResumeLastGameButton;
-            LogError(this.gameManager);
         }
 
         private void ChangeInteractableResumeLastGameButton()
         {
             if (menuManager.currentMenuType == MenuType.mainMenu)
             {
-                this.resumeButton.interactable = GeneralSettings.instance.isThereGameStarted;
+                this.resumeButton.interactable = generalSettings.isThereGameStarted;
             }
         }
         public void ResumeLastGame()

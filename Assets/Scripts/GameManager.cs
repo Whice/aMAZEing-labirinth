@@ -4,16 +4,17 @@ using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameView;
 using Assets.Scripts.Saving;
+using Settings;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 /// <summary>
 /// Главный управляющий скрипт игры.
 /// </summary>
 public class GameManager : MonoBehaviourLogger
 {
-    public static GameManager instance;
     #region View info
 
     /// <summary>
@@ -44,31 +45,35 @@ public class GameManager : MonoBehaviourLogger
     #endregion View info
 
     #region Провайдеры.
-
+    [Header("Providers")]
     [SerializeField]
     private GraphicPrefabsProvider prefabsProviderPrivate = null;
     public GraphicPrefabsProvider prefabsProvider
     {
         get => this.prefabsProviderPrivate;
     }
+
     [SerializeField]
     private TreasureProvider treasureProviderPrivate = null;
     public TreasureProvider treasureProvider
     {
         get => this.treasureProviderPrivate;
     }
+
     [SerializeField]
     private SpriteProvider treasureSpriteProviderPrivate = null;
     public SpriteProvider treasureSpriteProvider
     {
         get => this.treasureSpriteProviderPrivate;
     }
+
     [SerializeField]
     private UICardWithTreasureSlotProvider uiCardWithTreasureSlotProviderPrivate = null;
     public UICardWithTreasureSlotProvider uiCardWithTreasureSlotProvider
     {
         get => this.uiCardWithTreasureSlotProviderPrivate;
     }
+
     [SerializeField]
     private PlayerAvatarsProvider playerAvatarsProviderPrivate = null;
     public PlayerAvatarsProvider playerAvatarsProvider
@@ -137,7 +142,7 @@ public class GameManager : MonoBehaviourLogger
         }
 
         InitializeGame();
-        GeneralSettings.instance.isThereGameStarted = true;
+        generalSettings.isThereGameStarted = true;
         this.gameModelPrivate.OnGameEnded += EndGame;
     }
 
@@ -216,16 +221,31 @@ public class GameManager : MonoBehaviourLogger
 
     #region Общие настройки.
 
+    [Inject] private GeneralSettings generalSettings;
     /// <summary>
     /// Выполнить действия, которые предназначены для конца игры.
     /// </summary>
     private void EndGame()
     {
-        GeneralSettings.instance.isThereGameStarted = false;
+        generalSettings.isThereGameStarted = false;
     }
 
     #endregion Общие настройки.
 
+    [Inject]private DiContainer diContainer;
+    private void Awake()
+    {
+        List<AbstractProvider> providers = new List<AbstractProvider>();
+        providers.Add(this.prefabsProviderPrivate);
+        providers.Add(this.treasureProviderPrivate);
+        providers.Add(this.treasureSpriteProviderPrivate);
+        providers.Add(this.uiCardWithTreasureSlotProviderPrivate);
+        providers.Add(this.playerAvatarsProviderPrivate);
+        foreach (AbstractProvider provider in providers)
+        {
+            provider.diContainer = this.diContainer;
+        }
+    }
     private void Start()
     {
         //Application.targetFrameRate = 30;

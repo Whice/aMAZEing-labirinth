@@ -9,7 +9,6 @@ namespace Zenject.Installers
         {
             GameManager instance = this.Container
                 .InstantiatePrefabForComponent<GameManager>(this.gameManagerTemplate);
-            GameManager.instance= instance;
 
             this.Container.Bind<GameManager>()
                 .FromInstance(instance)

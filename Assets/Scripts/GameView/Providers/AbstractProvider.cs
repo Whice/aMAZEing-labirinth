@@ -7,10 +7,10 @@ namespace Assets.Scripts.GameView
     [Serializable]
     public abstract class AbstractProvider : ScriptableObject
     {
-        [Inject] private DiContainer diContainer;
-        protected T InstantiateWithInject<T>(T objectTemplate) where T : UnityEngine.Object
+        public DiContainer diContainer;
+        protected GameObject InstantiateWithInject(GameObject objectTemplate)
         {
-            return diContainer.InstantiatePrefabForComponent<T>(objectTemplate);
+            return diContainer.InstantiatePrefab(objectTemplate);
         }
     }
 }

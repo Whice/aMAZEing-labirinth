@@ -388,9 +388,9 @@ namespace Assets.Scripts.GameView
         /// </summary>
         public CellSlotFill arrowForFreeCellSlotFill = null;
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             this.cellObject = this.gameObject;
             this.originalHeight = this.transform.localPosition.y;
         }

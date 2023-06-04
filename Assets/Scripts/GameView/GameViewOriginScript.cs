@@ -42,7 +42,7 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     {
         get => this.gameObject.activeSelf;
     }
-    protected virtual void Start() 
+    protected virtual void Awake() 
     {
         this.gameManager.AddGameViewOriginScript(this);
     }

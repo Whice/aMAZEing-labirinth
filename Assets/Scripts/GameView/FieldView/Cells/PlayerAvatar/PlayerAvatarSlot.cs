@@ -94,9 +94,9 @@ namespace Assets.Scripts.GameView
             PlayerChanged();
         }
 
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
             this.gameModel.onPlayerChanged += PlayerChanged;
         }
         protected override void OnDestroy()
