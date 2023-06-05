@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace UI
     /// был ли нажат какой-либо элемент интерфейса,
     /// который наследует от <see cref="GameUIOriginScript"/>.
     /// </summary>
-    public class GameInterfaceRectanglesDetected : MonoSingleton<GameInterfaceRectanglesDetected>
+    public class GameInterfaceRectanglesDetector :MonoBehaviourLogger
     {
         /// <summary>
         /// Инфо о положении всех видимых UI элементов.

@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.GameModel.Player;
 using System;
+using Zenject;
 
 namespace UI
 {
@@ -19,9 +20,17 @@ namespace UI
         protected override void Awake()
         {
             base.Awake();
-            GameInterfaceRectanglesDetected.instance.AddGameViewOriginScripts(this);
         }
 
+        [Inject] private GameInterfaceRectanglesDetector rectanglesUIDetector;
+        protected void OnEnable()
+        {
+            rectanglesUIDetector.AddGameViewOriginScripts(this);
+        }
+        protected void OnDisable()
+        {
+            rectanglesUIDetector.RemoveGameViewOriginScripts(this);
+        }
         /// <summary>
         /// Подписаться на все нужные события.
         /// Используется во время инициализации скрипта.

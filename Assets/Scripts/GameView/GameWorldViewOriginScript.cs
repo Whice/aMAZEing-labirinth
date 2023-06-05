@@ -1,6 +1,7 @@
 ﻿using System;
 using UI;
 using UnityEngine;
+using Zenject;
 
 namespace Assets.Scripts.GameView
 {
@@ -26,11 +27,13 @@ namespace Assets.Scripts.GameView
         /// Позиция курсора мыши до нажатия на кнопку.
         /// </summary>
         private Vector3 cursorPositionBeforeMouseDown;
+
+        [Inject] private GameInterfaceRectanglesDetector rectanglesUIDetector;
         private void OnMouseUp()
         {
             if (this.cursorPositionBeforeMouseDown == Input.mousePosition)
             {
-                if (!GameInterfaceRectanglesDetected.instance.isPointerOnUIElement)
+                if (!rectanglesUIDetector.isPointerOnUIElement)
                 {
                     SimulateOnClick();
                 }
