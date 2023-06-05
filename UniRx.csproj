@@ -283,6 +283,8 @@
     <Compile Include="Assets\Plugins\UniRx\Scripts\UnityEngineBridge\Triggers\ObservableSelectTrigger.cs" />
     <Compile Include="Assets\Plugins\UniRx\Scripts\UnityEngineBridge\CancellationToken.cs" />
     <Compile Include="Assets\Plugins\UniRx\Scripts\Operators\SynchronizedObserver.cs" />
+    <Compile Include="Assets\Plugins\UniRx\Scripts\IRxMsg.cs" />
+    <Compile Include="Assets\Plugins\UniRx\Scripts\RxEventExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\UniRx\Scripts\UniRx.asmdef" />
