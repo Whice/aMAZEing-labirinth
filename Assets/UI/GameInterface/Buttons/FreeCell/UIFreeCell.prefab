@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isShouldInterruptPressesInWorld: 1
+  selfRectTransform: {fileID: 178581209295482069}
   animator: {fileID: 6310251867943983654}
   lineCellUISprite: {fileID: 21300000, guid: d5950b9536e3aa6439a7aa858342d6d4, type: 3}
   cornerCellUISprite: {fileID: 21300000, guid: c288413d39caac0439f96b1824f604e5, type: 3}
@@ -195,7 +196,7 @@ MonoBehaviour:
   cellUIImageSlot: {fileID: 3762398356614106627}
 --- !u!95 &6310251867943983654
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -212,7 +213,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4063595238238065806
 GameObject:
   m_ObjectHideFlags: 0

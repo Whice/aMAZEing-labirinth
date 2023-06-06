@@ -4,6 +4,8 @@ using System;
 using UnityEngine.UI;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
+using DG.Tweening;
+using Unity.VisualScripting;
 
 namespace UI
 {
@@ -29,6 +31,7 @@ namespace UI
 
         #region Видимость ячейки.
 
+        [SerializeField] private RectTransform selfRectTransform = null;
         /// <summary>
         /// Аниматор этого префаба.
         /// </summary>
@@ -37,7 +40,7 @@ namespace UI
         /// <summary>
         /// Считать ячейку скрытой.
         /// </summary>
-        private Boolean isNeedShowHidden
+        private Boolean isNeedHidden
         {
             get => this.gameModel.currentPhase == TurnPhase.movingCell;
         }    
@@ -55,12 +58,21 @@ namespace UI
         {
             SetEnableObjectAnimationBegin();
         }
+        private const float HIDE_SPEED = 1f;
         /// <summary>
         /// Начать анимацию включения или отключения объекта этого скрипта.
         /// </summary>
         public void SetEnableObjectAnimationBegin()
         {
-            this.animator.SetInteger("ShowFreeCellCode", !this.isNeedShowHidden ? -1 : 1);
+            this.animator.SetInteger("ShowFreeCellCode", !this.isNeedHidden ? -1 : 1);
+            /*if (this.isNeedHidden)
+            {
+                this.transform.DOLocalMoveX(-(10 + this.cellUIRectTransform.rect.width), HIDE_SPEED * Time.timeScale);
+            }
+            else
+            {
+                this.transform.DOLocalMoveX(0, HIDE_SPEED * Time.timeScale);
+            }*/
         }
 
         #endregion Видимость ячейки.

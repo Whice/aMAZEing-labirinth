@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GameModel.Player;
+using SummonEra.RxEvents;
 using System;
 using Zenject;
 
@@ -20,6 +21,7 @@ namespace UI
         protected override void Awake()
         {
             base.Awake();
+            new TestRxEvent { message = "UI script created!" }.Publish();
         }
 
         [Inject] private GameInterfaceRectanglesDetector rectanglesUIDetector;
