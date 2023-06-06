@@ -26,7 +26,7 @@ namespace Assets.Scripts.GameView
             }
 
             this.currentFieldView = InstantiateWithInject(this.fieldViewTemplate, this.transform);
-            this.currentFieldView.Initialize();
+            //this.currentFieldView.Initialize();
         }
         private void Awake()
         {

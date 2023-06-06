@@ -219,6 +219,7 @@ namespace UI
             base.Awake();
             this.turnClockwiseButton.onClick.AddListener(() => TurnClockwise());
             this.turnCounterClockwiseButton.onClick.AddListener(() => TurnCounterClockwise());
+            SetEnableObjectAnimationBegin();
         }
     }
 }

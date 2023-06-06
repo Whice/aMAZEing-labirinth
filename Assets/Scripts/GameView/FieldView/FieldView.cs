@@ -127,7 +127,6 @@ namespace Assets.Scripts.GameView
                     this.slots[i, j].SetCellFromModelCell(this.playingField[i, j]);
                     this.slots[i, j].SetSlotPosition(i, j);
                     this.slots[i, j].transform.parent = this.slotForFieldSlots;
-                    this.slots[i, j].OnCellSlotClicked += MoveAvatarInModel;
                 }
 
             //Установить стартовые точки для игроков.
@@ -754,19 +753,26 @@ namespace Assets.Scripts.GameView
 
         protected override void Subscribe()
         {
+            foreach (CellSlotFill slot in this.slots)
+            {
+                if (slot != null)
+                    slot.OnCellSlotClicked += MoveAvatarInModel;
+            }
 
             foreach (GamePlayer player in this.gameModel.players)
             {
-                player.onAvatarMoved += MoveAvatarView;
+                if (player != null)
+                    player.onAvatarMoved += MoveAvatarView;
             }
 
-            this.gameModel.onPhaseChange += ResetHeightAllCells;
+            if (this.gameModel != null)
+                this.gameModel.onPhaseChange += ResetHeightAllCells;
             base.Subscribe();
         }
         /// <summary>
         /// Воссоздать всю визуальную часть поля на основе глобально известной модели игры.
         /// </summary>
-        public new void Initialize()
+        public override void Initialize()
         {
             FillFreeCellSlot();
             FillFieldWithCell();
@@ -774,7 +780,7 @@ namespace Assets.Scripts.GameView
 
             AddArrowSlotsForFreeCell();
             ShowCellsWhereCanMoveIfNeed();
-            Subscribe();
+            base.Initialize();
         }
         private void Update()
         {

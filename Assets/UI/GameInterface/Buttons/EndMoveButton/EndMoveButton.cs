@@ -11,7 +11,7 @@ namespace UI
         /// <summary>
         /// Считать ячейку скрытой.
         /// </summary>
-        private Boolean isNeedShowHidden
+        private Boolean isNeedShow
         {
             get => this.gameModel.currentPhase == TurnPhase.movingAvatar;
         }
@@ -32,7 +32,7 @@ namespace UI
         /// </summary>
         public void SetEnableObjectAnimationBegin()
         {
-            int isNeedShowHiddenInt = this.isNeedShowHidden ? 1 : -1;
+            int isNeedShowHiddenInt = this.isNeedShow ? 1 : -1;
             this.hideShowAnimator.SetInteger("IsNeedHide", isNeedShowHiddenInt);
             this.hideShowAnimator.speed = 1;
         }
@@ -58,7 +58,7 @@ namespace UI
         {
             base.Initialize();
             SetEnableObjectAnimationBegin();
-            this.gameObject.SetActive(false);
+            this.gameObject.SetActive(this.isNeedShow);
         }
     }
 }

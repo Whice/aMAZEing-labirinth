@@ -317,11 +317,7 @@ namespace Assets.Scripts.GameView
         /// <param name="cell">Ячейка поля из модели.</param>
         public void SetCellFromModelCell(FieldCell cell)
         {
-            if (this.modelCell != null)
-            {
-                this.modelCell.OnTurnedClockwise -= this.TurnClockwise;
-                this.modelCell.OnTurnedCountclockwise -= this.TurnCounterclockwise;
-            }
+            Unsubscribe();
 
             this.modelCell = cell;
             SetCellType(cell.CellType);
@@ -456,5 +452,15 @@ namespace Assets.Scripts.GameView
         }
 
         #endregion Симуляция/считывание клика по объекту.
+
+        protected override void Unsubscribe()
+        {
+            if (this.modelCell != null)
+            {
+                this.modelCell.OnTurnedClockwise -= this.TurnClockwise;
+                this.modelCell.OnTurnedCountclockwise -= this.TurnCounterclockwise;
+            }
+            base.Unsubscribe();
+        }
     }
 }
