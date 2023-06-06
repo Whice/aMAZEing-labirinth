@@ -54,7 +54,7 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     /// </summary>
     protected virtual void Unsubscribe() { }
     /// <summary>
-    /// Инициализировать элементы интерфейса для новой модели.
+    /// Инициализировать элементы для новой модели.
     /// </summary>
     public virtual void Initialize()
     {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Assets.Scripts.GameModel.PlayingField;
 using Assets.Scripts.GameModel.TurnPhaseAndExtensions;
 using DG.Tweening;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 
 namespace UI
 {
@@ -14,6 +14,14 @@ namespace UI
     /// </summary>
     public class UIFreeCell : GameUIOriginScript
     {
+        /// <summary>
+        /// Кнопка поворота по часовой стрелке.
+        /// </summary>
+        [SerializeField] private Button turnClockwiseButton;
+        /// <summary>
+        /// Кнопка поворота против часовой стрелки.
+        /// </summary>
+        [SerializeField] private Button turnCounterClockwiseButton;
         /// <summary>
         /// Ссылка на свободную ячейку в модели.
         /// </summary>
@@ -33,16 +41,11 @@ namespace UI
 
         [SerializeField] private RectTransform selfRectTransform = null;
         /// <summary>
-        /// Аниматор этого префаба.
-        /// </summary>
-        [SerializeField]
-        private Animator animator = null;
-        /// <summary>
         /// Считать ячейку скрытой.
         /// </summary>
-        private Boolean isNeedHidden
+        private Boolean isNeedShow
         {
-            get => this.gameModel.currentPhase != TurnPhase.movingCell;
+            get => this.gameModel.currentPhase == TurnPhase.movingCell;
         }    
         /// <summary>
         /// Включить объект этого скрипта.
@@ -64,14 +67,13 @@ namespace UI
         /// </summary>
         public void SetEnableObjectAnimationBegin()
         {
-            //this.animator.SetInteger("ShowFreeCellCode", !this.isNeedHidden ? -1 : 1);
-            if (this.isNeedHidden)
+            if (this.isNeedShow)
             {
-                this.selfRectTransform.DOScale(0, HIDE_SPEED * Time.timeScale);
+                this.selfRectTransform.DOScale(1, HIDE_SPEED * Time.timeScale);
             }
             else
             {
-                this.selfRectTransform.DOScale(1, HIDE_SPEED * Time.timeScale);
+                this.selfRectTransform.DOScale(0, HIDE_SPEED * Time.timeScale);
             }
         }
 
@@ -97,41 +99,28 @@ namespace UI
         /// </summary>
         [SerializeField]
         private Image slotForCellUISprite = null;
+        private Dictionary<CellType, Sprite> cellUISprites;
         /// <summary>
         /// Изменить спрайт ячейки.
         /// </summary>
-        private void ChageSprite()
+        private void ChangeSprite()
         {
-            ResetRotation();
-            TurnClockwise(this.freeCellModel.turnsClockwiseCount);
-            switch (this.freeCellModel.CellType)
+            if (this.isNeedShow)
             {
-                case CellType.line:
-                    {
-                        this.slotForCellUISprite.sprite = this.lineCellUISprite;
-                        break;
-                    }
-                case CellType.corner:
-                    {
-                        this.slotForCellUISprite.sprite = this.cornerCellUISprite;
-                        break;
-                    }
-                case CellType.threeDirection:
-                    {
-                        this.slotForCellUISprite.sprite = this.threeDirectionCellUISprite;
-                        break;
-                    }
+                ResetRotation();
+                TurnClockwise(this.freeCellModel.turnsClockwiseCount);
+                this.slotForCellUISprite.sprite = this.cellUISprites[this.freeCellModel.CellType];
             }
         }
         protected override void Subscribe()
         {
             base.Subscribe();
-            this.fieldCells.OnFreeCellChange += ChageSprite;
             this.gameModel.onPhaseChange += ChangeVisibility;
+            this.gameModel.onPhaseChange += ChangeSprite;
         }
         protected override void Unsubscribe()
         {
-            this.fieldCells.OnFreeCellChange -= ChageSprite;
+            this.fieldCells.OnFreeCellChange -= ChangeSprite;
             this.gameModel.onPhaseChange -= ChangeVisibility;
             base.Unsubscribe();
         }
@@ -143,15 +132,24 @@ namespace UI
             {
                 LogError(nameof(this.lineCellUISprite) + " not found!");
             }
-            if (this.lineCellUISprite == null)
+            if (this.cornerCellUISprite == null)
             {
                 LogError(nameof(this.cornerCellUISprite) + " not found!");
             }
-            if (this.lineCellUISprite == null)
+            if (this.threeDirectionCellUISprite == null)
             {
                 LogError(nameof(this.threeDirectionCellUISprite) + " not found!");
             }
-            ChageSprite();
+            if (this.cellUISprites == null)
+            {
+                this.cellUISprites = new Dictionary<CellType, Sprite>
+                {
+                    { CellType.line, this.lineCellUISprite },
+                    { CellType.corner, this.cornerCellUISprite },
+                    { CellType.threeDirection, this.threeDirectionCellUISprite }
+                };
+            }
+            ChangeSprite();
         }
 
         #region Поворот.
@@ -172,7 +170,7 @@ namespace UI
         /// </summary>
         private void ResetRotation()
         {
-            TurnCounterclockwise(this.turnsClockwiseCount);
+            this.cellUIImageSlot.rotation = Quaternion.identity;
         }
         /// <summary>
         /// Повернуть по часовой стрелке.
@@ -193,10 +191,11 @@ namespace UI
 
             this.freeCellModel.TurnClockwise(count);
         }
+
         /// <summary>
         /// Повернуть против часовой стрелке.
         /// </summary>
-        public void TurnCounterclockwise(Int32 count = 1)
+        private void TurnCounterClockwise(Int32 count = 1)
         {
             count = count % 4;
             this.turnsClockwiseCount = 4 - ((this.turnsClockwiseCount + count) % 4);
@@ -214,5 +213,12 @@ namespace UI
         }
 
         #endregion Поворот.
+
+        protected override void Awake()
+        {
+            base.Awake();
+            this.turnClockwiseButton.onClick.AddListener(() => TurnClockwise());
+            this.turnCounterClockwiseButton.onClick.AddListener(() => TurnCounterClockwise());
+        }
     }
 }

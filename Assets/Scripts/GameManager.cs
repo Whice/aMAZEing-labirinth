@@ -240,12 +240,14 @@ public class GameManager : MonoBehaviourLogger
     [Inject]private DiContainer diContainer;
     private void Awake()
     {
-        List<AbstractProvider> providers = new List<AbstractProvider>();
-        providers.Add(this.prefabsProviderPrivate);
-        providers.Add(this.treasureProviderPrivate);
-        providers.Add(this.treasureSpriteProviderPrivate);
-        providers.Add(this.uiCardWithTreasureSlotProviderPrivate);
-        providers.Add(this.playerAvatarsProviderPrivate);
+        List<AbstractProvider> providers = new List<AbstractProvider>
+        {
+            this.prefabsProviderPrivate,
+            this.treasureProviderPrivate,
+            this.treasureSpriteProviderPrivate,
+            this.uiCardWithTreasureSlotProviderPrivate,
+            this.playerAvatarsProviderPrivate
+        };
         foreach (AbstractProvider provider in providers)
         {
             provider.diContainer = this.diContainer;

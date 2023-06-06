@@ -187,6 +187,17 @@ namespace Assets.Scripts.GameView
             }
         }
         /// <summary>
+        /// Задать указанную ячейку как свободную и посметить в слот.
+        /// </summary>
+        /// <param name="slot"></param>
+        private void SetFreeCell(CellSlotFill slot)
+        {
+            this.freeCellSlot = slot;
+            this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
+            this.freeCellSlot.transform.localPosition = Vector3.zero;
+            this.freeCellSlot.transform.rotation = Quaternion.identity;
+        }
+        /// <summary>
         /// Заполнить слот для свободной ячейкой.
         /// </summary>
         private void FillFreeCellSlot()
@@ -202,16 +213,6 @@ namespace Assets.Scripts.GameView
         private void ClearFreeCellSlot()
         {
             this.freeCellSlot = null;
-        }
-        /// <summary>
-        /// Задать указанную ячейку как свободную и посметить в слот.
-        /// </summary>
-        /// <param name="slot"></param>
-        private void SetFreeCell(CellSlotFill slot)
-        {
-            this.freeCellSlot = slot;
-            this.freeCellSlot.transform.parent = this.slotForFreeCellSlot;
-            this.freeCellSlot.transform.localPosition = Vector3.zero;
         }
 
         #endregion Свободная ячейка.
@@ -439,12 +440,14 @@ namespace Assets.Scripts.GameView
             Int32 numberLine = this.numberLineForShift;
             Int32 positionLastCell = 0;
             Int32 slotsForShiftCounter = 0;
+            CellSlotFill lastCell = null;
 
             switch (this.sideWhereToMove)
             {
                 case FieldSide.right:
                     {
-                        positionLastCell = this.slots[0, numberLine].positionInField.x;
+                        lastCell = this.slots[0, numberLine];
+                        positionLastCell = lastCell.positionInField.x;
                         for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
                         {
                             this.slots[i, numberLine].SetTargetSlotPosition
@@ -461,7 +464,8 @@ namespace Assets.Scripts.GameView
                     }
                 case FieldSide.left:
                     {
-                        positionLastCell = this.slots[Field.FIELD_SIZE - 1, numberLine].positionInField.x;
+                        lastCell = this.slots[Field.FIELD_SIZE - 1, numberLine];
+                        positionLastCell = lastCell.positionInField.x;
                         for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                         {
                             this.slots[i, numberLine].SetTargetSlotPosition
@@ -478,7 +482,8 @@ namespace Assets.Scripts.GameView
                     }
                 case FieldSide.top:
                     {
-                        positionLastCell = this.slots[numberLine, 0].positionInField.y;
+                        lastCell = this.slots[numberLine, 0];
+                        positionLastCell = lastCell.positionInField.y;
                         for (Int32 i = Field.FIELD_SIZE - 1; i > -1; i--)
                         {
                             this.slots[numberLine, i].SetTargetSlotPosition
@@ -495,7 +500,8 @@ namespace Assets.Scripts.GameView
                     }
                 case FieldSide.bottom:
                     {
-                        positionLastCell = this.slots[numberLine, Field.FIELD_SIZE - 1].positionInField.y;
+                        lastCell = this.slots[numberLine, Field.FIELD_SIZE - 1];
+                        positionLastCell = lastCell.positionInField.y;
                         for (Int32 i = 0; i < Field.FIELD_SIZE; i++)
                         {
                             this.slots[numberLine, i].SetTargetSlotPosition
@@ -746,17 +752,8 @@ namespace Assets.Scripts.GameView
 
         #endregion Показать ячейки, куда можно ходить.
 
-        /// <summary>
-        /// Воссоздать всю визуальную часть поля на основе глобально изместной модели игры.
-        /// </summary>
-        public void Initialize()
+        protected override void Subscribe()
         {
-            FillFreeCellSlot();
-            FillFieldWithCell();
-            ToCheckIfViewOfFieldCorrespondsToItModel();
-
-            AddArrowSlotsForFreeCell();
-            ShowCellsWhereCanMoveIfNeed();
 
             foreach (GamePlayer player in this.gameModel.players)
             {
@@ -764,6 +761,20 @@ namespace Assets.Scripts.GameView
             }
 
             this.gameModel.onPhaseChange += ResetHeightAllCells;
+            base.Subscribe();
+        }
+        /// <summary>
+        /// Воссоздать всю визуальную часть поля на основе глобально известной модели игры.
+        /// </summary>
+        public new void Initialize()
+        {
+            FillFreeCellSlot();
+            FillFieldWithCell();
+            ToCheckIfViewOfFieldCorrespondsToItModel();
+
+            AddArrowSlotsForFreeCell();
+            ShowCellsWhereCanMoveIfNeed();
+            Subscribe();
         }
         private void Update()
         {
@@ -780,20 +791,23 @@ namespace Assets.Scripts.GameView
             }
         }
 
-        protected override void OnDestroy()
+        protected override void Unsubscribe()
         {
+            base.Unsubscribe();
             foreach (CellSlotFill slot in this.slots)
             {
-                slot.OnCellSlotClicked -= MoveAvatarInModel;
+                if (slot != null)
+                    slot.OnCellSlotClicked -= MoveAvatarInModel;
             }
 
             foreach (GamePlayer player in this.gameModel.players)
             {
-                player.onAvatarMoved -= MoveAvatarView;
+                if (player != null)
+                    player.onAvatarMoved -= MoveAvatarView;
             }
 
-            this.gameModel.onPhaseChange -= ResetHeightAllCells;
-            base.OnDestroy();
+            if (this.gameModel != null)
+                this.gameModel.onPhaseChange -= ResetHeightAllCells;
         }
     }
 }
