@@ -4,6 +4,7 @@ using Assets.Scripts.GameModel.Logging;
 using Assets.Scripts.GameModel.Player;
 using Assets.Scripts.GameView;
 using Assets.Scripts.Saving;
+using RxEvents;
 using Settings;
 using SummonEra.RxEvents;
 using System;
@@ -87,6 +88,7 @@ public class GameManager : MonoBehaviourLogger
 
     #region Модель и представление игры.
 
+    private GameInitializeMessage gameInitializeMessage = new GameInitializeMessage();
     /// <summary>
     /// Модель игры, реализовывает логику взаимодействия всех частей.
     /// </summary>
@@ -111,6 +113,7 @@ public class GameManager : MonoBehaviourLogger
     private void InitializeGame()
     {
         CreateNewFieldView();
+        gameInitializeMessage.Publish();
     }
     /// <summary>
     /// Начать новую игру.
@@ -234,12 +237,9 @@ public class GameManager : MonoBehaviourLogger
 
     #endregion Общие настройки.
 
-    private CompositeDisposable disposables;
     [Inject]private DiContainer diContainer;
     private void Awake()
     {
-        disposables = new CompositeDisposable();
-        disposables.Subscribe<TestRxEvent>(IRxMsgmsg => { Debug.Log(IRxMsgmsg.message); });
         List<AbstractProvider> providers = new List<AbstractProvider>();
         providers.Add(this.prefabsProviderPrivate);
         providers.Add(this.treasureProviderPrivate);

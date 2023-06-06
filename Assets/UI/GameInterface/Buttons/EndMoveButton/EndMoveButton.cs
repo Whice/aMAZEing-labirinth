@@ -54,9 +54,9 @@ namespace UI
             this.gameModel.onPhaseChange -= ChangeVisibility;
             base.Unsubscribe();
         }
-        public override void Initialized()
+        public override void Initialize()
         {
-            base.Initialized();
+            base.Initialize();
             SetEnableObjectAnimationBegin();
             this.gameObject.SetActive(false);
         }

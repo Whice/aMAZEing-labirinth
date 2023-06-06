@@ -88,9 +88,9 @@ namespace UI
             this.gameModel.onNextTurnMoved -= FillPlayerName;
             base.Unsubscribe();
         }
-        public override void Initialized()
+        public override void Initialize()
         {
-            base.Initialized();
+            base.Initialize();
             AnimationEnable(false);
             this.playerName.text = this.currentPlayer.name;
             FillPlayerName();

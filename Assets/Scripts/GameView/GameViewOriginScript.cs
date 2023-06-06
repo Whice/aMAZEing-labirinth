@@ -1,11 +1,15 @@
 ﻿using Assets.Scripts.GameModel;
+using RxEvents;
+using SummonEra.RxEvents;
 using System;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
 public abstract class GameViewOriginScript : MonoBehaviourLogger
 {
     [Inject] protected GameManager gameManager;
+    protected CompositeDisposable disposables;
     /// <summary>
     /// Модель игры, реализовывает логику взаимодействия всех частей.
     /// </summary>
@@ -35,6 +39,39 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     {
         this.gameObject.SetActive(isActive);
     }
+
+    #region Подписки.
+
+    /// <summary>
+    /// Подписаться на все нужные события.
+    /// Используется во время инициализации скрипта.
+    /// </summary>
+    protected virtual void Subscribe() { }
+    /// <summary>
+    /// Отписаться от ненужных событий.
+    /// Используется во время инициализации скрипта.
+    /// Поу молчанию используется при уничтожении объекта.
+    /// </summary>
+    protected virtual void Unsubscribe() { }
+    /// <summary>
+    /// Инициализировать элементы интерфейса для новой модели.
+    /// </summary>
+    public virtual void Initialize()
+    {
+        Unsubscribe();
+        Subscribe();
+    }
+    /// <summary>
+    /// Произошло событие инициализации игры (модели).
+    /// </summary>
+    /// <param name="msg"></param>
+    private void OnGameInitialize(GameInitializeMessage msg)
+    {
+        Initialize();
+    }
+
+    #endregion Подписки.
+
     /// <summary>
     /// Включен или отключен объект этого скрипта.
     /// </summary>
@@ -44,7 +81,15 @@ public abstract class GameViewOriginScript : MonoBehaviourLogger
     }
     protected virtual void Awake() 
     {
+        disposables= new CompositeDisposable();
+        disposables.Subscribe<GameInitializeMessage>(OnGameInitialize);
         this.gameManager.AddGameViewOriginScript(this);
     }
-    protected virtual void OnDestroy() { }
+
+
+    protected virtual void OnDestroy()
+    {
+        Unsubscribe();
+        this.disposables?.Dispose();
+    }
 }

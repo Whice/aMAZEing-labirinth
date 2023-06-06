@@ -50,7 +50,7 @@ namespace UI
         {
             foreach (GameUIOriginScript script in this.initializableUIScripts)
             {
-                script.Initialized();
+                script.Initialize();
             }
         }
 
@@ -91,9 +91,9 @@ namespace UI
             this.gameModel.OnGameEnded -= ShowGameEndTable;
             base.Unsubscribe();
         }
-        public override void Initialized()
+        public override void Initialize()
         {
-            base.Initialized();
+            base.Initialize();
             this.isShouldInterruptPressesInWorld = false;
         }
 

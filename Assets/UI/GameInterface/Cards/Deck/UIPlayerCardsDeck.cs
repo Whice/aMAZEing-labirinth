@@ -115,9 +115,9 @@ namespace UI
             this.gameModel.onPlayerChanged -= FillPlayersDeck;
             base.Unsubscribe();
         }
-        public override void Initialized()
+        public override void Initialize()
         {
-            base.Initialized();
+            base.Initialize();
             FillPlayersDeck();
         }
         protected override void OnDestroy()

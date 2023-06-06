@@ -42,7 +42,7 @@ namespace UI
         /// </summary>
         private Boolean isNeedHidden
         {
-            get => this.gameModel.currentPhase == TurnPhase.movingCell;
+            get => this.gameModel.currentPhase != TurnPhase.movingCell;
         }    
         /// <summary>
         /// Включить объект этого скрипта.
@@ -64,15 +64,15 @@ namespace UI
         /// </summary>
         public void SetEnableObjectAnimationBegin()
         {
-            this.animator.SetInteger("ShowFreeCellCode", !this.isNeedHidden ? -1 : 1);
-            /*if (this.isNeedHidden)
+            //this.animator.SetInteger("ShowFreeCellCode", !this.isNeedHidden ? -1 : 1);
+            if (this.isNeedHidden)
             {
-                this.transform.DOLocalMoveX(-(10 + this.cellUIRectTransform.rect.width), HIDE_SPEED * Time.timeScale);
+                this.selfRectTransform.DOScale(0, HIDE_SPEED * Time.timeScale);
             }
             else
             {
-                this.transform.DOLocalMoveX(0, HIDE_SPEED * Time.timeScale);
-            }*/
+                this.selfRectTransform.DOScale(1, HIDE_SPEED * Time.timeScale);
+            }
         }
 
         #endregion Видимость ячейки.
@@ -135,9 +135,9 @@ namespace UI
             this.gameModel.onPhaseChange -= ChangeVisibility;
             base.Unsubscribe();
         }
-        public override void Initialized()
+        public override void Initialize()
         {
-            base.Initialized();
+            base.Initialize();
 
             if (this.lineCellUISprite == null)
             {
